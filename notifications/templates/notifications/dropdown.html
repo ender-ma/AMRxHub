@@ -1,0 +1,56 @@
+<div class="notification-dropdown">
+    <div class="notification-header">
+        <h3>Notifications</h3>
+        {% if notifications|length > 0 %}
+        <button id="mark-all-read" class="mark-all-read">
+            Mark all as read
+        </button>
+        {% endif %}
+    </div>
+    
+    <div class="notification-list">
+        {% if notifications %}
+            {% for notification in notifications %}
+                <div class="notification-item {% if not notification.is_read %}unread{% endif %}" 
+                     data-id="{{ notification.id }}">
+                    <div class="notification-icon 
+                        {% if notification.priority == 'high' or notification.priority == 'critical' %}
+                            high-priority
+                        {% elif notification.notification_type == 'system' or notification.notification_type == 'maintenance' %}
+                            system
+                        {% elif notification.notification_type == 'login' %}
+                            login
+                        {% elif notification.notification_type == 'admin' %}
+                            admin
+                        {% else %}
+                            general
+                        {% endif %}">
+                        <i class="
+                            {% if notification.notification_type == 'system' %}fas fa-cog
+                            {% elif notification.notification_type == 'admin' %}fas fa-bullhorn
+                            {% elif notification.notification_type == 'maintenance' %}fas fa-wrench
+                            {% elif notification.notification_type == 'update' %}fas fa-sync
+                            {% elif notification.notification_type == 'login' %}fas fa-sign-in-alt
+                            {% else %}fas fa-bell
+                            {% endif %}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">{{ notification.title }}</div>
+                        <div class="notification-message">{{ notification.message|truncatechars:60 }}</div>
+                        <div class="notification-time">
+                            {{ notification.created_at|timesince }} ago
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-notifications">
+                No notifications to display
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="notification-footer">
+        <a href="{% url 'notifications:notification-list' %}" class="view-all">View All</a>
+    </div>
+</div>

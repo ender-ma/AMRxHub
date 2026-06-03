@@ -1,0 +1,229 @@
+{% extends "main_layout.html" %}
+
+{% block title %}{{ category.name }} Tools - AMRx Hub{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-header">
+        <i class="{{ category.icon }}"></i>
+        <h2>{{ category.name }}</h2>
+
+        <div class="breadcrumb" style="position: absolute; top: 0; right: 30px;">
+            <a href="{% url 'tools:tools_home' %}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+    <div>
+        {% if category.detailed_description %}
+        <div class="category-detailed-description" style="margin-top: 18px; margin-bottom: 18px; font-size: 17px; color: #444;">
+            {{ category.detailed_description|linebreaks }}
+        </div>
+        {% endif %}
+    </div>
+    <div class="tools-grid">
+        {% for tool in tools %}
+        <div class="tool-card" onclick="window.open('{% url 'tools:tool_access' tool.id %}', '_blank')" style="position:relative;">
+            <div class="tool-title-row" style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                <h3 style="flex:1; text-align: center; margin: 0; font-size: 22px; font-weight: 700; color: #222;">{{ tool.name }}</h3>
+                {% if tool.logo %}
+                    <img src="{{ tool.logo.url }}" alt="{{ tool.name }}" class="tool-logo" style="margin-left: 12px;">
+                {% else %}
+                    <span class="tool-icon" style="background: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; margin-left: 12px; cursor:pointer;"
+                        onclick="event.stopPropagation(); window.location.href='{% url 'tools:tool_detail' tool.id %}'">
+                        <i class="fas fa-info-circle" style="font-size: 28px; color: #667eea;"></i>
+                    </span>
+                {% endif %}
+            </div>
+            <div class="tool-content" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <p class="tool-description" style="text-align: justify; margin-bottom: 15px; color: #444;">{{ tool.short_description }}</p>
+                <div class="tool-meta" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                    {% if tool.institution %}
+                    <div style="position: absolute, center; bottom: 12px; left: 12px;">
+                        <span class="meta-item" style="display: flex; align-items: center; gap: 6px; font-size: 15px; color: #667eea;">
+                            <span style="vertical-align: middle;">{{ tool.institution }}</span>
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div style="position: absolute; bottom: 12px; right: 12px; display: flex; gap: 6px;">
+                {% if tool.categories.all %}
+                    {% for cat in tool.categories.all %}
+                    <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:{{ cat.color }};border:2px solid #e1e8ed;" title="{{ cat.name }}"></span>
+                    {% endfor %}
+                {% else %}
+                    <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:{{ category.color }};border:2px solid #e1e8ed;" title="{{ category.name }}"></span>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-tools">
+            <i class="fas fa-exclamation-circle"></i>
+            <h3>No tools available</h3>
+            <p>No tools have been added to this category yet.</p>
+            {% if user.is_staff %}
+            <a href="/admin/tools/tool/add/" class="admin-link">
+                <i class="fas fa-plus"></i> Add Tool (Admin)
+            </a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .breadcrumb {
+        margin-top: 15px;
+    }
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #667eea;
+        text-decoration: none;
+        font-size: 14px;
+        padding: 8px 16px;
+        border: 1px solid #667eea;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+    .back-link:hover {
+        background-color: #667eea;
+        color: white;
+    }
+    .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+    }
+    .tool-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e1e8ed 100%);
+        border: 1px solid #e1e8ed;
+        border-radius: 15px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        position: relative;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        
+    }
+    .tool-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.13);
+        border-color: #667eea;
+        background: linear-gradient(135deg, #e1e8ed 0%, #f8f9fa 100%);
+    }
+    .tool-title-row h3 {
+        color: #222;
+        font-size: 22px;
+        line-height: 1.3;
+        text-align: justify;
+        font-weight: 700;
+        margin: 0;
+    }
+    .tool-logo {
+        width: 38px;
+        height: 38px;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(102,126,234,0.08);
+    }
+    .tool-icon {
+        width: 38px;
+        height: 38px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(102,126,234,0.08);
+    }
+    .tool-icon i {
+        font-size: 28px;
+        color: #667eea;
+    }
+    .tool-content h3 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 20px;
+        line-height: 1.3;
+        text-align: justify;
+        font-weight: 600;
+    
+    }
+    .tool-description {
+        color: #444;
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        text-align: justify;
+        width: 100%;
+    }
+    .tool-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+        justify-content: center;
+        width: 100%;
+    }
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 15px;
+        color: #667eea;
+    }
+    .meta-item i {
+        width: 16px;
+        text-align: center;
+        font-size: 16px;
+    }
+    .no-tools {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+    .no-tools i {
+        font-size: 48px;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+    .no-tools h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    .admin-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #667eea;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-top: 15px;
+        transition: background-color 0.3s;
+    }
+    .admin-link:hover {
+        background: #5a67d8;
+    }
+    @media (max-width: 768px) {
+        .tools-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .tool-header, .tool-content, .tool-meta, .tool-title-row {
+            align-items: center;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}

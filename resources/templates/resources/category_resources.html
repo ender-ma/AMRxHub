@@ -1,0 +1,205 @@
+{% extends "main_layout.html" %}
+{% block title %}{{ category.name }} - Resources{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-header">
+        <i class="{{ category.icon|default:'fas fa-book' }}"></i>
+        <h2>{{ category.name }}</h2>
+    </div>
+    <div class="breadcrumb" style="position: absolute; top: 0; right: 30px;">
+        <a href="{% url 'resources:resources_list' %}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Categories
+        </a>
+    </div>
+    <p class="category-description">{{ category.description }}</p>
+    <div class="resource-items-grid">
+        {% for item in category.items.all %}
+        <div class="resource-item-card">
+            {% if item.pdf_file %}
+                <a href="{{ item.pdf_file.url }}" download class="resource-link" title="Download PDF: {{ item.title }}">
+                    <div class="resource-thumb-wrap">
+                        <i class="fas fa-file-pdf resource-thumb"></i>
+                    </div>
+                    <div class="resource-info">
+                        <h4 class="resource-title">{{ item.title }}</h4>
+                        <p class="resource-desc">{{ item.description|truncatewords:20 }}</p>
+                    </div>
+                </a>
+            {% elif item.link %}
+                <a href="{{ item.link }}" target="_blank" rel="noopener" class="resource-link" title="{{ item.title }}">
+                    <div class="resource-thumb-wrap">
+                        {% if item.link_icon %}
+                            <i class="{{ item.link_icon }} resource-thumb"></i>
+                        {% else %}
+                            <i class="fas fa-link resource-thumb"></i>
+                        {% endif %}
+                    </div>
+                    <div class="resource-info">
+                        <h4 class="resource-title">{{ item.title }}</h4>
+                        <p class="resource-desc">{{ item.description|truncatewords:20 }}</p>
+                    </div>
+                </a>
+            {% elif item.image %}
+                <div class="resource-link">
+                    <div class="resource-thumb-wrap">
+                        <img src="{{ item.image.url }}" alt="{{ item.title }}" class="resource-thumb">
+                    </div>
+                    <div class="resource-info">
+                        <h4 class="resource-title">{{ item.title }}</h4>
+                        <p class="resource-desc">{{ item.description|truncatewords:20 }}</p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="resource-link">
+                    <div class="resource-thumb-wrap">
+                        <i class="fas fa-file resource-thumb"></i>
+                    </div>
+                    <div class="resource-info">
+                        <h4 class="resource-title">{{ item.title }}</h4>
+                        <p class="resource-desc">{{ item.description|truncatewords:20 }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="resource-item-card">
+            <span class="no-resource">No resources in this category yet.</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .breadcrumb {
+        margin-top: 15px;
+    }
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #667eea;
+        text-decoration: none !important;
+        font-size: 15px;
+        padding: 10px 20px;
+        border: 2px solid #667eea;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #f3f3f3 60%, #e9e9ff 100%);
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(102,126,234,0.07);
+        transition: background 0.3s, color 0.3s, box-shadow 0.3s, border 0.3s;
+    }
+    .back-link i {
+        font-size: 18px;
+        margin-right: 4px;
+        color: #667eea;
+        transition: color 0.3s;
+    }
+    .back-link:hover {
+        background: linear-gradient(90deg, #667eea 60%, #4c51bf 100%);
+        color: #fff !important;
+        border-color: #4c51bf;
+        box-shadow: 0 4px 16px rgba(102,126,234,0.13);
+    }
+    .back-link:hover i {
+        color: #fff;
+    }
+    .content-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+    }
+    .content-header i {
+        font-size: 32px;
+        color: #667eea;
+    }
+    .category-description {
+        color: #555;
+        margin-bottom: 24px;
+        font-size: 15px;
+    }
+    .resource-items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+    }
+    .resource-item-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(102,126,234,0.08);
+        padding: 18px;
+        transition: box-shadow 0.2s, transform 0.2s;
+        display: flex;
+        align-items: flex-start;
+        min-height: 120px;
+    }
+    .resource-item-card:hover {
+        box-shadow: 0 6px 24px rgba(102,126,234,0.15);
+        transform: translateY(-2px);
+    }
+    .resource-link {
+        display: flex;
+        gap: 18px;
+        text-decoration: none;
+        color: inherit;
+        width: 100%;
+        align-items: center;
+    }
+    .resource-thumb-wrap {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        background: #f3f3f3;
+        border-radius: 8px;
+    }
+    .resource-thumb {
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
+        border-radius: 6px;
+        font-size: 28px;
+        color: #667eea;
+        display: inline-block;
+    }
+    .resource-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .resource-title {
+        font-size: 16px;
+        color: #667eea;
+        margin: 0 0 6px 0;
+        font-weight: 600;
+    }
+    .resource-desc {
+        font-size: 13px;
+        color: #444;
+        margin: 0;
+        line-height: 1.5;
+    }
+    .no-resource {
+        color: #aaa;
+        font-size: 15px;
+        margin: 30px auto;
+        display: block;
+        text-align: center;
+    }
+    .breadcrumb .back-link {
+        color: #667eea;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+    .breadcrumb .back-link:hover {
+        color: #4c51bf;
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

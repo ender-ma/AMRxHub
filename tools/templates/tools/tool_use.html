@@ -1,0 +1,21 @@
+{% extends "main_layout.html" %}
+
+{% block title %}Use {{ tool.name }} - AMRx Hub{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <h2>Use {{ tool.name }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="description">Description (optional):</label>
+            <input type="text" name="description" id="description" class="edit-input">
+        </div>
+        <div>
+            <label for="uploaded_file">Upload File (optional):</label>
+            <input type="file" name="uploaded_file" id="uploaded_file" class="edit-input">
+        </div>
+        <button type="submit" class="save-btn">Run Analysis</button>
+    </form>
+</div>
+{% endblock %}

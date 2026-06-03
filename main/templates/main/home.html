@@ -1,0 +1,245 @@
+{% extends "main_layout.html" %}
+{% block meta_description %}
+Discover and access antimicrobial resistance analysis tools organized by category. Find the right AMR tool for your research, clinical, or public health needs.
+{% endblock %}
+
+{% block title %}AMRx Hub - Exchanging ideas, advancing AMR solutions{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-header">
+        <h2>Welcome to AMRx Hub</h2>
+    </div>
+
+    <!-- HTML: No need for a track div, just .advert-slide for each image -->
+    <div class="adverts-carousel" id="advertsCarousel">
+        <div class="adverts-track" id="advertsTrack">
+            {% for advert in adverts %}
+            <div class="advert-slide">
+                <a href="{{ advert.url }}" target="_blank">
+                    <img src="{{ advert.image.url }}" alt="{{ advert.title }}" class="advert-img">
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+<div style="text-align: justify; margin-top: 1.5em;">
+    <p>
+        <b>Antimicrobial resistance (AMR)</b> is one of the most pressing global health threats of our time. From hospitals to farms, from research laboratories to policy chambers, AMR challenges our ability to treat infections, protect food safety, and safeguard public health worldwide. Yet one of the biggest obstacles researchers and practitioners face isn't the lack of tools,—it's finding them.
+    </p>
+    <p>
+        AMR research tools, databases, educational materials, and computational platforms are scattered across hundreds of websites worldwide. Each institution, research group, and organization maintains their resources on separate platforms with different navigation systems and terminology. This fragmentation means that discovering the right tool for your specific research question or clinical need can take hours of searching across disparate websites—time that could be spent on actual research.
+    </p>
+    <p>
+        <b>AMRx Hub solves this problem.</b>
+    </p>
+    <p>
+        We are a centralized directory and search platform specifically designed for the antimicrobial resistance community. Think of us as your starting point for discovering AMR resources—a comprehensive, searchable catalog that brings together information about tools and resources that are currently scattered across the internet.
+    </p>
+    <h4 style="margin-top:2em; color:#333;">What We Offer</h4>
+    <ul style="margin-bottom: 1.5em;">
+        <li><b>Computational Analysis Tools</b> – Information about genomic analysis platforms, resistance gene identification tools, and bioinformatics resources for AMR research, with direct links to where you can access them</li>
+        <li><b>Surveillance and Data Resources</b> – Curated links to AMR surveillance databases, epidemiological tracking systems, and data visualization platforms maintained by research institutions worldwide</li>
+        <li><b>Educational Materials</b> – A library of research papers, tutorial videos, webinars, and case studies that explain AMR mechanisms, analysis methods, and research best practices</li>
+        <li><b>Research Resources</b> – Access to publications, datasets, presentations, and documentation from the global AMR research community</li>
+    </ul>
+    <p>
+        <i>Important:</i> We don't host these tools and resources ourselves. Instead, we provide comprehensive descriptions, usage guidance, and direct links to authoritative sources where you can access them. Original developers maintain their tools, ensuring you always get the most current versions while we handle the discovery challenge.
+    </p>
+    <h4 style="margin-top:2em; color:#333;">Who AMRx Hub Serves</h4>
+    <p>
+        Whether you're a researcher searching for the right genomic analysis tool for your organism of interest, a bioinformatician looking for resistance prediction platforms, a student seeking educational resources to understand AMR mechanisms, or a public health professional needing access to surveillance data tools—AMRx Hub is designed to help you find what you need quickly.
+    </p>
+    <ul>
+        <li><b>Saving Research Time</b> – Find relevant tools in minutes instead of spending hours browsing institutional websites</li>
+        <li><b>Providing Context</b> – Each entry includes detailed descriptions, developer information, technical requirements, and usage guidance to help you assess whether a tool is appropriate for your needs</li>
+        <li><b>Enabling Discovery</b> – Our search and filtering capabilities help you discover tools you might not have known existed</li>
+        <li><b>Supporting Collaboration</b> – Create personal collections of favorite tools, share resources with colleagues, and receive notifications about new resources matching your research interests</li>
+    </ul>
+    <h4 style="margin-top:2em; color:#333;">How It Works</h4>
+    <ol>
+        <li><b>Search or Browse</b> – Use our search function with keywords relevant to your research needs, or browse our curated collections organized by organism, analysis type, or application</li>
+        <li><b>Review Information</b> – Read detailed descriptions, developer information, and usage guidance to determine if a tool fits your requirements</li>
+        <li><b>Access Tools</b> – Click direct links to access tools on their original developer websites</li>
+        <li><b>Save and Organize</b> – Bookmark useful resources to personal collections for quick future access</li>
+        <li><b>Stay Updated</b> – Opt in to receive notifications when we add new tools relevant to your research interests</li>
+    </ol>
+    <h4 style="margin-top:2em; color:#333;">Our Commitment</h4>
+    <p>
+        AMRx Hub is built on principles of accessibility, transparency, and community collaboration. We provide free access to all researchers worldwide, regardless of institutional affiliation or geographic location. Our platform is continuously updated with new tools and resources as the AMR research landscape evolves.
+    </p>
+    <p>
+        We operate as a directory for discovery, not a platform for computation. This approach respects intellectual property, ensures users access authoritative tool versions maintained by original developers, and allows us to focus on solving the discovery problem that affects every researcher in this field.
+    </p>
+    <h4 style="margin-top:2em; color:#333;">Join the Community</h4>
+    <p>
+        This is more than a database—it's a collaborative effort to strengthen the global response to antimicrobial resistance. We actively seek input from researchers, clinicians, and public health professionals like you. If you know of excellent AMR tools or resources that should be included in our directory, we encourage you to suggest them. Your feedback on what works, what's missing, and how we can improve directly shapes our development priorities.
+    </p>
+    <p>
+        <b>Create your free account today and discover how AMRx Hub can streamline your research workflow, expand your access to AMR resources, and connect you with the global community working to combat antimicrobial resistance.</b>
+    </p>
+    <p>
+        <b>Together, we can make AMR research more efficient, collaborative, and impactful. Together, we can safeguard the effectiveness of antimicrobials and ensure a healthier future for all.</b>
+    </p>
+</div>
+
+    <!-- Announcements -->
+    <div class="announcements">
+        <h3><i class="fas fa-bullhorn"></i> Latest Updates</h3>
+        {% for announcement in announcements %}
+        <div class="announcement-item">
+            <h4>
+                {% if announcement.link %}
+                    <a href="{{ announcement.link }}" target="_blank">{{ announcement.title }}</a>
+                {% else %}
+                    {{ announcement.title }}
+                {% endif %}
+            </h4>
+            <p>{{ announcement.content }}</p>
+            <span class="date">{{ announcement.date|date:"M d, Y" }}</span>
+        </div>
+        {% endfor %}
+        {% if announcements|length >= 5 %}
+        <div class="view-all-announcements">
+            <a href="{% url 'main:all_announcements' %}">View All Announcements</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const track = document.getElementById('advertsTrack');
+        let slides = Array.from(track.children);
+        if (slides.length <= 1) return;
+
+        // Clone first and last slides for seamless looping
+        const firstClone = slides[0].cloneNode(true);
+        const lastClone = slides[slides.length - 1].cloneNode(true);
+        track.appendChild(firstClone);
+        track.insertBefore(lastClone, slides[0]);
+        slides = Array.from(track.children);
+
+        let current = 1; // Start at the real first slide (after the clone)
+        const duration = {{ adverts.0.display_duration|default:5 }};
+        let timer;
+
+        function goToSlide(idx, animate = true) {
+            if (animate) {
+                track.style.transition = 'transform 0.7s cubic-bezier(.4,0,.2,1)';
+            } else {
+                track.style.transition = 'none';
+            }
+            track.style.transform = `translateX(-${idx * 100}%)`;
+        }
+
+        function nextSlide() {
+            current++;
+            goToSlide(current, true);
+
+            // When reaching the clone at the end, jump to the real first slide
+            if (current === slides.length - 1) {
+                setTimeout(() => {
+                    current = 1;
+                    goToSlide(current, false);
+                }, 700);
+            }
+        }
+
+        function startCarousel() {
+            timer = setInterval(nextSlide, duration * 1000);
+        }
+
+        function stopCarousel() {
+            clearInterval(timer);
+        }
+
+        // Optional: Pause on hover (desktop)
+        track.addEventListener('mouseenter', stopCarousel);
+        track.addEventListener('mouseleave', startCarousel);
+
+        // Set initial position (show the real first slide)
+        goToSlide(current, false);
+        startCarousel();
+    });
+</script>
+
+<style>
+    .adverts-carousel {
+        margin-bottom: 30px;
+        background: #f8fafc;
+        border-radius: 14px;
+        box-shadow: 0 2px 12px rgba(102,126,234,0.08);
+        width: 100%;
+        max-width: 900px;
+        position: relative;
+        height: 320px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    @media (max-width: 900px) {
+        .adverts-carousel {
+            height: 40vw;
+            min-height: 180px;
+            max-height: 320px;
+        }
+    }
+    @media (max-width: 600px) {
+        .adverts-carousel {
+            height: 50vw;
+            min-height: 120px;
+            max-height: 220px;
+        }
+    }
+    .adverts-track {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        transition: transform 0.7s cubic-bezier(.4,0,.2,1);
+        will-change: transform;
+    }
+    .advert-slide {
+        flex: 0 0 100%;
+        max-width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+    }
+    .advert-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 4px 24px rgba(102,126,234,0.18);
+        display: block;
+        margin: auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .announcement-item {
+        background: rgba(102, 126, 234, 0.05);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border-left: 4px solid #667eea;
+    }
+    .announcement-item h4 {
+        color: #333;
+        margin-bottom: 8px;
+    }
+    .announcement-item .date {
+        color: #666;
+        font-size: 12px;
+        font-style: italic;
+    }
+    .p{
+        text-align: justify;
+    }
+</style>
+{% endblock %}

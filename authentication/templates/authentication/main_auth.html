@@ -1,0 +1,13 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0;url={% url 'authentication:login' %}">
+    <title>Redirecting...</title>
+</head>
+<body>
+    <p>Redirecting to login page...</p>
+    <script>window.location.href = "{% url 'authentication:login' %}";</script>
+</body>
+</html>

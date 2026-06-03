@@ -1,0 +1,255 @@
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Affiliations — AMRx Hub</title>
+  <link rel="stylesheet" href="affiliations.css" />
+   <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+    <!-- For modern browsers, also add: -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+    <link rel="icon" type="image/png" sizes="64x64" href="{% static 'img/favicon-64x64.jpg' %}">
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    <!-- Add this line right after your other favicon links -->
+    <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
+</head>
+<body>
+  <!-- Header -->
+  <header class="aff-header">
+    <div class="aff-header-inner">
+      <h1>Affiliations</h1>
+      <p>Institutions and organizations that partner with AMRx Hub to strengthen the fight against antimicrobial resistance.</p>
+    </div>
+  </header>
+
+  <!-- Affiliations Grid -->
+  <main class="aff-container">
+    <section class="aff-grid">
+      
+      <!-- Example Affiliation Card -->
+      <div class="aff-card">
+        <img src="{% static 'img/affiliations/helix logo.png' %}" alt="Org 1 Logo" class="aff-logo" />
+        <h3>Global Health Institute</h3>
+        <p class="aff-type">Academic Partner</p>
+        <p class="aff-desc">Collaborates with AMRx Hub on research initiatives and AMR data-sharing programs.</p>
+        <a href="https://ghi.org" target="_blank" class="aff-link">Visit Website</a>
+      </div>
+
+      <div class="aff-card">
+        <img src="org2-logo.png" alt="Org 2 Logo" class="aff-logo" />
+        <h3>Nigeria Centre for Disease Control</h3>
+        <p class="aff-type">Government Partner</p>
+        <p class="aff-desc">Provides surveillance data and strategic support for AMR monitoring.</p>
+        <a href="https://ncdc.gov.ng" target="_blank" class="aff-link">Visit Website</a>
+      </div>
+
+      <div class="aff-card">
+        <img src="org3-logo.png" alt="Org 3 Logo" class="aff-logo" />
+        <h3>World Health Organization</h3>
+        <p class="aff-type">International Agency</p>
+        <p class="aff-desc">Supports global standards and frameworks for AMR control and reporting.</p>
+        <a href="https://who.int" target="_blank" class="aff-link">Visit Website</a>
+      </div>
+
+    </section>
+
+    <!-- Call to Action -->
+    <section class="aff-cta">
+      <p>Interested in affiliating with AMRx Hub? Contact us at <a href="mailto:amrtool344@gmail.com">amrtool344@gmail.com</a>.</p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="aff-footer">
+    <p>© <span id="year"></span> AMRx Hub</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+<div class="action-buttons">
+  <button onclick="window.history.back()" class="btn btn-primary">Go Back</button>
+</div>
+</html>
+
+<style>
+    /* Affiliations Page Styles */
+
+/* Colors */
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --text: #333;
+  --muted: #555;
+  --card-bg: #fff;
+  --border: #e6e8eb;
+  --shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9fafb;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* Header */
+.aff-header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.aff-header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.aff-header p {
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+/* Affiliations Grid */
+.aff-container {
+  max-width: 1200px;
+  margin: 2rem auto 4rem;
+  padding: 0 1rem;
+}
+
+.aff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.aff-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.aff-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+.aff-logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  border: 4px solid var(--primary);
+}
+
+.aff-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  color: var(--primary);
+}
+
+.aff-type {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+
+.aff-desc {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.aff-link {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.aff-link:hover {
+  background: var(--secondary);
+}
+
+/* CTA Section */
+.aff-cta {
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.aff-cta a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.aff-cta a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.aff-footer {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin: 2rem 0;
+}
+.action-buttons {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+</style>
+
+{% endblock %}

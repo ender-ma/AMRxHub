@@ -1,0 +1,311 @@
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta description="Glossary of key terms related to Antimicrobial Resistance (AMR) - definitions and explanations for better understanding.">
+  <title>AMRx Hub | Glossary</title>
+  <link rel="stylesheet" href="glossary.css">
+  <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+  <link rel="icon" type="image/png" sizes="64x64" href="{% static 'img/favicon-64x64.jpg' %}">
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    <!-- Add this line right after your other favicon links -->
+    <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.jpg' %}">
+</head>
+<body>
+
+  <header class="glossary-header">
+    <h1>Antimicrobial Resistance (AMR) Glossary</h1>
+    <p>A quick reference guide to key terms and concepts in AMR.</p>
+  </header>
+
+  <main class="glossary-container">
+    
+    <!-- Core Terms -->
+    <section class="glossary-section">
+      <h2>Core Terms (Must-Have for Everyone)</h2>
+      <dl>
+        <dt>Antimicrobial Resistance (AMR)</dt>
+        <dd>When microorganisms (bacteria, viruses, fungi, parasites) evolve and stop responding to medicines that used to kill them.</dd>
+
+        <dt>Antimicrobials</dt>
+        <dd>Medicines that treat infections, including antibiotics (bacteria), antivirals (viruses), antifungals (fungi), and antiparasitics (parasites).</dd>
+
+        <dt>Antibiotic Resistance</dt>
+        <dd>A specific type of AMR where bacteria no longer respond to antibiotics.</dd>
+
+        <dt>Superbugs</dt>
+        <dd>Strains of bacteria that are resistant to multiple antibiotics, making infections hard to treat.</dd>
+
+        <dt>Misuse of Antimicrobials</dt>
+        <dd>Incorrect use of medicines—such as wrong drug choice, wrong dose, overuse, or stopping treatment too early.</dd>
+
+        <dt>Antimicrobial Stewardship</dt>
+        <dd>Coordinated strategies to use antimicrobials wisely and responsibly to preserve their effectiveness.</dd>
+
+        <dt>Infection Prevention and Control (IPC)</dt>
+        <dd>Measures like hand hygiene, vaccination, safe hospital practices, and clean environments to prevent the spread of infections, including resistant ones.</dd>
+
+        <dt>One Health Approach</dt>
+        <dd>A strategy recognizing the interconnection between human health, animal health, and the environment in tackling AMR.</dd>
+      </dl>
+    </section>
+
+    <!-- Technical but Important -->
+    <section class="glossary-section">
+      <h2>Technical but Important (Awareness Level)</h2>
+      <dl>
+        <dt>Multidrug-Resistant (MDR)</dt>
+        <dd>Microorganisms resistant to at least one medicine in three or more antimicrobial categories.</dd>
+
+        <dt>Extensively Drug-Resistant (XDR)</dt>
+        <dd>Resistant to almost all available antimicrobials, with only a few treatment options left.</dd>
+
+        <dt>Pan-Drug Resistant (PDR)</dt>
+        <dd>Resistant to all known antimicrobials, leaving no effective treatments.</dd>
+
+        <dt>Last-Resort Antibiotics</dt>
+        <dd>Potent antibiotics (like colistin or carbapenems) reserved for infections that don’t respond to other treatments.</dd>
+
+        <dt>Nosocomial Infections (Hospital-Acquired Infections)</dt>
+        <dd>Infections acquired in healthcare settings, often involving resistant pathogens.</dd>
+
+        <dt>Surveillance</dt>
+        <dd>The systematic monitoring of AMR trends in humans, animals, and the environment to guide interventions.</dd>
+      </dl>
+    </section>
+
+    <!-- Genetics and Mechanisms -->
+    <section class="glossary-section">
+      <h2>Genetics and Mechanisms (For Deeper Understanding)</h2>
+      <dl>
+        <dt>Resistance Genes</dt>
+        <dd>Segments of DNA that provide microorganisms with the ability to survive treatment with antimicrobials.</dd>
+
+        <dt>Horizontal Gene Transfer (HGT)</dt>
+        <dd>The process by which bacteria exchange genetic material (including resistance genes) with one another.</dd>
+
+        <dt>Plasmid</dt>
+        <dd>Small, circular DNA molecules in bacteria that often carry and transfer resistance genes between cells.</dd>
+
+        <dt>Efflux Pump</dt>
+        <dd>Protein systems that bacteria use to pump antimicrobial drugs out of their cells before the drugs can act.</dd>
+
+        <dt>Integrons</dt>
+        <dd>Genetic elements that capture, store, and express resistance genes, contributing to the spread of AMR.</dd>
+
+        <dt>Transposons (“Jumping Genes”)</dt>
+        <dd>DNA sequences that can move within and between genomes, spreading resistance traits.</dd>
+
+        <dt>Mutation</dt>
+        <dd>A permanent change in DNA sequence that can create or enhance resistance.</dd>
+
+        <dt>Mobile Genetic Elements (MGEs)</dt>
+        <dd>Pieces of DNA (like plasmids, transposons, and integrons) that move between organisms, helping spread resistance.</dd>
+      </dl>
+    </section>
+
+    <!-- Additional Useful Terms -->
+    <section class="glossary-section">
+      <h2>Additional Useful Terms</h2>
+      <dl>
+        <dt>Selective Pressure</dt>
+        <dd>The survival advantage microorganisms gain when exposed to antimicrobials, allowing resistant ones to thrive while others die off.</dd>
+
+        <dt>Biofilm</dt>
+        <dd>A protective layer formed by communities of microbes that makes them more resistant to antimicrobials and immune responses.</dd>
+
+        <dt>Intrinsic Resistance</dt>
+        <dd>Natural resistance that certain microorganisms already have, without needing new mutations or gene acquisition.</dd>
+
+        <dt>Acquired Resistance</dt>
+        <dd>Resistance developed through mutations or by picking up resistance genes from other microbes.</dd>
+
+        <dt>Global Action Plan (GAP)</dt>
+        <dd>The World Health Organization’s framework to guide countries in combating AMR.</dd>
+      </dl>
+    </section>
+    <center>
+     <footer class="pp-footer">
+      <p>© <span id="year"></span> AMRx Hub</p>
+    </footer>
+    </center>
+  </main>
+    <script>
+    // Year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+<div class="action-buttons">
+  <button onclick="window.history.back()" class="btn btn-primary">Go Back</button>
+</div>
+</html>
+<!-- End of glossary.html -->
+
+<style> 
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.7;
+  background: #f9fafb;
+  color: #333;
+}
+
+.glossary-header {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.glossary-header h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.glossary-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.glossary-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.glossary-section {
+  margin-bottom: 3rem;
+}
+
+.glossary-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-left: 5px solid #667eea;
+  padding-left: 10px;
+  color: #764ba2;
+}
+
+dl {
+  margin: 0;
+}
+
+dt {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  color: #667eea;
+}
+
+dd {
+  margin: 0.3rem 0 1rem 1.5rem;
+  color: #555;
+}
+
+@media (max-width: 600px) {
+  .glossary-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .glossary-section h2 {
+    font-size: 1.2rem;
+  }
+
+  dt {
+    font-size: 1rem;
+  }
+}
+
+.glossary-section dl {
+  border-left: 3px solid #ccc;
+  padding-left: 15px;
+}
+
+.glossary-section dl dt {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.glossary-section dl dd {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+.glossary-section dl dt:last-of-type {
+  border-bottom: none;
+}
+
+.glossary-section dl dd:last-of-type {
+  border-bottom: none;
+}
+
+.glossary-section dl dt:hover {
+  color: #764ba2;
+  cursor: pointer;
+}
+
+.glossary-section dl dd:hover {
+  color: #444;
+  cursor: pointer;
+}
+
+.glossary-section dl dt::before {
+  content: "• ";
+  color: #667eea;
+}
+
+.glossary-section dl dd::before {
+  content: "– ";
+  color: #555;
+}
+
+.glossary-section dl dt,
+.glossary-section dl dd {
+  transition: color 0.3s ease;
+}
+
+.glossary-section dl dt:focus,
+.glossary-section dl dd:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.glossary-section dl dt {
+  font-size: 1.1rem;
+}
+.action-buttons {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+</style>
+  
+{% endblock %}

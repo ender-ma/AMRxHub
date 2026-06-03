@@ -1,0 +1,363 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - AMRx Hub</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <meta name="description" content="AMRx Hub is a collaborative platform providing advanced antimicrobial resistance tools, curated resources, research support, and a vibrant community for scientists, clinicians, and public health professionals worldwide.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+      <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+    <!-- For modern browsers, also add: -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    <!-- Add this line right after your other favicon links -->
+    <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
+</head>
+<body> 
+    <div class="auth-container">
+        <div class="auth-box">
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <h2>Create an Account</h2>
+            <p>Join the AMRx Hub community</p>
+
+            <!-- Signup Form -->
+            <form action="{% url 'authentication:register' %}" method="post">
+                {% csrf_token %}
+                
+                <div class="input-group">
+                    <label for="signup-email">Email:</label>
+                    <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+                    <div id="email-validation" class="validation-message" style="display: none;"></div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="signup-first-name">First Name:</label>
+                    <input type="text" id="signup-first-name" name="first_name" placeholder="Enter your first name" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="signup-last-name">Last Name:</label>
+                    <input type="text" id="signup-last-name" name="last_name" placeholder="Enter your last name" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="signup-password">Password:</label>
+                    <input type="password" id="signup-password" name="password" placeholder="Create a password" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="signup-confirm-password">Confirm Password:</label>
+                    <input type="password" id="signup-confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+                    <div id="password-match-validation" class="validation-message" style="display: none;"></div>
+                </div>
+
+                <!-- Password Requirements Block -->
+                <div id="password-requirements">
+                    <p>Password must contain:</p>
+                    <ul>
+                        <li id="length" class="invalid">At least 8 characters</li>
+                        <li id="uppercase" class="invalid">At least one uppercase letter</li>
+                        <li id="number" class="invalid">At least one number</li>
+                    </ul>
+                </div>
+                
+                <div class="terms-container">
+                     <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <a href="{% url 'authentication:terms' %}">Terms and Conditions</a></label>
+                </div>
+
+                <button type="submit" class="btn" name="signup">Sign Up</button>
+            </form>
+
+            <br>
+            <!-- Google Signup Button
+            <a href="{% url 'google_login' %}?process=signup&next=/" class="google-btn">
+                <svg class="google-logo" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                <span><b>Sign up with Google</b></span>
+            </a> -->
+            
+            <p class="auth-switch">Already have an account? <a href="{% url 'authentication:login' %}">Login</a></p>
+        </div>
+    </div>
+    <!-- Microorganism Floating Background -->
+    <div class="microorganism-pattern" style="top: 10%; left: 5%;"></div>
+    <div class="microorganism-pattern" style="top: 10%; right: 10%; animation-delay: 1s;"></div>
+    <div class="microorganism-pattern" style="top: 50%; left: 20%; animation-delay: 2s;"></div>
+    <div class="microorganism-pattern" style="bottom: 20%; right: 15%; animation-delay: 3s;"></div>
+    <div class="microorganism-pattern" style="bottom: 10%; left: 40%; animation-delay: 4s;"></div>
+
+    <style>
+        /* Copy essential styles from main_auth.html */
+        .auth-box form p {
+            margin-bottom: 15px;
+        }
+        /* Google Button */
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .google-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #c6c6c6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
+        }
+
+        .google-logo {
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-40px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Microorganism floating emoji */
+        .microorganism-pattern {
+            position: absolute;
+            font-size: 140px;
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .microorganism-pattern::before {
+            content: '🦠';
+            display: block;
+        }
+
+        .terms-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0 20px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .terms-container a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .terms-container a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-box label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .auth-box input[type="text"],
+        .auth-box input[type="email"],
+        .auth-box input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        #password-requirements {
+            margin-top: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        #password-requirements ul {
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+        
+        .valid {
+            color: green;
+        }
+        
+        .invalid {
+            color: red;
+        }
+        
+        .validation-message {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        
+        .validation-message.success {
+            color: green;
+        }
+        
+        .validation-message.error {
+            color: red;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <script>
+        // Password strength validation
+        const passwordInput = document.getElementById('signup-password');
+        const confirmPasswordInput = document.getElementById('signup-confirm-password');
+        const lengthRequirement = document.getElementById('length');
+        const uppercaseRequirement = document.getElementById('uppercase');
+        const numberRequirement = document.getElementById('number');
+        
+        const emailValidation = document.getElementById('email-validation');
+        const passwordMatchValidation = document.getElementById('password-match-validation');
+        
+        const emailInput = document.getElementById('signup-email');
+
+        // Password strength validation
+        if (passwordInput) {
+            passwordInput.addEventListener('keyup', () => {
+                const password = passwordInput.value;
+
+                if (password.length >= 8) {
+                    lengthRequirement.classList.remove('invalid');
+                    lengthRequirement.classList.add('valid');
+                } else {
+                    lengthRequirement.classList.remove('valid');
+                    lengthRequirement.classList.add('invalid');
+                }
+
+                if (/[A-Z]/.test(password)) {
+                    uppercaseRequirement.classList.remove('invalid');
+                    uppercaseRequirement.classList.add('valid');
+                } else {
+                    uppercaseRequirement.classList.remove('valid');
+                    uppercaseRequirement.classList.add('invalid');
+                }
+
+                if (/[0-9]/.test(password)) {
+                    numberRequirement.classList.remove('invalid');
+                    numberRequirement.classList.add('valid');
+                } else {
+                    numberRequirement.classList.remove('valid');
+                    numberRequirement.classList.add('invalid');
+                }
+                
+                checkPasswordMatch();
+            });
+        }
+
+        if (confirmPasswordInput) {
+            confirmPasswordInput.addEventListener('keyup', checkPasswordMatch);
+        }
+
+        function checkPasswordMatch() {
+            if (passwordInput && confirmPasswordInput && confirmPasswordInput.value) {
+                if (passwordInput.value === confirmPasswordInput.value) {
+                    showValidationMessage(passwordMatchValidation, 'Passwords match!', 'success');
+                } else {
+                    showValidationMessage(passwordMatchValidation, 'Passwords do not match.', 'error');
+                }
+            } else if (passwordMatchValidation) {
+                hideValidationMessage(passwordMatchValidation);
+            }
+        }
+
+        // Email availability check
+        if (emailInput) {
+            let emailTimeout;
+            emailInput.addEventListener('keyup', () => {
+                clearTimeout(emailTimeout);
+                const email = emailInput.value.trim();
+                
+                if (!email || !isValidEmail(email)) {
+                    hideValidationMessage(emailValidation);
+                    return;
+                }
+                
+                emailTimeout = setTimeout(() => {
+                    fetch(`/auth/check-email/?email=${encodeURIComponent(email)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.available) {
+                                showValidationMessage(emailValidation, 'Email is available!', 'success');
+                            } else {
+                                showValidationMessage(emailValidation, data.message, 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error checking email:', error);
+                        });
+                }, 500);
+            });
+        }
+
+        function showValidationMessage(element, message, type) {
+            if (element) {
+                element.textContent = message;
+                element.className = `validation-message ${type}`;
+                element.style.display = 'block';
+            }
+        }
+
+        function hideValidationMessage(element) {
+            if (element) {
+                element.style.display = 'none';
+            }
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+</body>
+</html>

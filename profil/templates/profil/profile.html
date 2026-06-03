@@ -1,0 +1,1044 @@
+{% extends "main_layout.html" %}
+
+{% block title %}Profile - AMR Tool House{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="profile-info">
+            <h1>{{ user.get_full_name }}</h1>
+            <p class="email">{{ user.email }}</p>
+            <p class="join-date">Member since {{ user.date_joined|date:"F Y" }}</p>
+        </div>
+        <div class="profile-stats">
+            <div class="stat-item">
+                <span class="stat-number">{{ analyses_count|default:"0" }}</span>
+                <span class="stat-label">Analyses</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{ discussions_count|default:"0" }}</span>
+                <span class="stat-label">Discussions</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{ connections_count|default:"0" }}</span>
+                <span class="stat-label">Connections</span>
+            </div>
+        </div>
+    </div>
+
+        <!-- Profile Content -->
+        <div class="profile-content">
+            <!-- 1. Personal Information Card -->
+            <div class="content-card" id="personal">
+                <div class="card-header">
+                    <h3><i class="fas fa-user"></i> Personal Information</h3>
+                    <button class="edit-btn" onclick="toggleEdit('personal')">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+                <div class="card-body">
+                    <!-- Display View -->
+                    <div class="info-grid" id="personal-display-view">
+                        <div class="info-item">
+                            <label>Full Name</label>
+                            <div class="info-value">
+                                <span id="personal-fullname-display">{{ user.get_full_name|default:"Not provided" }}</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <label>Email</label>
+                            <div class="info-value">
+                                <span id="personal-email-display">{{ user.email }}</span>
+                                {% if not user.is_email_verified %}
+                                    <button id="verify-email-btn" class="verify-btn" onclick="sendVerificationEmail()">
+                                        Resend Verification Email
+                                    </button>
+                                {% else %}
+                                    <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <label>Department</label>
+                            <div class="info-value">
+                                <span id="personal-department-display">{{ profile.department|default:"Not provided" }}</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <label>Role</label>
+                            <div class="info-value">
+                                <span id="personal-role-display">{{ profile.role|default:"Not provided" }}</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <label>Organization/Institution</label>
+                            <div class="info-value">
+                                <span id="personal-organization-display">{{ profile.organization|default:"Not provided" }}</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <label>Country</label>
+                            <div class="info-value">
+                                <span id="personal-country-display">{{ profile.country|default:"Not provided" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Edit Form -->
+                    <form action="{% url 'profil:update_personal' %}" method="POST" id="personal-edit-form" style="display: none;">
+                        {% csrf_token %}
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label for="first_name">Full Name</label>
+                                <div class="info-value">
+                                    <input type="text" id="personal-first_name-edit" name="first_name" class="edit-input" value="{{ user.first_name }}" placeholder="First Name">
+                                    <input type="text" id="personal-last_name-edit" name="last_name" class="edit-input" value="{{ user.last_name }}" placeholder="Last Name">
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label>Email</label>
+                                <div class="info-value">
+                                    <span>{{ user.email }}</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label for="department">Department</label>
+                                <div class="info-value">
+                                    <input type="text" id="personal-department-edit" name="department" class="edit-input" value="{{ profile.department|default:'' }}">
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label for="role">Role</label>
+                                <div class="info-value">
+                                    <select id="personal-role-edit" name="role" class="edit-input">
+                                        <option value="">Select Role</option>
+                                        <option value="researcher" {% if profile.role == 'researcher' %}selected{% endif %}>Researcher</option>
+                                        <option value="clinician" {% if profile.role == 'clinician' %}selected{% endif %}>Clinician</option>
+                                        <option value="student" {% if profile.role == 'student' %}selected{% endif %}>Student</option>
+                                        <option value="other" {% if profile.role == 'other' %}selected{% endif %}>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label for="organization">Organization/Institution</label>
+                                <div class="info-value">
+                                    <input type="text" id="personal-organization-edit" name="organization" class="edit-input" value="{{ profile.organization|default:'' }}">
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label for="country">Country</label>
+                                <div class="info-value">
+                                    <input type="text" id="personal-country-edit" name="country" class="edit-input" value="{{ profile.country|default:'' }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="edit-actions">
+                            <button type="submit" class="save-btn">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            <button type="button" class="cancel-btn" onclick="toggleEdit('personal')">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        
+            <!-- 2. Research Interests Card -->
+            <div class="content-card" id="research">
+                <div class="card-header">
+                    <h3><i class="fas fa-microscope"></i> Research Interests & Background</h3>
+                    <button class="edit-btn" onclick="toggleEdit('research')">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+                <div class="card-body">
+                    <!-- Display View -->
+                    <div id="research-display-view">
+                        <div class="interests-section">
+                            <h4>Research Interests</h4>
+                            <div class="interest-tags">
+                                {% for interest in profile.interests.all %}
+                                    <span class="interest-tag">{{ interest.name }}</span>
+                                {% empty %}
+                                    <span class="interest-tag empty">No interests added yet</span>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="research-bio">
+                                <h4>Research Background</h4>
+                                <p id="research-bio-display">{{ profile.research_background|default:"Tell others about your research interests and background..." }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Edit Form -->
+                    <form action="{% url 'profil:update_research' %}" method="POST" id="research-edit-form" style="display: none;">
+                        {% csrf_token %}
+                        <div class="interests-section">
+                            <h4>Research Interests</h4>
+                            <div class="interest-checkboxes">
+                                {% for interest in all_interests %}
+                                <div class="interest-checkbox">
+                                    <input type="checkbox" id="interest-{{ interest.id }}" 
+                                        name="interests" 
+                                        value="{{ interest.id }}"
+                                        {% if interest in profile.interests.all %}checked{% endif %}>
+                                    <label for="interest-{{ interest.id }}">{{ interest.name }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="research-bio">
+                                <h4>Research Background</h4>
+                                <textarea id="research-bio-edit" name="research_background" class="edit-textarea" 
+                                        placeholder="Tell others about your research interests and background...">{{ profile.research_background|default:'' }}</textarea>
+                            </div>
+                        </div>
+                        <div class="edit-actions">
+                            <button type="submit" class="save-btn">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            <button type="button" class="cancel-btn" onclick="toggleEdit('research')">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 3. Account Settings Card -->
+        <div class="content-card">
+            <div class="card-header">
+                <h3><i class="fas fa-cog"></i> Account Settings</h3>
+            </div>
+            <div class="card-body">
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Research Updates</h4>
+                            <p>Get notified about newsletters and general research updates</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="settings-receive_research_updates-edit" {% if profile.receive_research_updates %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Email Notifications</h4>
+                            <p>Receive email updates from the platform</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="settings-receive_email_notifications-edit" {% if profile.receive_email_notifications %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Profile Visibility</h4>
+                            <p>Make your profile public and searchable to the social platform</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="settings-profile_visibility-edit" {% if profile.profile_visibility %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-actions" style="margin-top: 20px;">
+                    <button class="save-btn" onclick="saveAccountSettings()">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+
+                <!-- 4. Danger Zone Section -->
+                <div class="danger-zone">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Danger Zone</h4>
+                    <p class="danger-notice">These actions are irreversible once confirmed. Please proceed with caution.</p>
+                    
+                    <div class="danger-options">
+                        <div class="danger-option">
+                            <div class="danger-header">
+                                <i class="fas fa-key danger-icon"></i>
+                                <h5>Change Password</h5>
+                            </div>
+                            <p class="danger-desc">Change your account password. You'll need to verify your current password.</p>
+                            <button class="danger-btn" onclick="changePassword()">
+                                Change Password
+                            </button>
+                        </div>
+                        
+                        <div class="danger-option">
+                            <div class="danger-header">
+                                <i class="fas fa-exchange-alt danger-icon"></i>
+                                <h5>Transfer Account</h5>
+                            </div>
+                            <p class="danger-desc">Transfer your account to another email address. This action cannot be undone.</p>
+                            <button class="danger-btn" onclick="transferAccount()">
+                                Transfer Account
+                            </button>
+                        </div>
+                        
+                        <div class="danger-option">
+                            <div class="danger-header">
+                                <i class="fas fa-trash danger-icon"></i>
+                                <h5>Delete Account</h5>
+                            </div>
+                            <p class="danger-desc">Permanently delete your account and all associated data. This action cannot be reversed.</p>
+                            <a href="{% url 'authentication:delete_account' %}" class="danger-btn">
+                                Delete My Account
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS Styles -->
+<style>
+    .profile-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .profile-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .profile-info h1 {
+        margin-bottom: 5px;
+        font-size: 2.2rem;
+    }
+    
+    .profile-info .email {
+        opacity: 0.9;
+        margin-bottom: 8px;
+    }
+    
+    .profile-info .join-date {
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+    
+    .profile-stats {
+        display: flex;
+        gap: 30px;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-number {
+        display: block;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    
+    .content-card {
+        background: white;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        padding: 20px 30px;
+        background: #f7f9fc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eaedf3;
+    }
+    
+    .card-header h3 {
+        margin: 0;
+        font-size: 1.3rem;
+        color: #374151;
+        display: flex;
+        align-items: center;
+    }
+    
+    .card-header h3 i {
+        margin-right: 10px;
+        color: #6366f1;
+    }
+    
+    .card-body {
+        padding: 30px;
+    }
+    
+    .edit-btn {
+        background: #f3f4f6;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 8px;
+        color: #4b5563;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: all 0.2s;
+    }
+    
+    .edit-btn i {
+        margin-right: 5px;
+    }
+    
+    .edit-btn:hover {
+        background: #e5e7eb;
+        color: #1f2937;
+    }
+    
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+    }
+    
+    .info-item {
+        margin-bottom: 5px;
+    }
+    
+    .info-item label {
+        display: block;
+        margin-bottom: 5px;
+        color: #6b7280;
+        font-size: 0.9rem;
+    }
+    
+    .info-value {
+        font-size: 1.05rem;
+        color: #111827;
+    }
+    
+    .edit-input, .edit-textarea {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin-top: 5px;
+    }
+    
+    .edit-textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    .edit-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .save-btn, .cancel-btn {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: none;
+    }
+    
+    .save-btn {
+        background: #4f46e5;
+        color: white;
+    }
+    
+    .save-btn:hover {
+        background: #4338ca;
+    }
+    
+    .cancel-btn {
+        background: #f3f4f6;
+        color: #4b5563;
+    }
+    
+    .cancel-btn:hover {
+        background: #e5e7eb;
+    }
+    
+    .save-btn i, .cancel-btn i {
+        margin-right: 5px;
+    }
+    
+    .interests-section {
+        margin-bottom: 30px;
+    }
+    
+    .interest-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 15px 0;
+    }
+    
+    .interest-tag {
+        background: #eef2ff;
+        color: #4f46e5;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+    
+    .interest-tag.empty {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+    
+    .interest-checkboxes {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 12px;
+        margin: 15px 0 25px;
+    }
+    
+    .interest-checkbox {
+        display: flex;
+        align-items: center;
+    }
+    
+    .interest-checkbox input {
+        margin-right: 8px;
+    }
+    
+    .research-bio h4 {
+        margin: 20px 0 15px;
+        color: #374151;
+    }
+    
+    .research-bio p {
+        color: #4b5563;
+        line-height: 1.6;
+    }
+    
+    .settings-grid {
+        display: grid;
+        gap: 20px;
+    }
+    
+    .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #eaedf3;
+    }
+    
+    .setting-item:last-child {
+        border-bottom: none;
+    }
+    
+    .setting-info h4 {
+        margin: 0 0 5px;
+        color: #374151;
+    }
+    
+    .setting-info p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 0.9rem;
+    }
+    
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 26px;
+    }
+    
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #e5e7eb;
+        transition: .4s;
+        border-radius: 26px;
+    }
+    
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+        background-color: #4f46e5;
+    }
+    
+    input:checked + .slider:before {
+        transform: translateX(24px);
+    }
+    
+    .danger-zone {
+        margin-top: 40px;
+        padding: 25px;
+        background: #fef2f2;
+        border: 1px solid #fee2e2;
+        border-radius: 12px;
+    }
+    
+    .danger-zone h4 {
+        color: #b91c1c;
+        margin: 0 0 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .danger-zone h4 i {
+        margin-right: 10px;
+    }
+    
+    .danger-notice {
+        color: #4b5563;
+        margin-bottom: 20px;
+    }
+    
+    .danger-options {
+        display: grid;
+        gap: 20px;
+    }
+    
+    .danger-option {
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        border: 1px solid #fee2e2;
+    }
+    
+    .danger-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .danger-icon {
+        color: #dc2626;
+        margin-right: 10px;
+    }
+    
+    .danger-header h5 {
+        margin: 0;
+        color: #dc2626;
+        font-size: 1.1rem;
+    }
+    
+    .danger-desc {
+        color: #4b5563;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+    }
+    
+    .danger-btn {
+        background: #fee2e2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .danger-btn:hover {
+        background: #fecaca;
+    }
+    
+    .verified-badge {
+        display: inline-flex;
+        align-items: center;
+        color: #059669;
+        font-size: 0.9rem;
+        margin-left: 10px;
+    }
+    
+    .verified-badge i {
+        margin-right: 5px;
+    }
+    
+    .verify-btn {
+        background: #d1fae5;
+        color: #065f46;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        margin-left: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .verify-btn:hover {
+        background: #a7f3d0;
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+    
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 20px;
+        }
+        
+        .profile-stats {
+            width: 100%;
+            justify-content: space-around;
+        }
+        
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<form style="display:none;">
+    {% csrf_token %}
+</form>
+
+<script>
+    // JavaScript for profile functionality
+    let originalValues = {};
+
+    function toggleEdit(section) {
+        const displayView = document.getElementById(`${section}-display-view`);
+        const editForm = document.getElementById(`${section}-edit-form`);
+        
+        if (displayView && editForm) {
+            if (displayView.style.display !== 'none') {
+                // Switch to edit mode
+                displayView.style.display = 'none';
+                editForm.style.display = 'block';
+            } else {
+                // Switch to display mode
+                displayView.style.display = 'block';
+                editForm.style.display = 'none';
+            }
+        }
+        
+        console.log(`Toggled ${section}: displayView=${displayView ? displayView.style.display : 'not found'}, editForm=${editForm ? editForm.style.display : 'not found'}`);
+    }
+    
+    function saveChanges(section) {
+        let data = { section: section };
+    
+        if (section === 'personal') {
+            data['first_name'] = document.getElementById('personal-first_name-edit').value;
+            data['last_name'] = document.getElementById('personal-last_name-edit').value;
+            data['organization'] = document.getElementById('personal-organization-edit').value;
+            data['department'] = document.getElementById('personal-department-edit').value;
+            data['role'] = document.getElementById('personal-role-edit').value;
+            data['country'] = document.getElementById('personal-country-edit').value;
+        } else if (section === 'research') {
+            data['research_background'] = document.getElementById('research-bio-edit').value;
+            
+            // Get selected research interests
+            const selectedInterests = [];
+            document.querySelectorAll('input[name="research_interests"]:checked').forEach(checkbox => {
+                selectedInterests.push(checkbox.value);
+            });
+            data['interests'] = selectedInterests;
+        }
+        
+        fetch('/profile/update/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            if (responseData.success) {
+                showNotification(responseData.message, 'success');
+                if (section === 'personal') {
+                    updatePersonalDisplay(responseData);
+                } else if (section === 'research') {
+                    updateResearchDisplay(responseData);
+                }
+                document.querySelector(`#${section}-actions`).style.display = 'none';
+                toggleEdit(section);
+            } else {
+                showNotification(responseData.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred while saving changes.', 'error');
+        });
+    }
+    
+    function saveAccountSettings() {
+        const data = {
+            section: 'settings',
+            receive_research_updates: document.getElementById('settings-receive_research_updates-edit').checked,
+            receive_email_notifications: document.getElementById('settings-receive_email_notifications-edit').checked,
+            profile_visibility: document.getElementById('settings-profile_visibility-edit').checked
+        };
+        
+        fetch('/profile/update-settings/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            if (responseData.success) {
+                showNotification('Account settings updated successfully', 'success');
+            } else {
+                showNotification(responseData.message || 'Failed to update settings', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred while saving settings.', 'error');
+        });
+    }
+    
+    function cancelEdit(section) {
+        if (originalValues[section]) {
+            Object.keys(originalValues[section]).forEach(inputId => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    if (input.type === 'checkbox') {
+                        input.checked = originalValues[section][inputId];
+                    } else {
+                        input.value = originalValues[section][inputId];
+                    }
+                }
+            });
+        }
+        
+        toggleEdit(section);
+    }
+    
+    function updatePersonalDisplay(responseData) {
+        // Update display elements with response data
+        if (document.getElementById('personal-fullname-display')) {
+            document.getElementById('personal-fullname-display').textContent = responseData.full_name || 'Not provided';
+        }
+        
+        const personalFields = responseData.updated_fields || {};
+        for (const field in personalFields) {
+            const displayEl = document.getElementById(`personal-${field}-display`);
+            if (displayEl) {
+                displayEl.textContent = personalFields[field] || 'Not provided';
+            }
+        }
+    }
+    
+    function updateResearchDisplay(responseData) {
+        // Update research interests display
+        const tagsContainer = document.querySelector('.interest-tags');
+        if (tagsContainer && responseData.interests) {
+            tagsContainer.innerHTML = '';
+            if (responseData.interests.length > 0) {
+                responseData.interests.forEach(interest => {
+                    const tag = document.createElement('span');
+                    tag.className = 'interest-tag';
+                    tag.textContent = interest.name || interest;
+                    tagsContainer.appendChild(tag);
+                });
+            } else {
+                const tag = document.createElement('span');
+                tag.className = 'interest-tag empty';
+                tag.textContent = 'No interests added yet';
+                tagsContainer.appendChild(tag);
+            }
+        }
+        
+        // Update bio display
+        const bioDisplay = document.getElementById('research-bio-display');
+        if (bioDisplay && responseData.research_background !== undefined) {
+            bioDisplay.textContent = responseData.research_background || 'Tell others about your research interests and background...';
+        }
+    }
+    
+    function sendVerificationEmail() {
+        const button = document.getElementById("verify-email-btn");
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+    
+        if (!csrfToken) {
+            showNotification("CSRF token missing. Please refresh the page.", "error");
+            return;
+        }
+    
+        if (button) {
+            button.disabled = true;
+            button.textContent = "Sending...";
+        }
+    
+        fetch("/auth/send-verification-email/", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrfToken,
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification(data.message || "Verification email sent. Check your inbox.", "success");
+                if (button) {
+                    button.textContent = "Resend Verification Email";
+                    button.disabled = false;
+                }
+            } else {
+                showNotification(data.message || "Failed to send verification email.", "error");
+                if (button) button.disabled = false;
+            }
+        })
+        .catch(() => {
+            showNotification("An error occurred while sending verification email.", "error");
+            if (button) button.disabled = false;
+        });
+    }
+    
+    function changePassword() {
+        window.location.href = "{% url 'authentication:password_reset' %}";
+    }
+    
+    function transferAccount() {
+        const newEmail = prompt('Enter the new email address to transfer your account to:');
+        if (!newEmail) return;
+        
+        fetch('/profile/transfer-account/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ new_email: newEmail })
+        })
+        .then(response => response.json())
+        .then(data => {
+            showNotification(data.message, data.success ? 'success' : 'error');
+        })
+        .catch(() => {
+            showNotification('An error occurred while processing your request.', 'error');
+        });
+    }
+    
+    function deleteAccount() {
+        const confirmed = prompt('Type DELETE to confirm account deletion. This action cannot be undone.');
+        if (confirmed === 'DELETE') {
+            fetch('/profile/delete-account/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Your account has been deleted.', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 2000);
+                } else {
+                    showNotification(data.message || 'Failed to delete account.', 'error');
+                }
+            })
+            .catch(() => {
+                showNotification('An error occurred while processing your request.', 'error');
+            });
+        } else if (confirmed !== null) {
+            showNotification('You must type DELETE to confirm account deletion.', 'error');
+        }
+    }
+    
+    function showNotification(message, type) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            z-index: 10000;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            ${type === 'success' ? 'background-color: #22c55e;' : 'background-color: #dc2626;'}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto-remove after 4 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+    }
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock %}

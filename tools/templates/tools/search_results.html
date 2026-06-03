@@ -1,0 +1,17 @@
+{% extends "main_layout.html" %}
+{% block content %}
+  <h2>Search Results for "{{ query }}"</h2>
+  {% if results %}
+    <ul>
+      {% for tool in results %}
+        <li>
+          <a href="{% url 'tools:tool_detail' tool.id %}">
+            {{ tool.name }} - {{ tool.short_description }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No tools found matching your search.</p>
+  {% endif %}
+{% endblock %}

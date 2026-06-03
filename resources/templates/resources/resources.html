@@ -1,0 +1,158 @@
+{% extends "main_layout.html" %}
+
+{% block title %}Resources - AMRx Hub{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-header">
+        <i class="fas fa-book"></i>
+        <h2>AMR Resources</h2>
+    </div>
+    
+    <div class="resources-grid">
+        {% for category in categories %}
+        <div class="resource-category">
+            <a href="{% url 'resources:category_resources' category.pk %}" class="resource-category-link">
+                <h3><i class="{{ category.icon }}"></i> {{ category.name }}</h3>
+            </a>
+            <p>{{ category.description }}</p>
+            <div class="resource-items">
+                {% for item in category.items.all %}
+                <div class="resource-item">
+                    <h4>{{ item.title }}</h4>
+                    <p>{{ item.description }}</p>
+                    {% if item.pdf_file %}
+                        <a href="{{ item.pdf_file.url }}" class="resource-link" download>
+                            <i class="fas fa-file-pdf"></i>
+                            Download PDF
+                        </a>
+                    {% elif item.link %}
+                        <a href="{{ item.link }}" class="resource-link" target="_blank">
+                            {% if item.link_icon %}
+                                <i class="{{ item.link_icon }}"></i>
+                            {% endif %}
+                            {{ item.link_text|default:"View" }}
+                        </a>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <div class="resource-item">
+                    <span class="no-resource">No resources yet</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="microorganism-pattern" style="top: 15%; left: 85%;"></div>
+<div class="microorganism-pattern" style="top: 45%; left: 5%;"></div>
+<div class="microorganism-pattern" style="top: 75%; left: 80%;"></div>
+
+<style>
+    .resources-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 30px;
+        margin-top: 20px;
+        max-height: 600px;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+    .resource-category {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 15px;
+        padding: 25px;
+        border-left: 4px solid #667eea;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.2s, transform 0.2s;
+        position: relative;
+        height: 400px; /* Fixed height for each category box */
+        display: flex;
+        flex-direction: column;
+    }
+    .resource-category-link {
+        text-decoration: none;
+        color: #667eea;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 20px;
+        margin-bottom: 10px;
+        transition: color 0.2s;
+    }
+    .resource-category-link:hover {
+        color: #5a67d8;
+        text-decoration: underline;
+    }
+    .resource-category h3 {
+        margin-bottom: 10px;
+        font-size: 20px;
+        display: inline;
+        color: inherit;
+    }
+    .resource-items {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        overflow-y: auto;
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+    .resource-item {
+        background: rgba(102, 126, 234, 0.05);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid rgba(102, 126, 234, 0.1);
+        transition: all 0.3s;
+    }
+    .resource-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .resource-item h4 {
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+    .resource-item p {
+        color: #666;
+        margin-bottom: 10px;
+        line-height: 1.5;
+        font-size: 14px;
+    }
+    .resource-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: color 0.3s;
+    }
+    .resource-link:hover {
+        color: #5a67d8;
+    }
+    .no-resource {
+        color: #aaa;
+        font-size: 13px;
+        margin-top: 18px;
+    }
+    .microorganism-pattern {
+        position: fixed;
+        opacity: 0.1;
+        pointer-events: none;
+        z-index: -1;
+    }
+    .microorganism-pattern::before {
+        content: '🦠';
+        font-size: 80px;
+        animation: float 8s ease-in-out infinite;
+    }
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(180deg); }
+    }
+</style>
+{% endblock %}

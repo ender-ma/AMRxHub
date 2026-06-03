@@ -1,0 +1,136 @@
+{% extends "main_layout.html" %}
+{% load static %}
+
+{% block title %}Notifications | AMRx Hub{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-header">
+        <i class="fas fa-bell"></i>
+        <h2>Notifications</h2>
+    </div>
+    
+    <div class="notification-controls">
+        {% if notifications %}
+            <button id="mark-all-read-btn" class="btn">Mark all as read</button>
+        {% endif %}
+    </div>
+    
+    <div class="notification-list-full">
+        {% if notifications %}
+            {% for notification in notifications %}
+                <div class="notification-item {% if not notification.is_read %}unread{% endif %}" 
+                     data-id="{{ notification.id }}">
+                    <div class="notification-icon 
+                        {% if notification.priority == 'high' or notification.priority == 'critical' %}
+                            high-priority
+                        {% elif notification.notification_type == 'system' or notification.notification_type == 'maintenance' %}
+                            system
+                        {% elif notification.notification_type == 'login' %}
+                            login
+                        {% elif notification.notification_type == 'admin' %}
+                            admin
+                        {% else %}
+                            general
+                        {% endif %}">
+                        <i class="
+                            {% if notification.notification_type == 'system' %}fas fa-cog
+                            {% elif notification.notification_type == 'admin' %}fas fa-bullhorn
+                            {% elif notification.notification_type == 'maintenance' %}fas fa-wrench
+                            {% elif notification.notification_type == 'update' %}fas fa-sync
+                            {% elif notification.notification_type == 'login' %}fas fa-sign-in-alt
+                            {% else %}fas fa-bell
+                            {% endif %}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">{{ notification.title }}</div>
+                        <div class="notification-message">{{ notification.message }}</div>
+                        <div class="notification-meta">
+                            <span class="notification-type badge">{{ notification.get_notification_type_display }}</span>
+                            <span class="notification-priority badge">{{ notification.get_priority_display }}</span>
+                            <span class="notification-time">{{ notification.created_at|date:"F j, Y, g:i a" }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+            {% if is_paginated %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                    
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="no-notifications-message">
+                <i class="fas fa-bell-slash"></i>
+                <p>You have no notifications.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% csrf_token %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mark all as read button
+        const markAllReadBtn = document.getElementById('mark-all-read-btn');
+        if (markAllReadBtn) {
+            markAllReadBtn.addEventListener('click', function() {
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                
+                fetch('{% url "notifications:mark-all-read" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Refresh the page to show updated read status
+                        window.location.reload();
+                    }
+                })
+                .catch(error => console.error('Error marking all notifications as read:', error));
+            });
+        }
+        
+        // Mark as read when notification clicked
+        document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const notificationId = this.dataset.id;
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                
+                fetch(`/notifications/mark-read/${notificationId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.classList.remove('unread');
+                    }
+                })
+                .catch(error => console.error('Error marking notification as read:', error));
+            });
+        });
+    });
+</script>
+{% endblock %}

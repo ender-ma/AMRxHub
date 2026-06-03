@@ -1,0 +1,15 @@
+{% autoescape off %}
+Hello,
+
+Thanks for signing up for an AMRx Hub account. 
+Please verify your email address by clicking the link below:
+
+{{ protocol }}://{{ domain }}{% url 'authentication:verify_email' uidb64=uidb64 token=token %}
+
+This link will expire in 24 hours.
+
+If you didn't create this account, you can safely ignore this email.
+
+Thanks,
+The AMRx Team
+{% endautoescape %}

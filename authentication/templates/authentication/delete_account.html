@@ -1,0 +1,130 @@
+{% extends "main_layout.html" %}
+{% load static %}
+
+{% block title %}Delete Account - AMRx Hub{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-header">
+        <i class="fas fa-user-times"></i>
+        <h2>Delete Your Account</h2>
+    </div>
+    
+    <div class="delete-account-container">
+        <div class="warning-box">
+            <h3><i class="fas fa-exclamation-triangle"></i> Warning: This action cannot be undone</h3>
+            <p>Deleting your account will:</p>
+            <ul>
+                <li>Permanently remove all your personal information</li>
+                <li>Delete your profile and preferences</li>
+                <li>Remove you from all projects and collaborations</li>
+                <li>Log you out immediately</li>
+            </ul>
+        </div>
+        
+        <form method="post" class="delete-account-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="confirmation">To confirm, please type "delete my account" below:</label>
+                <input type="text" id="confirmation" name="confirmation" class="form-control" required>
+            </div>
+            
+            <div class="form-actions">
+                <a href="{% url 'profil:profile' %}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-danger">Permanently Delete My Account</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .delete-account-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .warning-box {
+        background-color: #fff5f5;
+        border: 1px solid #f56565;
+        border-radius: 6px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .warning-box h3 {
+        color: #e53e3e;
+        font-size: 18px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .warning-box h3 i {
+        margin-right: 10px;
+    }
+    
+    .warning-box ul {
+        margin-left: 20px;
+    }
+    
+    .delete-account-form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 500;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 16px;
+        border: none;
+    }
+    
+    .btn-secondary {
+        background-color: #e2e8f0;
+        color: #4a5568;
+    }
+    
+    .btn-danger {
+        background-color: #e53e3e;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #cbd5e0;
+    }
+    
+    .btn-danger:hover {
+        background-color: #c53030;
+    }
+</style>
+{% endblock %}

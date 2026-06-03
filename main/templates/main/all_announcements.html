@@ -1,0 +1,14 @@
+<!-- main/all_announcements.html -->
+{% extends "main_layout.html" %}
+{% block content %}
+<div class="content-card">
+    <h2>All Announcements</h2>
+    {% for announcement in announcements %}
+    <div class="announcement-item">
+        <h4>{{ announcement.title }}</h4>
+        <p>{{ announcement.content }}</p>
+        <span class="date">{{ announcement.date|date:"M d, Y" }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

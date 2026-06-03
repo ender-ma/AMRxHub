@@ -1,0 +1,430 @@
+{% extends "main_layout.html" %}
+
+{% block title %}Workflow - AMR Tool House{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-header">
+        <i class="fas fa-project-diagram"></i>
+        <h2>AMR Analysis Workflow</h2>
+    </div>
+    
+    <div class="workflow-description">
+        <p>Follow this systematic approach to analyze antimicrobial resistance patterns effectively.</p>
+    </div>
+    
+    <div class="workflow-steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h3>Data Collection & Upload</h3>
+                <p>Gather your antimicrobial susceptibility test data and upload it to the system. Supported formats include CSV, Excel, and XML.</p>
+                <div class="step-actions">
+                    <button class="btn" onclick="goToStep('upload')">
+                        <i class="fas fa-upload"></i> Upload Data
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h3>Data Validation & Processing</h3>
+                <p>Our system validates your data format, checks for inconsistencies, and processes it for analysis.</p>
+                <div class="step-actions">
+                    <button class="btn" onclick="goToStep('validate')">
+                        <i class="fas fa-check"></i> Validate Data
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h3>Analysis Configuration</h3>
+                <p>Configure analysis parameters including organism type, antibiotics of interest, and analysis methods.</p>
+                <div class="step-actions">
+                    <button class="btn" onclick="goToStep('configure')">
+                        <i class="fas fa-cogs"></i> Configure Analysis
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h3>Pattern Analysis</h3>
+                <p>Advanced algorithms analyze resistance patterns, identify trends, and generate statistical insights.</p>
+                <div class="step-actions">
+                    <button class="btn" onclick="goToStep('analyze')">
+                        <i class="fas fa-microscope"></i> Start Analysis
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+                <h3>Results & Reporting</h3>
+                <p>View comprehensive analysis results, generate reports, and export data for further use.</p>
+                <div class="step-actions">
+                    <button class="btn" onclick="goToStep('results')">
+                        <i class="fas fa-chart-bar"></i> View Results
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Workflow Interface -->
+    <div class="workflow-interface" id="workflow-interface" style="display: none;">
+        <div class="workflow-header">
+            <h3 id="workflow-title">Workflow Step</h3>
+            <button onclick="closeWorkflow()" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="workflow-content" id="workflow-content">
+            <!-- Workflow content will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<div class="microorganism-pattern" style="top: 20%; left: 80%;"></div>
+<div class="microorganism-pattern" style="top: 60%; left: 10%;"></div>
+<div class="microorganism-pattern" style="top: 80%; left: 70%;"></div>
+
+<style>
+.workflow-description {
+    background: rgba(102, 126, 234, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    border-left: 4px solid #667eea;
+}
+
+.workflow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    border-left: 4px solid #667eea;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+.step:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.step-number {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h3 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.step-content p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.step-actions {
+    margin-top: 10px;
+}
+
+.workflow-interface {
+    margin-top: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 2px solid #667eea;
+}
+
+.workflow-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+}
+
+.workflow-header h3 {
+    color: #667eea;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #667eea;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.close-btn:hover {
+    background-color: rgba(102, 126, 234, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #e1e8ed;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s;
+}
+
+.microorganism-pattern {
+    position: fixed;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.microorganism-pattern::before {
+    content: '🦠';
+    font-size: 100px;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+</style>
+
+<script>
+function goToStep(stepType) {
+    const workflowInterface = document.getElementById('workflow-interface');
+    const workflowTitle = document.getElementById('workflow-title');
+    const workflowContent = document.getElementById('workflow-content');
+    
+    workflowInterface.style.display = 'block';
+    workflowInterface.scrollIntoView({ behavior: 'smooth' });
+    
+    switch(stepType) {
+        case 'upload':
+            workflowTitle.textContent = 'Step 1: Data Upload';
+            workflowContent.innerHTML = `
+                <div class="form-group">
+                    <label for="data-file">Select Data File:</label>
+                    <input type="file" id="data-file" accept=".csv,.xlsx,.xls,.xml">
+                </div>
+                <div class="form-group">
+                    <label for="data-source">Data Source:</label>
+                    <select id="data-source">
+                        <option value="">Select source</option>
+                        <option value="lab">Laboratory</option>
+                        <option value="hospital">Hospital</option>
+                        <option value="research">Research Study</option>
+                        <option value="surveillance">Surveillance Program</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date-range">Date Range:</label>
+                    <input type="date" id="date-start" placeholder="Start Date">
+                    <input type="date" id="date-end" placeholder="End Date">
+                </div>
+                <button class="btn" onclick="uploadData()">
+                    <i class="fas fa-upload"></i> Upload Data
+                </button>
+            `;
+            break;
+        case 'validate':
+            workflowTitle.textContent = 'Step 2: Data Validation';
+            workflowContent.innerHTML = `
+                <div class="validation-status">
+                    <h4>Validation Results:</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%"></div>
+                    </div>
+                    <p>85% of data validated successfully</p>
+                    <ul>
+                        <li>✓ File format correct</li>
+                        <li>✓ Required columns present</li>
+                        <li>⚠ 15% of records have missing values</li>
+                        <li>✓ Data types validated</li>
+                    </ul>
+                </div>
+                <button class="btn" onclick="proceedToNext()">
+                    <i class="fas fa-arrow-right"></i> Proceed to Configuration
+                </button>
+            `;
+            break;
+        case 'configure':
+            workflowTitle.textContent = 'Step 3: Analysis Configuration';
+            workflowContent.innerHTML = `
+                <div class="form-group">
+                    <label for="organism-select">Primary Organism:</label>
+                    <select id="organism-select">
+                        <option value="">Select organism</option>
+                        <option value="ecoli">E. coli</option>
+                        <option value="staph">Staphylococcus aureus</option>
+                        <option value="strep">Streptococcus pneumoniae</option>
+                        <option value="pseudo">Pseudomonas aeruginosa</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="antibiotics">Antibiotics of Interest:</label>
+                    <select id="antibiotics" multiple>
+                        <option value="ampicillin">Ampicillin</option>
+                        <option value="penicillin">Penicillin</option>
+                        <option value="vancomycin">Vancomycin</option>
+                        <option value="ciprofloxacin">Ciprofloxacin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Analysis Options:</label>
+                    <label><input type="checkbox" checked> Resistance trends</label>
+                    <label><input type="checkbox" checked> Geographic distribution</label>
+                    <label><input type="checkbox"> Genetic analysis</label>
+                </div>
+                <button class="btn" onclick="startAnalysis()">
+                    <i class="fas fa-play"></i> Start Analysis
+                </button>
+            `;
+            break;
+        default:
+            workflowTitle.textContent = 'Workflow Step';
+            workflowContent.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <i class="fas fa-cog fa-spin" style="font-size: 48px; color: #667eea; margin-bottom: 20px;"></i>
+                    <h3>This step is being prepared</h3>
+                    <p>Please proceed with the previous steps first.</p>
+                </div>
+            `;
+    }
+}
+
+function closeWorkflow() {
+    document.getElementById('workflow-interface').style.display = 'none';
+}
+
+function uploadData() {
+    const fileInput = document.getElementById('data-file');
+    const dataSource = document.getElementById('data-source').value;
+    
+    if (!fileInput.files[0]) {
+        alert('Please select a data file');
+        return;
+    }
+    
+    if (!dataSource) {
+        alert('Please select a data source');
+        return;
+    }
+    
+    alert('Data uploaded successfully! Proceeding to validation...');
+    setTimeout(() => goToStep('validate'), 1000);
+}
+
+function proceedToNext() {
+    alert('Validation complete! Proceeding to configuration...');
+    setTimeout(() => goToStep('configure'), 1000);
+}
+
+function startAnalysis() {
+    const organism = document.getElementById('organism-select').value;
+    
+    if (!organism) {
+        alert('Please select an organism');
+        return;
+    }
+    
+    alert('Analysis started! You can monitor progress in the History section.');
+    closeWorkflow();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends "main_layout.html" %}
+
+{% block title %}{{ tool.name }} - Tool Details{% endblock %}
+
+{% block content %}
+
+<div class="content-card" style="max-width: 800px; margin: 40px auto; padding: 40px 32px; border-radius: 18px; box-shadow: 0 8px 32px rgba(102,126,234,0.10); background: linear-gradient(135deg, #f8f9fa 0%, #e0e7ff 100%);">
+    <div class="content-header" style="display: flex; align-items: center; gap: 32px; margin-bottom: 32px;">
+        {% if tool.logo %}
+            <img src="{{ tool.logo.url }}" alt="{{ tool.name }}" style="width:90px;height:90px;border-radius:16px;box-shadow:0 2px 12px #667eea33;">
+        {% else %}
+            <span style="display: flex; align-items: center; justify-content: center; width: 90px; height: 90px; background: #e0e7ff; border-radius: 16px; box-shadow: 0 2px 12px #667eea33;">
+                <i class="fas fa-info-circle" style="font-size:60px;color:#667eea;"></i>
+            </span>
+        {% endif %}
+        <div style="flex:1;">
+            <h2 style="font-size: 2.2rem; font-weight: 700; color: #222; margin-bottom: 12px;">{{ tool.name }}</h2>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <span class="category-badge">{{ tool.category.name }}</span>
+                {% if tool.is_featured %}
+                    <span class="featured-badge"><i class="fas fa-star"></i> Featured</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="tool-meta" style="margin-bottom:28px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; font-size: 1rem;">
+        {% if tool.institution %}
+            <span style="color:#667eea;"><i class="fas fa-university" style="margin-right:7px;"></i> {{ tool.institution }}</span>
+        {% endif %}
+        {% if tool.author %}
+            <span style="color:#4b5563;"><i class="fas fa-user" style="margin-right:7px;"></i> {{ tool.author }}</span>
+        {% endif %}
+        {% if tool.version %}
+            <span style="color:#4b5563;"><i class="fas fa-code-branch" style="margin-right:7px;"></i> Version: {{ tool.version }}</span>
+        {% endif %}
+        {% if tool.license %}
+            <span style="color:#4b5563;"><i class="fas fa-file-contract" style="margin-right:7px;"></i> License: {{ tool.license }}</span>
+        {% endif %}
+    </div>
+    <div class="tool-description" style="margin-bottom:28px;">
+        <h4 style="font-size: 1.2rem; color: #667eea; margin-bottom: 8px;">Description</h4>
+        <p style="color:#222; font-size: 1.08rem; line-height: 1.7; text-align: justify;">{{ tool.description }}</p>
+    </div>
+    <div class="tool-features" style="margin-bottom:28px;">
+        <h4 style="font-size: 1.2rem; color: #667eea; margin-bottom: 8px;">Features</h4>
+        <ul style="padding-left: 18px; color: #444; font-size: 1rem;">
+            {% for feature in tool.get_features_list %}
+                <li style="margin-bottom: 6px;">{{ feature }}</li>
+            {% empty %}
+                <li>No features listed.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if tool.requirements %}
+    <div class="tool-requirements" style="margin-bottom:28px;">
+        <h4 style="font-size: 1.2rem; color: #667eea; margin-bottom: 8px;">Requirements</h4>
+        <p style="color:#444; font-size: 1rem;">{{ tool.requirements }}</p>
+    </div>
+    {% endif %}
+    {% if tool.screenshot %}
+    <div class="tool-screenshot" style="margin-bottom:28px;">
+        <h4 style="font-size: 1.2rem; color: #667eea; margin-bottom: 8px;">Screenshot</h4>
+        <img src="{{ tool.screenshot.url }}" alt="Screenshot of {{ tool.name }}" style="max-width:100%;border-radius:12px;box-shadow:0 2px 12px #667eea33;">
+    </div>
+    {% endif %}
+    <div class="tool-actions" style="margin-top:36px; display: flex; gap: 18px;">
+        <a href="{% url 'tools:tool_access' tool.id %}" target="_blank" class="btn btn-primary">
+            <i class="fas fa-external-link-alt"></i> Access Tool
+        </a>
+        <button type="button" class="btn btn-secondary" onclick="window.history.back();">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+    </div>
+</div>
+
+<style>
+    .category-badge {
+        background: #667eea;
+        color: white;
+        padding: 5px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px #667eea22;
+    }
+    .featured-badge {
+        background: #ffd700;
+        color: #b45309;
+        padding: 5px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: bold;
+        box-shadow: 0 2px 8px #ffd70033;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 22px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 8px #667eea22;
+    }
+    .btn-primary {
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+    }
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #5a67d8 0%, #6b47b2 100%);
+    }
+    .btn-secondary {
+        background: #f3f4f6;
+        color: #333;
+        border: 1px solid #667eea;
+    }
+    .btn-secondary:hover {
+        background: #e0e7ff;
+        color: #333;
+    }
+    @media (max-width: 900px) {
+        .content-card {
+            padding: 24px 8px;
+        }
+        .content-header {
+            flex-direction: column;
+            gap: 18px;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,477 @@
+{% load static notification_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AMRx Hub{% endblock %}</title>
+
+    <meta name="description" content="{% block meta_description %}AMRx Hub is a collaborative platform providing advanced antimicrobial resistance tools, curated resources, research support, and a vibrant community for scientists, clinicians, and public health professionals worldwide.{% endblock %}">
+    <meta name="keywords" content="AMRx Hub, Antimicrobial Resistance, AMR Tools, Research Support, Data Analysis, Bioinformatics, Public Health, Microbiology, Collaborative Platform">
+    <meta name="author" content="AMRx Hub">
+
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="stylesheet" href="{% static 'notifications/css/notifications.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}">
+    <link rel="icon" type="image/png" sizes="64x64" href="{% static 'img/favicon-64x64.jpg' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
+
+    <style>
+        .header-logo {
+            height: 80px;
+            width: 80px;
+            object-fit: contain;
+            margin-right: -10px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .signup-btn {
+            background-color: #10b981;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .signup-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        .messages-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 400px;
+        }
+
+        .message {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .message.success {
+            background-color: #22c55e;
+        }
+
+        .message.error {
+            background-color: #dc2626;
+        }
+
+        .close-message {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .login-prompt-modal,
+        .verification-prompt-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-prompt-content,
+        .verification-prompt-content {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .message.warning {
+            background-color: #900bf5;
+            color: #fff;
+        }
+
+        .messages-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 400px;
+        }
+        
+        .message {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 1;
+        }
+        
+        .close-modal,
+        .close-verification-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+            background: none;
+            border: none;
+        }
+
+        .login-prompt-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .login-prompt-buttons .login-btn,
+        .login-prompt-buttons .signup-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <h1 class="logo">
+            <img src="{% static 'img/AMRx HUB Logo.png' %}" alt="AMRx Hub Logo" class="header-logo">
+            <span>AMRx Hub</span>
+        </h1>
+
+        <div class="header-right">
+            {% if user.is_authenticated %}
+                <div class="notification-bell" id="notification-bell" role="button" tabindex="0" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count" {% if not notification_count %}style="display:none"{% endif %}>
+                        {% get_unread_count %}
+                    </span>
+                </div>
+
+                <div id="notification-dropdown-container" class="notification-dropdown-container"></div>
+
+                <div class="profile-dropdown">
+                    <button class="profile-trigger" id="profile-trigger" type="button" aria-expanded="false" aria-controls="profile-menu">
+                        <i class="fas fa-user-circle"></i>
+                        <span>{{ user.first_name }} {{ user.last_name }}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-menu" id="profile-menu">
+                        <a href="{% url 'profil:profile' %}">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Open menu" type="button">
+                    <i class="fas fa-bars"></i>
+                </button>
+            {% else %}
+                <div class="auth-buttons">
+                    <a href="{% url 'authentication:login' %}" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="{% url 'authentication:signup' %}" class="signup-btn">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <aside class="mobile-sidebar" id="mobile-sidebar" aria-hidden="true">
+        <div class="sidebar-header">
+            <h2>Menu</h2>
+            <button class="close-btn" id="mobile-sidebar-close" type="button" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    
+        <ul class="sidebar-menu">
+            <li><a href="{% url 'home' %}" class="menu-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}"><i class="fas fa-home"></i><span>Home</span></a></li>
+            <li><a href="{% url 'tools:tools' %}" class="menu-item {% if request.resolver_match.url_name == 'tools' %}active{% endif %}"><i class="fas fa-tools"></i><span>Tools</span></a></li>
+            <li><a href="{% url 'resources:resources_list' %}" class="menu-item {% if request.resolver_match.url_name == 'resources' %}active{% endif %}"><i class="fas fa-book"></i><span>Resources</span></a></li>
+            <li>
+                <a href="{% if user.is_authenticated %}{% url 'tools:history' %}{% else %}#{% endif %}"
+                   class="menu-item {% if request.resolver_match.url_name == 'history' or request.resolver_match.url_name == 'tools:history' %}active{% endif %}"
+                   {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
+                    <i class="fas fa-history"></i><span>History</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% if user.is_authenticated %}{% url 'socials:social_hub' %}{% else %}#{% endif %}"
+                   class="menu-item {% if request.resolver_match.url_name == 'social_hub' or request.resolver_match.url_name == 'socials:social_hub' %}active{% endif %}"
+                   {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
+                    <i class="fas fa-globe-africa"></i><span>Socials</span>
+                </a>
+            </li>
+            <li><a href="{% url 'about' %}" class="menu-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}"><i class="fas fa-info-circle"></i><span>About</span></a></li>
+            <li><a href="{% url 'help' %}" class="menu-item {% if request.resolver_match.url_name == 'help' %}active{% endif %}"><i class="fas fa-question-circle"></i><span>Help</span></a></li>
+        </ul>
+    </aside>
+    
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    
+    <nav class="sidebar">
+        <div class="sidebar-menu">
+            <a href="{% url 'home' %}" class="menu-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}"><i class="fas fa-home"></i><span>Home</span></a>
+            <a href="{% url 'tools:tools' %}" class="menu-item {% if request.resolver_match.url_name == 'tools' %}active{% endif %}"><i class="fas fa-tools"></i><span>Tools</span></a>
+            <a href="{% url 'resources:resources_list' %}" class="menu-item {% if request.resolver_match.url_name == 'resources' %}active{% endif %}"><i class="fas fa-book"></i><span>Resources</span></a>
+            <a href="{% if user.is_authenticated %}{% url 'tools:history' %}{% else %}#{% endif %}"
+               class="menu-item {% if request.resolver_match.url_name == 'history' or request.resolver_match.url_name == 'tools:history' %}active{% endif %}"
+               {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
+                <i class="fas fa-history"></i><span>History</span>
+            </a>
+            <a href="{% if user.is_authenticated %}{% url 'socials:social_hub' %}{% else %}#{% endif %}"
+               class="menu-item {% if request.resolver_match.url_name == 'social_hub' or request.resolver_match.url_name == 'socials:social_hub' %}active{% endif %}"
+               {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
+                <i class="fas fa-globe-africa"></i><span>Socials</span>
+            </a>
+            <a href="{% url 'about' %}" class="menu-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}"><i class="fas fa-info-circle"></i><span>About</span></a>
+            <a href="{% url 'help' %}" class="menu-item {% if request.resolver_match.url_name == 'help' %}active{% endif %}"><i class="fas fa-question-circle"></i><span>Help</span></a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <div id="login-prompt" class="login-prompt-modal">
+        <div class="login-prompt-content">
+            <button class="close-modal" id="login-prompt-close" type="button" aria-label="Close">&times;</button>
+            <h2>Login Required</h2>
+            <p>Please login or sign up to access this feature.</p>
+            <div class="login-prompt-buttons">
+                <a href="{% url 'authentication:login' %}" class="login-btn">Login</a>
+                <a href="{% url 'authentication:signup' %}" class="signup-btn">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    <span>{{ message }}</span>
+                    <button class="close-message" type="button" aria-label="Close message">&times;</button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <footer class="footer">
+        <div class="container footer-content-wrapper">
+            <div class="row">
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="{% if user.is_authenticated %}{% url 'about' %}{% else %}#{% endif %}" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>About us</a></li>
+                        <li><a href="{% url 'about' %}#our-team" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Our Team</a></li>
+                        <li><a href="{% url 'collaborators' %}">Collaborators</a></li>
+                        <li><a href="{% url 'affiliations' %}">Affiliation program</a></li>
+                        <li><a href="{% url 'about' %}#contact-us" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Contact us</a></li>
+                        <li><a href="{% url 'privacy_policy' %}">Privacy policy</a></li>
+                        <li><a href="{% url 'authentication:terms' %}">Terms and conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Get Help</h4>
+                    <ul>
+                        <li><a href="{% if user.is_authenticated %}{% url 'help' %}#faq{% else %}#{% endif %}" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>FAQ</a></li>
+                        <li><a href="{% if user.is_authenticated %}{% url 'help' %}#tutorials{% else %}#{% endif %}" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Tutorials</a></li>
+                        <li><a href="{% url 'documentation' %}" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Documentation</a></li>
+                        <li><a href="{% url 'glossary' %}">Glossary</a></li>
+                        <li><a href="#" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>How to cite us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Data and Databases</a></li>
+                        <li><a href="#" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Tools and Software</a></li>
+                        <li><a href="#" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Publications</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow us</h4>
+                    <div class="social-links">
+                        <a href="#" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}><i class="fab fa-linkedin-in"></i></a>
+                        <a href="{% if user.is_authenticated %}https://join.slack.com/t/amrxhub/shared_invite/zt-3av13pb2c-zZ1KsvVzlNYlgvxqCLQiCA{% else %}#{% endif %}"><i class="fa-brands fa-slack"></i></a>
+                        <a href="{% if user.is_authenticated %}https://x.com/amrtool344?s=11{% else %}#{% endif %}"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="{% if user.is_authenticated %}https://youtube.com/@amrhub-321?si=LjK2UmqFgAz4qGBr{% else %}#{% endif %}"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'notifications/js/notifications.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+
+    <script>
+        function promptLogin(event) {
+            event.preventDefault();
+            const modal = document.getElementById("login-prompt");
+            if (modal) modal.style.display = "flex";
+        }
+
+        function closeLoginPrompt() {
+            const modal = document.getElementById("login-prompt");
+            if (modal) modal.style.display = "none";
+        }
+
+        function openMobileSidebar() {
+            const sidebar = document.getElementById("mobile-sidebar");
+            const overlay = document.getElementById("sidebar-overlay");
+            if (!sidebar || !overlay) return;
+
+            sidebar.classList.add("active");
+            overlay.classList.add("active");
+            sidebar.setAttribute("aria-hidden", "false");
+            if (window.innerWidth <= 768) document.body.style.overflow = "hidden";
+        }
+
+        function closeMobileSidebar() {
+            const sidebar = document.getElementById("mobile-sidebar");
+            const overlay = document.getElementById("sidebar-overlay");
+            if (!sidebar || !overlay) return;
+
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+            sidebar.setAttribute("aria-hidden", "true");
+            document.body.style.overflow = "";
+        }
+
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById("mobile-sidebar");
+            if (!sidebar) return;
+            if (sidebar.classList.contains("active")) closeMobileSidebar();
+            else openMobileSidebar();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const profileTrigger = document.getElementById("profile-trigger");
+            const profileMenu = document.getElementById("profile-menu");
+            const sidebarToggle = document.getElementById("sidebar-toggle");
+            const sidebarClose = document.getElementById("mobile-sidebar-close");
+            const sidebarOverlay = document.getElementById("sidebar-overlay");
+            const loginPromptClose = document.getElementById("login-prompt-close");
+            const verificationModal = document.getElementById("verification-prompt");
+            const verificationClose = document.querySelector(".close-verification-modal");
+
+            if (profileTrigger && profileMenu) {
+                profileTrigger.addEventListener("click", function () {
+                    const isOpen = profileMenu.classList.toggle("active");
+                    profileTrigger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+                });
+            }
+
+            document.addEventListener("click", function (event) {
+                if (profileMenu && profileTrigger && !event.target.closest(".profile-dropdown")) {
+                    profileMenu.classList.remove("active");
+                    profileTrigger.setAttribute("aria-expanded", "false");
+                }
+            });
+
+            if (sidebarToggle) sidebarToggle.addEventListener("click", toggleMobileSidebar);
+            if (sidebarClose) sidebarClose.addEventListener("click", closeMobileSidebar);
+            if (sidebarOverlay) sidebarOverlay.addEventListener("click", closeMobileSidebar);
+            if (loginPromptClose) loginPromptClose.addEventListener("click", closeLoginPrompt);
+
+            window.addEventListener("click", function (event) {
+                const loginModal = document.getElementById("login-prompt");
+                if (event.target === loginModal) closeLoginPrompt();
+                if (verificationModal && event.target === verificationModal) verificationModal.style.display = "none";
+            });
+
+            if (verificationModal) verificationModal.style.display = "flex";
+            if (verificationClose && verificationModal) {
+                verificationClose.addEventListener("click", function () {
+                    verificationModal.style.display = "none";
+                });
+            }
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeMobileSidebar();
+                    closeLoginPrompt();
+                    if (verificationModal) verificationModal.style.display = "none";
+                }
+            });
+
+            document.querySelectorAll(".close-message").forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const message = button.closest(".message");
+                    if (message) message.remove();
+                });
+            });
+
+            document.querySelectorAll('a[href*="#"]').forEach(function (anchor) {
+                anchor.addEventListener("click", function (event) {
+                    const href = this.getAttribute("href");
+                    if (!href || href === "#" || href.indexOf("#") === -1) return;
+
+                    const targetId = href.split("#")[1];
+                    if (!targetId) return;
+
+                    const targetElement = document.getElementById(targetId);
+                    if (!targetElement) return;
+
+                    event.preventDefault();
+                    const targetPosition = targetElement.offsetTop - 80;
+                    window.scrollTo({ top: targetPosition, behavior: "smooth" });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

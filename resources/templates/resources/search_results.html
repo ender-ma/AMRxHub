@@ -1,0 +1,17 @@
+{% extends "main_layout.html" %}
+{% block content %}
+  <h2>Search Results for "{{ query }}"</h2>
+  {% if results %}
+    <ul>
+      {% for resource in results %}
+        <li>
+          <a href="{% url 'resources:resource_detail' resource.pk %}">
+            {{ resource.title }} - {{ resource.description|truncatewords:10 }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No resources found matching your search.</p>
+  {% endif %}
+{% endblock %}

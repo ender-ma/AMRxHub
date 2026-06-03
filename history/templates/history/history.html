@@ -1,0 +1,185 @@
+{% extends "main_layout.html" %}
+{% load static %}
+
+{% block title %}Analysis History - AMRx Hub{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-header">
+        <i class="fas fa-history"></i>
+        <h2>Analysis History</h2>
+        <p class="text-muted">Track your tool usage and analysis results</p>
+    </div>
+
+<!-- Im Akin aka Ender-ma on github if you want to improve this site hit me up on isaacodes25@gmail.com -->
+
+    {% if history_items %}
+    <div class="table-responsive">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Tool</th>
+                    <th>Tool Category</th>
+                    <!-- <th>Description</th> -->
+                    <th>Date/Time</th>
+                    <th>View</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% regroup history_items by content_object as tool_history %}
+                {% for group in tool_history %}
+                    {% if group.grouper %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            {% if group.grouper.id %}
+                                <a href="{% url 'tools:tool_detail' group.grouper.id %}" class="history-link">
+                                    <!-- <i class="fas fa-toolbox"></i> -->
+                                    {{ group.grouper.name }}
+                                </a>
+                            {% else %}
+                                <span class="text-muted"><i class="fas fa-question-circle"></i> Unknown Tool</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ group.grouper.category.name|default:"-" }}
+                        </td>
+                        <!-- <td>
+                            <span class="desc-hover" tabindex="0">
+                                {{ group.grouper.description|truncatechars:50|default:"-" }}
+                                <span class="desc-overlay">
+                                    {{ group.grouper.description|default:"No description" }}
+                                </span>
+                            </span>
+                        </td> -->
+                        <td>
+                            {{ group.list.0.viewed_on|date:"M d, Y H:i" }}
+                        </td>
+                        <td>
+                            {% if group.grouper.id %}
+                                <a href="{% url 'tools:tool_detail' group.grouper.id %}" class="btn btn-sm btn-primary">
+                                    View
+                                </a>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="post" action="{% url 'history:delete' group.list.0.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="button" class="btn btn-sm btn-danger delete-history-btn" data-id="{{ group.list.0.id }}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> You haven't used any analysis tools yet.
+        <a href="{% url 'tools:tools_home' %}" class="alert-link">Explore available tools</a>.
+    </div>
+    {% endif %}
+</div>
+
+<div class="microorganism-pattern" style="top: 15%; left: 85%;"></div>
+<div class="microorganism-pattern" style="top: 45%; left: 5%;"></div>
+<div class="microorganism-pattern" style="top: 75%; left: 80%;"></div>
+
+<style>
+    .history-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    .history-table th, .history-table td {
+        border-right: 1px solid #e2e8f0;
+        padding: 12px 8px;
+        vertical-align: middle;
+    }
+    .history-table th:last-child, .history-table td:last-child {
+        border-right: none;
+    }
+    .history-table tr {
+        border-bottom: 1px solid #e2e8f0;
+    }
+    .desc-hover {
+        position: relative;
+        cursor: pointer;
+    }
+    .desc-overlay {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        z-index: 10;
+        background: #fff;
+        color: #222;
+        border: 1px solid #667eea;
+        border-radius: 8px;
+        padding: 10px;
+        min-width: 220px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        white-space: normal;
+    }
+    .desc-hover:hover .desc-overlay,
+    .desc-hover:focus .desc-overlay {
+        display: block;
+    }
+    .history-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: color 0.3s;
+    }
+    .history-link:hover {
+        color: #5a67d8;
+    }
+    .microorganism-pattern {
+        position: fixed;
+        opacity: 0.1;
+        pointer-events: none;
+        z-index: -1;
+    }
+    .microorganism-pattern::before {
+        content: '🦠';
+        font-size: 80px;
+        animation: float 8s ease-in-out infinite;
+    }
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(180deg); }
+    }
+</style>
+
+<script>
+    document.querySelectorAll('.delete-history-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (!confirm('Delete this history entry?')) return;
+            fetch(`/history/delete/${this.dataset.id}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    const row = this.closest('tr');
+                    row.remove();
+                    // Re-number the No. column
+                    document.querySelectorAll('.history-table tbody tr').forEach((tr, idx) => {
+                        tr.querySelector('td').textContent = idx + 1;
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

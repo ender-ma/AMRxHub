@@ -1,0 +1,357 @@
+{% extends "main_layout.html" %}
+{% load static %}
+
+{% block title %}{{ room.name }} - Chat Room{% endblock %}
+
+{% block content %}
+<section class="chat-room-page">
+  <div class="chat-room-wrap">
+    <header class="chat-room-topbar">
+      <a href="{% url 'socials:social_hub' %}" class="back-link">
+        <span class="arrow">←</span>
+        <span>Back to Social Hub</span>
+      </a>
+
+      <div class="room-title-wrap">
+        <h1 class="room-title">
+          {% if room.is_private %}
+            <span class="room-badge private">Private</span>
+          {% else %}
+            <span class="room-badge public">Public</span>
+          {% endif %}
+          {{ room.name }}
+        </h1>
+      </div>
+    </header>
+
+    <main class="chat-room-main">
+      <div class="chat-stream" id="chat-messages">
+        {% for message in latest_messages %}
+          <article class="bubble {% if message.author == request.user %}mine{% endif %}">
+            <header>
+              <strong>{{ message.author.get_full_name|default:message.author.email }}</strong>
+              <time>{{ message.timestamp|date:"M d, H:i" }}</time>
+            </header>
+            <p>{{ message.content }}</p>
+          </article>
+        {% empty %}
+          <div class="empty-chat">No messages yet. Start the conversation.</div>
+        {% endfor %}
+      </div>
+
+      <form id="chat-form" class="chat-composer">
+        <input
+          type="text"
+          id="chat-message-input"
+          placeholder="Type your message..."
+          maxlength="1000"
+          required
+        />
+        <button type="submit" id="chat-message-submit">
+          <span>Send</span>
+        </button>
+      </form>
+    </main>
+  </div>
+</section>
+
+<style>
+  :root {
+    --bg-1: #f3f7fb;
+    --bg-2: #e7f4f2;
+    --panel: #ffffff;
+    --text: #19212d;
+    --muted: #5f6b7a;
+    --line: #d9e3ec;
+    --accent: #0f766e;
+    --accent-2: #115e59;
+    --mine-bg: #dcfce7;
+    --mine-line: #86efac;
+    --other-bg: #f8fafc;
+    --other-line: #e2e8f0;
+    --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  }
+
+  .chat-room-page {
+    min-height: calc(100vh - 140px);
+    padding: 18px;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(15, 118, 110, 0.10), transparent 30%),
+      radial-gradient(circle at 90% 0%, rgba(2, 132, 199, 0.08), transparent 25%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    border-radius: 20px;
+  }
+
+  .chat-room-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+  }
+
+  .chat-room-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--line);
+    background: #fbfdff;
+  }
+
+  .back-link {
+    text-decoration: none;
+    color: var(--accent-2);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  .arrow {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .room-title {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .room-badge {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .room-badge.public {
+    color: #0c4a6e;
+    background: #e0f2fe;
+    border-color: #7dd3fc;
+  }
+
+  .room-badge.private {
+    color: #7c2d12;
+    background: #ffedd5;
+    border-color: #fdba74;
+  }
+
+  .chat-room-main {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    min-height: 68vh;
+  }
+
+  .chat-stream {
+    padding: 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: linear-gradient(180deg, #ffffff, #f7fbff);
+  }
+
+  .bubble {
+    max-width: 78%;
+    align-self: flex-start;
+    background: var(--other-bg);
+    border: 1px solid var(--other-line);
+    border-radius: 14px;
+    padding: 10px 12px;
+  }
+
+  .bubble.mine {
+    align-self: flex-end;
+    background: var(--mine-bg);
+    border-color: var(--mine-line);
+  }
+
+  .bubble header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .bubble strong {
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  .bubble time {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .bubble p {
+    margin: 0;
+    color: #1f2937;
+    line-height: 1.45;
+    word-break: break-word;
+  }
+
+  .empty-chat {
+    margin: auto;
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+  }
+
+  .chat-composer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    padding: 12px;
+    border-top: 1px solid var(--line);
+    background: #fcfdff;
+  }
+
+  .chat-composer input {
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 11px 12px;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .chat-composer input:focus {
+    border-color: #14b8a6;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+  }
+
+  .chat-composer button {
+    border: none;
+    border-radius: 12px;
+    padding: 0 16px;
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.2s ease;
+  }
+
+  .chat-composer button:hover {
+    background: var(--accent-2);
+    transform: translateY(-1px);
+  }
+
+  .chat-composer button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  @media (max-width: 768px) {
+    .chat-room-page {
+      padding: 10px;
+      border-radius: 12px;
+    }
+
+    .chat-room-topbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .bubble {
+      max-width: 92%;
+    }
+
+    .chat-room-main {
+      min-height: 62vh;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+    const roomName = "{{ room.name|escapejs }}";
+    const socketUrl = wsScheme + "://" + window.location.host + "/ws/chat/" + encodeURIComponent(roomName) + "/";
+
+    let chatSocket = null;
+
+    const messageContainer = document.getElementById("chat-messages");
+    const chatForm = document.getElementById("chat-form");
+    const messageInput = document.getElementById("chat-message-input");
+    const submitBtn = document.getElementById("chat-message-submit");
+
+    function scrollToBottom() {
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+
+    function appendMessage(data, own) {
+      const messageElement = document.createElement("article");
+      messageElement.className = "bubble" + (own ? " mine" : "");
+
+      const messageDate = new Date(data.timestamp);
+      const formattedTime = messageDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+      messageElement.innerHTML = `
+        <header>
+          <strong>${data.username}</strong>
+          <time>${formattedTime}</time>
+        </header>
+        <p>${data.message}</p>
+      `;
+
+      messageContainer.appendChild(messageElement);
+      scrollToBottom();
+    }
+
+    function connect() {
+      chatSocket = new WebSocket(socketUrl);
+
+      chatSocket.onopen = function () {
+        submitBtn.disabled = false;
+        scrollToBottom();
+      };
+
+      chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        if (data.type === "chat_message") {
+          appendMessage(data, data.user_id === {{ request.user.id }});
+        }
+      };
+
+      chatSocket.onclose = function () {
+        submitBtn.disabled = true;
+        setTimeout(connect, 2000);
+      };
+
+      chatSocket.onerror = function () {
+        chatSocket.close();
+      };
+    }
+
+    chatForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const message = messageInput.value.trim();
+
+      if (!message || !chatSocket || chatSocket.readyState !== WebSocket.OPEN) return;
+
+      chatSocket.send(JSON.stringify({ message: message }));
+      messageInput.value = "";
+      messageInput.focus();
+    });
+
+    submitBtn.disabled = true;
+    connect();
+    scrollToBottom();
+  });
+</script>
+{% endblock %}

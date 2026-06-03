@@ -1,0 +1,45 @@
+# Exported from Render on 2026-03-31T21:39:39Z
+version: "1"
+projects:
+- name: AMRx Hub
+  environments:
+  - name: Production
+    services:
+    - type: web
+      name: AMRx Hub
+      runtime: python
+      repo: https://github.com/ender-ma/ATH
+      branch: render-main
+      plan: free
+      envVars:
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: DEFAULT_FROM_EMAIL
+        sync: false
+      - key: DEBUG
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: CSRF_TRUSTED_ORIGINS
+        sync: false
+      - key: ALLOWED_HOSTS
+        sync: false
+      - key: MYSQL_SSL_CA
+        sync: false
+      - key: MYSQL_SSL_MODE
+        sync: false
+      - key: USE_SQLITE
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: ENVIRONMENT
+        sync: false
+      - key: EMAIL_HOST_USER
+        sync: false
+      region: oregon
+      buildCommand: pip install -r requirements.txt
+      startCommand: gunicorn app:app
+      domains:
+      - www.amrxhub.com
+      - amrxhub.com
+      autoDeployTrigger: commit
