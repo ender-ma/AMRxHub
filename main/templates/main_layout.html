@@ -248,11 +248,11 @@
                 </a>
             </li>
             <li>
-                <a href="{% if user.is_authenticated %}{% url 'socials:social_hub' %}{% else %}#{% endif %}"
+                {% comment %} <a href="{% if user.is_authenticated %}{% url 'socials:social_hub' %}{% else %}#{% endif %}"
                    class="menu-item {% if request.resolver_match.url_name == 'social_hub' or request.resolver_match.url_name == 'socials:social_hub' %}active{% endif %}"
                    {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
                     <i class="fas fa-globe-africa"></i><span>Socials</span>
-                </a>
+                </a> {% endcomment %}
             </li>
             <li><a href="{% url 'about' %}" class="menu-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}"><i class="fas fa-info-circle"></i><span>About</span></a></li>
             <li><a href="{% url 'help' %}" class="menu-item {% if request.resolver_match.url_name == 'help' %}active{% endif %}"><i class="fas fa-question-circle"></i><span>Help</span></a></li>
@@ -271,11 +271,11 @@
                {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
                 <i class="fas fa-history"></i><span>History</span>
             </a>
-            <a href="{% if user.is_authenticated %}{% url 'socials:social_hub' %}{% else %}#{% endif %}"
+            {% comment %} <a href="{% if user.is_authenticated %}{% url 'socials:social_hub' %}{% else %}#{% endif %}"
                class="menu-item {% if request.resolver_match.url_name == 'social_hub' or request.resolver_match.url_name == 'socials:social_hub' %}active{% endif %}"
                {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
                 <i class="fas fa-globe-africa"></i><span>Socials</span>
-            </a>
+            </a> {% endcomment %}
             <a href="{% url 'about' %}" class="menu-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}"><i class="fas fa-info-circle"></i><span>About</span></a>
             <a href="{% url 'help' %}" class="menu-item {% if request.resolver_match.url_name == 'help' %}active{% endif %}"><i class="fas fa-question-circle"></i><span>Help</span></a>
         </div>
@@ -314,11 +314,11 @@
                 <div class="footer-col">
                     <h4>Company</h4>
                     <ul>
-                        <li><a href="{% if user.is_authenticated %}{% url 'about' %}{% else %}#{% endif %}" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>About us</a></li>
-                        <li><a href="{% url 'about' %}#our-team" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Our Team</a></li>
-                        <li><a href="{% url 'collaborators' %}">Collaborators</a></li>
-                        <li><a href="{% url 'affiliations' %}">Affiliation program</a></li>
-                        <li><a href="{% url 'about' %}#contact-us" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Contact us</a></li>
+                        <li><a href="{% url 'about' %}">About us</a></li>
+                        <li><a href="{% url 'about' %}#our-team">Our Team</a></li>
+                        {% comment %} <li><a href="{% url 'collaborators' %}">Collaborators</a></li> {% endcomment %}
+                        {% comment %} <li><a href="{% url 'affiliations' %}">Affiliation program</a></li> {% endcomment %}
+                        <li><a href="{% url 'about' %}#contact-us">Contact us</a></li>
                         <li><a href="{% url 'privacy_policy' %}">Privacy policy</a></li>
                         <li><a href="{% url 'authentication:terms' %}">Terms and conditions</a></li>
                     </ul>
@@ -326,28 +326,27 @@
                 <div class="footer-col">
                     <h4>Get Help</h4>
                     <ul>
-                        <li><a href="{% if user.is_authenticated %}{% url 'help' %}#faq{% else %}#{% endif %}" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>FAQ</a></li>
-                        <li><a href="{% if user.is_authenticated %}{% url 'help' %}#tutorials{% else %}#{% endif %}" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Tutorials</a></li>
-                        <li><a href="{% url 'documentation' %}" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Documentation</a></li>
+                        {% comment %} <li><a href="{% url 'help' %}#faq">FAQ</a></li> {% endcomment %}
+                        <li><a href="{% url 'help' %}#tutorials">Tutorials</a></li>
+                        <li><a href="{% url 'documentation' %}">Documentation</a></li>
                         <li><a href="{% url 'glossary' %}">Glossary</a></li>
-                        <li><a href="#" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>How to cite us</a></li>
                     </ul>
                 </div>
-                <div class="footer-col">
+                {% comment %} <div class="footer-col">
                     <h4>Resources</h4>
                     <ul>
-                        <li><a href="#" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Data and Databases</a></li>
-                        <li><a href="#" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Tools and Software</a></li>
-                        <li><a href="#" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>Publications</a></li>
+                        <li><a href="#">Data and Databases</a></li>
+                        <li><a href="#">Tools and Software</a></li>
+                        <li><a href="#">Publications</a></li>
                     </ul>
-                </div>
+                </div> {% endcomment %}
                 <div class="footer-col">
                     <h4>Follow us</h4>
                     <div class="social-links">
-                        <a href="#" {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}><i class="fab fa-linkedin-in"></i></a>
-                        <a href="{% if user.is_authenticated %}https://join.slack.com/t/amrxhub/shared_invite/zt-3av13pb2c-zZ1KsvVzlNYlgvxqCLQiCA{% else %}#{% endif %}"><i class="fa-brands fa-slack"></i></a>
-                        <a href="{% if user.is_authenticated %}https://x.com/amrtool344?s=11{% else %}#{% endif %}"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="{% if user.is_authenticated %}https://youtube.com/@amrhub-321?si=LjK2UmqFgAz4qGBr{% else %}#{% endif %}"><i class="fa-brands fa-youtube"></i></a>
+                        {% comment %} <a href="#"><i class="fab fa-linkedin-in"></i></a> {% endcomment %}
+                        <a href="https://join.slack.com/t/amrxhub/shared_invite/zt-3av13pb2c-zZ1KsvVzlNYlgvxqCLQiCA"><i class="fa-brands fa-slack"></i></a>
+                        <a href="https://x.com/amrtool344?s=11"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="https://youtube.com/@amrhub-321?si=LjK2UmqFgAz4qGBr"><i class="fa-brands fa-youtube"></i></a>
                     </div>
                 </div>
             </div>

@@ -418,48 +418,279 @@ Discover and access antimicrobial resistance analysis tools organized by categor
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('tool-search');
-        const suggestionsList = document.getElementById('tool-suggestions');
-        const adminEmail = "amrtool344@gmail.com"; // Change to your real admin email
+  (() => {
+    const API_URL = "/api/search-catalog/";
+    const CACHE_KEY = "amrxhub.searchCatalog.v1";
+    const CACHE_TS_KEY = "amrxhub.searchCatalog.v1.ts";
+    const CACHE_TTL = 24 * 60 * 60 * 1000;
+    const MIN_QUERY_LENGTH = 3;
+    const DEBOUNCE_MS = 300;
 
-        searchInput.addEventListener('input', function() {
-            const query = this.value.trim();
-            if (query.length === 0) {
-                suggestionsList.style.display = 'none';
-                suggestionsList.innerHTML = '';
-                return;
-            }
-            fetch("{% url 'tools:ajax_search_tools' %}?q=" + encodeURIComponent(query))
-                .then(response => response.json())
-                .then(data => {
-                    if (data.results.length > 0) {
-                        suggestionsList.innerHTML = data.results.map(tool => `
-                            <li onclick="window.location.href='${tool.url}'">
-                                ${tool.logo ? `<img src="${tool.logo}" alt="${tool.name}" style="width:24px;height:24px;margin-right:8px;vertical-align:middle;">` : `<i class="fas fa-cog" style="margin-right:8px;"></i>`}
-                                <strong>${tool.name}</strong>
-                                <span style="color:#667eea; font-size:13px; margin-left:8px;">${tool.category}</span>
-                                <div style="font-size:13px; color:#444;">${tool.short_description}</div>
-                            </li>
-                        `).join('');
-                    } else {
-                        suggestionsList.innerHTML = `
-                            <li style="text-align:center; color:#888;">
-                                <i class="fas fa-exclamation-circle"></i> No matching tools found.<br>
-                                <a href="mailto:${adminEmail}?subject=Tool%20Suggestion&body=I%20would%20like%20to%20suggest%20a%20tool%20for%20AMR%20Tool%20House.%0A%0ATool%20Name:%0AUtility:%0A" style="color:#667eea;">Suggest a tool to the admins</a>
-                            </li>
-                        `;
-                    }
-                    suggestionsList.style.display = 'block';
-                });
-        });
+    const state = {
+      catalog: [],
+      searchTimer: null,
+    };
 
-        // Hide suggestions when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !suggestionsList.contains(e.target)) {
-                suggestionsList.style.display = 'none';
-            }
+    const els = {};
+
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function normalize(value) {
+      return String(value ?? "").trim().toLowerCase();
+    }
+
+    function getCachedCatalog() {
+      try {
+        const cachedAt = Number(localStorage.getItem(CACHE_TS_KEY) || 0);
+        const cachedPayload = localStorage.getItem(CACHE_KEY);
+        if (!cachedPayload || !cachedAt) {
+          return null;
+        }
+        if (Date.now() - cachedAt > CACHE_TTL) {
+          return null;
+        }
+        return JSON.parse(cachedPayload);
+      } catch {
+        return null;
+      }
+    }
+
+    function setCachedCatalog(catalog) {
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(catalog));
+        localStorage.setItem(CACHE_TS_KEY, String(Date.now()));
+      } catch {
+        // Ignore storage failures and continue with in-memory search.
+      }
+    }
+
+    async function fetchCatalog() {
+      const response = await fetch(API_URL, {
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Catalog request failed with status ${response.status}`);
+      }
+
+      return response.json();
+    }
+
+    async function loadCatalog() {
+      const cached = getCachedCatalog();
+      if (cached) {
+        return cached;
+      }
+
+      const freshCatalog = await fetchCatalog();
+      setCachedCatalog(freshCatalog);
+      return freshCatalog;
+    }
+
+    function matchesQuery(item, query) {
+      if (query.length < MIN_QUERY_LENGTH) {
+        return true;
+      }
+
+      const haystack = [
+        item.name,
+        item.description,
+        item.category,
+        item.subcategory,
+        item.organism,
+      ]
+        .map(normalize)
+        .join(" ");
+
+      return haystack.includes(query);
+    }
+
+    function filteredCatalog() {
+      const query = normalize(els.searchInput.value);
+      return state.catalog.filter((item) => matchesQuery(item, query));
+    }
+
+    function renderSuggestions(items) {
+      if (!els.suggestionsList) {
+        return;
+      }
+
+      if (!items.length) {
+        els.suggestionsList.innerHTML = `
+          <li style="text-align:center; color:#888;">
+            <i class="fas fa-exclamation-circle"></i> No matching tools found.<br>
+            <a href="mailto:amrtool344@gmail.com?subject=Tool%20Suggestion&body=I%20would%20like%20to%20suggest%20a%20tool%20for%20AMR%20Tool%20House.%0A%0ATool%20Name:%0AUtility:%0A" style="color:#667eea;">Suggest a tool to the admins</a>
+          </li>
+        `;
+        els.suggestionsList.style.display = "block";
+        return;
+      }
+
+      els.suggestionsList.innerHTML = items.slice(0, 8).map((item) => `
+        <li data-url="${escapeHtml(item.url || "")}">
+          <strong>${escapeHtml(item.name)}</strong>
+          <span style="color:#667eea; font-size:13px; margin-left:8px;">${escapeHtml(item.category || "Uncategorized")}</span>
+          <div style="font-size:13px; color:#444;">${escapeHtml(item.description || "")}</div>
+        </li>
+      `).join("");
+
+      els.suggestionsList.style.display = "block";
+    }
+
+    function renderResults(items) {
+      if (!els.liveResults) {
+        return;
+      }
+
+      if (!items.length) {
+        els.liveResults.style.display = "none";
+        els.liveResults.innerHTML = "";
+        return;
+      }
+
+      els.liveResults.style.display = "block";
+      els.liveResults.innerHTML = `
+        <div style="margin-top:18px;">
+          <h3 style="margin-bottom:12px;">Search Results</h3>
+          <div class="categories-grid">
+            ${items.map((item) => `
+              <div class="featured-tool" style="text-align:left; cursor:pointer;" data-url="${escapeHtml(item.url || "")}">
+                <h4>${escapeHtml(item.name)}</h4>
+                <p>${escapeHtml(item.description || "")}</p>
+                <span class="category-badge">${escapeHtml(item.category || "Uncategorized")}</span>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function syncUi(items) {
+      const query = normalize(els.searchInput.value);
+
+      if (query.length === 0) {
+        els.suggestionsList.style.display = "none";
+        els.suggestionsList.innerHTML = "";
+        els.liveResults.style.display = "none";
+        els.liveResults.innerHTML = "";
+        return;
+      }
+
+      if (query.length > 0 && query.length < MIN_QUERY_LENGTH) {
+        if (els.suggestionsList) {
+          els.suggestionsList.innerHTML = `
+            <li style="text-align:center; color:#888;">
+              Type at least 3 characters to search.
+            </li>
+          `;
+          els.suggestionsList.style.display = "block";
+        }
+        els.liveResults.style.display = "none";
+        els.liveResults.innerHTML = "";
+        return;
+      }
+
+      renderSuggestions(items);
+      renderResults(items);
+    }
+
+    function scheduleSearch() {
+      clearTimeout(state.searchTimer);
+      state.searchTimer = setTimeout(() => {
+        syncUi(filteredCatalog());
+      }, DEBOUNCE_MS);
+    }
+
+    function bindEvents() {
+      els.searchInput.addEventListener("input", scheduleSearch);
+
+      if (els.clearButton) {
+        els.clearButton.addEventListener("click", () => {
+          els.searchInput.value = "";
+          els.suggestionsList.style.display = "none";
+          els.suggestionsList.innerHTML = "";
+          els.liveResults.style.display = "none";
+          els.liveResults.innerHTML = "";
+          els.searchInput.focus();
         });
-    });
+      }
+
+      document.addEventListener("click", (event) => {
+        const clickedInsideSearch =
+          els.searchInput.contains(event.target) ||
+          (els.suggestionsList && els.suggestionsList.contains(event.target));
+
+        if (!clickedInsideSearch) {
+          els.suggestionsList.style.display = "none";
+        }
+      });
+
+      if (els.suggestionsList) {
+        els.suggestionsList.addEventListener("click", (event) => {
+          const item = event.target.closest("li[data-url]");
+          if (!item) {
+            return;
+          }
+          const url = item.getAttribute("data-url");
+          if (url) {
+            window.location.href = url;
+          }
+        });
+      }
+
+      if (els.liveResults) {
+        els.liveResults.addEventListener("click", (event) => {
+          const item = event.target.closest("[data-url]");
+          if (!item) {
+            return;
+          }
+          const url = item.getAttribute("data-url");
+          if (url) {
+            window.location.href = url;
+          }
+        });
+      }
+    }
+
+    async function init() {
+      els.searchInput = $("tool-search");
+      els.suggestionsList = $("tool-suggestions");
+      els.liveResults = $("live-search-results");
+      els.clearButton = $("clear-search");
+
+      if (!els.searchInput || !els.suggestionsList) {
+        return;
+      }
+
+      try {
+        state.catalog = await loadCatalog();
+        bindEvents();
+        syncUi(state.catalog);
+      } catch (error) {
+        console.error(error);
+        els.suggestionsList.innerHTML = `
+          <li style="text-align:center; color:#888;">
+            Unable to load search catalog.
+          </li>
+        `;
+        els.suggestionsList.style.display = "block";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  })();
 </script>
 {% endblock %}

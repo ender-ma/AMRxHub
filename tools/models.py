@@ -8,30 +8,19 @@ class ToolCategory(models.Model):
         ('organism', 'Organism Specific'),
         ('general', 'General Use'),
     )
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True, db_index=True)
     description = models.TextField()
-    icon = models.CharField(
-        max_length=50, 
-        default='fas fa-tools',
-        help_text="FontAwesome icon class (e.g., 'fas fa-microscope', 'fas fa-chart-bar')"
-    )
-    color = models.CharField(
-        max_length=7, 
-        default='#667eea',
-        help_text="Hex color code for category card"
-    )
-    order = models.IntegerField(default=0, help_text="Order in which categories appear")
-    is_active = models.BooleanField(default=True)
+    icon = models.CharField(max_length=50, default='fas fa-tools')
+    color = models.CharField(max_length=7, default='#667eea')
+    order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True, db_index=True)
     category_type = models.CharField(
         max_length=10,
         choices=CATEGORY_TYPE_CHOICES,
         default='general',
-        help_text="Choose if this category is for general use or organism specific tools"
+        db_index=True,
     )
-    detailed_description = models.TextField(
-        blank=True,
-        help_text="Long, detailed description for this category. Shown at the top of the category page."
-    )
+    detailed_description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -65,28 +54,21 @@ class Tool(models.Model):
     ]
     
     # Basic Information
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, db_index=True)
     description = models.TextField()
-    short_description = models.CharField(
-        max_length=300, 
-        help_text="Brief description shown on tool cards"
+    short_description = models.CharField(max_length=300)
+    category = models.ForeignKey(ToolCategory, on_delete=models.CASCADE, related_name='tools')
+    url = models.URLField()
+    tool_type = models.CharField(max_length=20, choices=TOOL_TYPES, default='web', db_index=True)
+    ...
+    approval_status = models.CharField(
+        max_length=20,
+        choices=APPROVAL_STATUS,
+        default='approved',
+        db_index=True,
     )
-    category = models.ForeignKey(
-        ToolCategory, 
-        on_delete=models.CASCADE, 
-        related_name='tools'
-    )
-    
-    # Tool Access
-    url = models.URLField(
-        help_text="External URL where the tool is hosted"
-    )
-    tool_type = models.CharField(
-        max_length=20, 
-        choices=TOOL_TYPES, 
-        default='web'
-    )
-    
+    is_active = models.BooleanField(default=True, db_index=True)
+
     # Additional Information
     institution = models.CharField(max_length=200, blank=True)
     author = models.CharField(max_length=200, blank=True)

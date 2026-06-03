@@ -88,7 +88,7 @@ INSTALLED_APPS = [
     "notifications",
     "history",
     "resources",
-    "socials",
+#    "socials",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",

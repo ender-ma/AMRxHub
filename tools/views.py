@@ -101,34 +101,6 @@ def tool_detail(request, tool_id):
         History.objects.create(user=request.user, content_type=ct, object_id=tool.pk)
     return render(request, 'tools/tool_detail.html', {'tool': tool})
 
-def search_tools(request):
-    query = request.GET.get('q', '').strip()
-    results = Tool.objects.none()
-    if query:
-        all_tools = Tool.objects.filter(is_active=True, approval_status='approved')
-        tool_strings = [f"{tool.name} {tool.short_description}" for tool in all_tools]
-        matches = process.extract(query, tool_strings, limit=10, score_cutoff=40)
-        matched_names = [m[0].split(' ', 1)[0] for m in matches]
-        results = all_tools.filter(name__in=matched_names)
-    return render(request, 'tools/search_results.html', {'query': query, 'results': results})
-
-def ajax_search_tools(request):
-    query = request.GET.get('q', '').strip()
-    results = []
-    if query:
-        tools_qs = Tool.objects.filter(is_active=True, approval_status='approved').filter(
-            Q(name__icontains=query) | Q(short_description__icontains=query)
-        )[:10]
-        for tool in tools_qs:
-            results.append({
-                'name': tool.name,
-                'short_description': tool.short_description,
-                'category': tool.category.name if tool.category else '',
-                'logo': tool.logo.url if tool.logo else '',
-                'url': tool.get_absolute_url()
-            })
-    return JsonResponse({'results': results})
-
 @login_required
 def workflow(request):
     return render(request, 'tools/workflow.html')

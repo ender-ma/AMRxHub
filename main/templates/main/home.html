@@ -1,6 +1,6 @@
 {% extends "main_layout.html" %}
 {% block meta_description %}
-Discover and access antimicrobial resistance analysis tools organized by category. Find the right AMR tool for your research, clinical, or public health needs.
+Discover and access curated antimicrobial-resistance tools, datasets, educational resources, and research references.
 {% endblock %}
 
 {% block title %}AMRx Hub - Exchanging ideas, advancing AMR solutions{% endblock %}
@@ -11,7 +11,7 @@ Discover and access antimicrobial resistance analysis tools organized by categor
         <h2>Welcome to AMRx Hub</h2>
     </div>
 
-    <!-- HTML: No need for a track div, just .advert-slide for each image -->
+    {% comment %} <!-- HTML: No need for a track div, just .advert-slide for each image -->
     <div class="adverts-carousel" id="advertsCarousel">
         <div class="adverts-track" id="advertsTrack">
             {% for advert in adverts %}
@@ -22,70 +22,42 @@ Discover and access antimicrobial resistance analysis tools organized by categor
             </div>
             {% endfor %}
         </div>
+    </div> {% endcomment %}
+
+    <!-- Concise overview replaced the long narrative -->
+    <div class="home-overview" style="margin-top:1.5em;">
+        <p class="lead" style="font-size:1.05rem; margin-bottom:1rem;">
+            AMRx Hub is a searchable directory of antimicrobial-resistance (AMR) resources. Find tools, datasets, learning materials, and research references in one place.
+        </p>
+
+        <div style="display:flex; flex-wrap:wrap; gap:24px; margin-bottom:1rem;">
+            <div style="flex:1; min-width:220px;">
+                <h4 style="margin-bottom:0.5rem;">What We Offer</h4>
+                <ul style="margin:0; padding-left:1.15rem;">
+                    <li>Computational tools for AMR analysis</li>
+                    <li>Surveillance & data resources</li>
+                    <li>Educational materials (tutorials, papers)</li>
+                    <li>Research resources (datasets, documentation)</li>
+                </ul>
+            </div>
+
+            <div style="flex:1; min-width:220px;">
+                <h4 style="margin-bottom:0.5rem;">How It Works</h4>
+                <ol style="margin:0 0 0 1.15rem; padding:0;">
+                    <li>Search or browse resources</li>
+                    <li>Review resource details</li>
+                    <li>Access the original tool or data source</li>
+                </ol>
+            </div>
+        </div>
+
+        <p style="margin-top:0.5rem; font-weight:500;">
+            Benefit: find relevant AMR resources faster and go directly to the source.
+        </p>
     </div>
 
-<div style="text-align: justify; margin-top: 1.5em;">
-    <p>
-        <b>Antimicrobial resistance (AMR)</b> is one of the most pressing global health threats of our time. From hospitals to farms, from research laboratories to policy chambers, AMR challenges our ability to treat infections, protect food safety, and safeguard public health worldwide. Yet one of the biggest obstacles researchers and practitioners face isn't the lack of tools,—it's finding them.
-    </p>
-    <p>
-        AMR research tools, databases, educational materials, and computational platforms are scattered across hundreds of websites worldwide. Each institution, research group, and organization maintains their resources on separate platforms with different navigation systems and terminology. This fragmentation means that discovering the right tool for your specific research question or clinical need can take hours of searching across disparate websites—time that could be spent on actual research.
-    </p>
-    <p>
-        <b>AMRx Hub solves this problem.</b>
-    </p>
-    <p>
-        We are a centralized directory and search platform specifically designed for the antimicrobial resistance community. Think of us as your starting point for discovering AMR resources—a comprehensive, searchable catalog that brings together information about tools and resources that are currently scattered across the internet.
-    </p>
-    <h4 style="margin-top:2em; color:#333;">What We Offer</h4>
-    <ul style="margin-bottom: 1.5em;">
-        <li><b>Computational Analysis Tools</b> – Information about genomic analysis platforms, resistance gene identification tools, and bioinformatics resources for AMR research, with direct links to where you can access them</li>
-        <li><b>Surveillance and Data Resources</b> – Curated links to AMR surveillance databases, epidemiological tracking systems, and data visualization platforms maintained by research institutions worldwide</li>
-        <li><b>Educational Materials</b> – A library of research papers, tutorial videos, webinars, and case studies that explain AMR mechanisms, analysis methods, and research best practices</li>
-        <li><b>Research Resources</b> – Access to publications, datasets, presentations, and documentation from the global AMR research community</li>
-    </ul>
-    <p>
-        <i>Important:</i> We don't host these tools and resources ourselves. Instead, we provide comprehensive descriptions, usage guidance, and direct links to authoritative sources where you can access them. Original developers maintain their tools, ensuring you always get the most current versions while we handle the discovery challenge.
-    </p>
-    <h4 style="margin-top:2em; color:#333;">Who AMRx Hub Serves</h4>
-    <p>
-        Whether you're a researcher searching for the right genomic analysis tool for your organism of interest, a bioinformatician looking for resistance prediction platforms, a student seeking educational resources to understand AMR mechanisms, or a public health professional needing access to surveillance data tools—AMRx Hub is designed to help you find what you need quickly.
-    </p>
-    <ul>
-        <li><b>Saving Research Time</b> – Find relevant tools in minutes instead of spending hours browsing institutional websites</li>
-        <li><b>Providing Context</b> – Each entry includes detailed descriptions, developer information, technical requirements, and usage guidance to help you assess whether a tool is appropriate for your needs</li>
-        <li><b>Enabling Discovery</b> – Our search and filtering capabilities help you discover tools you might not have known existed</li>
-        <li><b>Supporting Collaboration</b> – Create personal collections of favorite tools, share resources with colleagues, and receive notifications about new resources matching your research interests</li>
-    </ul>
-    <h4 style="margin-top:2em; color:#333;">How It Works</h4>
-    <ol>
-        <li><b>Search or Browse</b> – Use our search function with keywords relevant to your research needs, or browse our curated collections organized by organism, analysis type, or application</li>
-        <li><b>Review Information</b> – Read detailed descriptions, developer information, and usage guidance to determine if a tool fits your requirements</li>
-        <li><b>Access Tools</b> – Click direct links to access tools on their original developer websites</li>
-        <li><b>Save and Organize</b> – Bookmark useful resources to personal collections for quick future access</li>
-        <li><b>Stay Updated</b> – Opt in to receive notifications when we add new tools relevant to your research interests</li>
-    </ol>
-    <h4 style="margin-top:2em; color:#333;">Our Commitment</h4>
-    <p>
-        AMRx Hub is built on principles of accessibility, transparency, and community collaboration. We provide free access to all researchers worldwide, regardless of institutional affiliation or geographic location. Our platform is continuously updated with new tools and resources as the AMR research landscape evolves.
-    </p>
-    <p>
-        We operate as a directory for discovery, not a platform for computation. This approach respects intellectual property, ensures users access authoritative tool versions maintained by original developers, and allows us to focus on solving the discovery problem that affects every researcher in this field.
-    </p>
-    <h4 style="margin-top:2em; color:#333;">Join the Community</h4>
-    <p>
-        This is more than a database—it's a collaborative effort to strengthen the global response to antimicrobial resistance. We actively seek input from researchers, clinicians, and public health professionals like you. If you know of excellent AMR tools or resources that should be included in our directory, we encourage you to suggest them. Your feedback on what works, what's missing, and how we can improve directly shapes our development priorities.
-    </p>
-    <p>
-        <b>Create your free account today and discover how AMRx Hub can streamline your research workflow, expand your access to AMR resources, and connect you with the global community working to combat antimicrobial resistance.</b>
-    </p>
-    <p>
-        <b>Together, we can make AMR research more efficient, collaborative, and impactful. Together, we can safeguard the effectiveness of antimicrobials and ensure a healthier future for all.</b>
-    </p>
-</div>
-
-    <!-- Announcements -->
-    <div class="announcements">
+    <!-- Announcements (kept intact) -->
+    <div class="announcements" style="margin-top:1.5em;">
         <h3><i class="fas fa-bullhorn"></i> Latest Updates</h3>
         {% for announcement in announcements %}
         <div class="announcement-item">
@@ -238,8 +210,6 @@ Discover and access antimicrobial resistance analysis tools organized by categor
         font-size: 12px;
         font-style: italic;
     }
-    .p{
-        text-align: justify;
-    }
+    .home-overview .lead { margin-bottom: 0.75rem; }
 </style>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from . import views 
+from . import api
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -30,6 +31,7 @@ admin.site.password_reset_confirm = None
 admin.site.password_reset_complete = None
 
 urlpatterns = [
+    path("api/search-catalog/", api.search_catalog, name="search_catalog"),
     path('auth/', include('authentication.urls')),
     path('accounts/', include('allauth.urls')),  # Include Allauth URLs for social authentication
     path('profile/', include('profil.urls')),  # Updated to use profil app
@@ -38,7 +40,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('notifications/', include('notifications.urls', namespace='notifications')),
     path('history/', include('history.urls', namespace='history')),
-    path("socials/", include("socials.urls", namespace="socials")),
+#    path("socials/", include("socials.urls", namespace="socials")),
     
     path('tools/', include('tools.urls', namespace='tools')),
     path('resources/', include('resources.urls', namespace='resources')),

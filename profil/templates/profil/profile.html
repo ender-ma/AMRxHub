@@ -3,7 +3,7 @@
 {% block title %}Profile - AMR Tool House{% endblock %}
 
 {% block content %}
-<div class="profile-container">
+{% comment %} <div class="profile-container">
     <!-- Profile Header -->
     <div class="profile-header">
         <div class="profile-info">
@@ -25,7 +25,7 @@
                 <span class="stat-label">Connections</span>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
 
         <!-- Profile Content -->
         <div class="profile-content">
@@ -145,7 +145,7 @@
                 </div>
             </div>
         
-            <!-- 2. Research Interests Card -->
+            {% comment %} <!-- 2. Research Interests Card -->
             <div class="content-card" id="research">
                 <div class="card-header">
                     <h3><i class="fas fa-microscope"></i> Research Interests & Background</h3>
@@ -171,7 +171,7 @@
                                 <p id="research-bio-display">{{ profile.research_background|default:"Tell others about your research interests and background..." }}</p>
                             </div>
                         </div>
-                    </div>
+                    </div> {% endcomment %}
                     
                     <!-- Edit Form -->
                     <form action="{% url 'profil:update_research' %}" method="POST" id="research-edit-form" style="display: none;">
@@ -270,7 +270,7 @@
                             </button>
                         </div>
                         
-                        <div class="danger-option">
+                        {% comment %} <div class="danger-option">
                             <div class="danger-header">
                                 <i class="fas fa-exchange-alt danger-icon"></i>
                                 <h5>Transfer Account</h5>
@@ -279,7 +279,7 @@
                             <button class="danger-btn" onclick="transferAccount()">
                                 Transfer Account
                             </button>
-                        </div>
+                        </div> {% endcomment %}
                         
                         <div class="danger-option">
                             <div class="danger-header">
