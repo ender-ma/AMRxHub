@@ -59,7 +59,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <div class="info-item">
+                        {% comment %} <div class="info-item">
                             <label>Department</label>
                             <div class="info-value">
                                 <span id="personal-department-display">{{ profile.department|default:"Not provided" }}</span>
@@ -83,7 +83,7 @@
                                 <span id="personal-country-display">{{ profile.country|default:"Not provided" }}</span>
                             </div>
                         </div>
-                    </div>
+                    </div> {% endcomment %}
                     
                     <!-- Edit Form -->
                     <form action="{% url 'profil:update_personal' %}" method="POST" id="personal-edit-form" style="display: none;">
@@ -209,7 +209,7 @@
             </div>
         </div>
         
-        <!-- 3. Account Settings Card -->
+        {% comment %} <!-- 3. Account Settings Card -->
         <div class="content-card">
             <div class="card-header">
                 <h3><i class="fas fa-cog"></i> Account Settings</h3>
@@ -251,7 +251,7 @@
                     <button class="save-btn" onclick="saveAccountSettings()">
                         <i class="fas fa-save"></i> Save Settings
                     </button>
-                </div>
+                </div> {% endcomment %}
 
                 <!-- 4. Danger Zone Section -->
                 <div class="danger-zone">
