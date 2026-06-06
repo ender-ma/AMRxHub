@@ -3,5 +3,14 @@ Disallow: /auth/       # Block login-related pages
 Disallow: /admin/      # Block admin backend (if any)
 Allow: /
 
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
 # Sitemap reference
 Sitemap: https://amrxhub.com/sitemap.xml

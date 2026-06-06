@@ -35,11 +35,11 @@ class ToolDetailView(ObjectViewMixin, DetailView):
     template_name = 'tools/tool_detail.html'
     context_object_name = 'tool'
     
-@login_required
 def tool_access(request, tool_id):
     tool = get_object_or_404(Tool, pk=tool_id)
-    ct = ContentType.objects.get_for_model(tool)
-    History.objects.create(user=request.user, content_type=ct, object_id=tool.pk)
+    if request.user.is_authenticated:
+        ct = ContentType.objects.get_for_model(tool)
+        History.objects.create(user=request.user, content_type=ct, object_id=tool.pk)
     return redirect(tool.url)
 
 @login_required

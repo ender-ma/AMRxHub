@@ -398,16 +398,16 @@ def password_reset_request(request):
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 protocol = "https" if request.is_secure() else "http"
                 domain = request.get_host()
-                message = render_to_string("registration/password_reset_email.html", {
-                    "protocol": protocol,
-                    "domain": domain,
-                    "uid": uid,
-                    "uidb64": uid,
-                    "token": token,
-                    "user": user,
-                })
 
                 try:
+                    message = render_to_string("registration/password_reset_email.html", {
+                        "protocol": protocol,
+                        "domain": domain,
+                        "uid": uid,
+                        "uidb64": uid,
+                        "token": token,
+                        "user": user,
+                    })
                     send_mail(
                         subject,
                         message,
