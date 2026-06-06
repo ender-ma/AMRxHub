@@ -98,7 +98,7 @@ AMRx Hub aims to democratize access to antimicrobial resistance resources by imp
 
 ```bash
 # Clone the repository
-git clone https://github.com/<owner>/AMRxHub.git
+git clone https://github.com/ender-ma/AMRxHub.git
 cd AMRxHub
 
 # Create and activate a virtual environment
@@ -150,4 +150,4 @@ License information will be added once the project license is finalized.
 - **Project Lead:** _To be added_
 - **Email:** _To be added_
 - **Website:** _To be added_
-- **GitHub Repository:** https://github.com/<owner>/AMRxHub
+- **GitHub Repository:** https://github.com/ender-ma/AMRxHub
