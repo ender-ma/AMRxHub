@@ -1,44 +1,153 @@
-# AMRx Hub: A Curated Web Platform for Discovery of Antimicrobial Resistance Resources
+# AMRx Hub
 
-A comprehensive Django-based web application tailored to support antimicrobial resistance (AMR) research. AMRx Hub provides scientists and clinicians with unified collaborative tools, secure data analysis pipelines, and centralized resource sharing.
+AMRx Hub is an open-access web platform for centralized discovery of antimicrobial resistance (AMR) resources across the scientific ecosystem. It brings together databases, analytical tools, publications, protocols, surveillance systems, educational content, and policy references into a single searchable repository.
 
-## 🎯 Technical Features
+The platform is designed to reduce fragmentation in AMR research and practice by improving access for researchers, clinicians, educators, students, policymakers, and public health professionals.
 
-* **Advanced Authentication & Security:** Custom user model with secure session management, built-in email verification, and Google OAuth integration via `django-allauth`.
-* **Flexible Database Architecture:** Dynamic environment-based toggling between SQLite for rapid local development and Postgresql for high-performance production.
-* **Storage & Static Management:** Robust file upload handling with WhiteNoise integration for serving static assets effectively in production environments.
-* **Platform-Agnostic Deployment:** Out-of-the-box support for multiple PaaS providers including Render (via `render.yaml`), Railway (via `nixpacks.toml` and Docker), and Heroku-like environments (via `procfile`).
+## Problem Statement
 
-## 🛠 Tech Stack
+AMR resources are distributed across many websites, databases, repositories, publications, and institutional platforms. This fragmentation makes it time-intensive to identify relevant tools, datasets, educational materials, and surveillance resources.
 
-* **Backend:** Django 5.2.3, Python 3.11+
-* **Database:** Postgresql (Production), SQLite (Development)
-* **Authentication:** Django Allauth + Google OAuth
-* **Infrastructure:** Docker, Render, Nixpacks
-* **Static Files:** WhiteNoise
+AMRx Hub addresses this challenge by organizing AMR-related resources into a centralized, searchable platform.
 
-## 📁 Project Structure
+## Current Development Status
 
-Below is an overview of the project's structure, focusing heavily on the configuration and infrastructure files used outside of the standard Django boilerplate:
+AMRx Hub is under active development.
 
-```text
-ATH/
-├── authentication/          # Django app: User management, custom models, and auth views
-├── history/                 # Django app: Audit models and mixins for activity tracking
-├── main/                    # Django app: Core project settings and URL routing
-├── notifications/           # Django app: Notification triggers
-├── profil/                  # Django app: Extended user profiles
-├── resources/               # Django app: Resource library and document management
-├── tools/                   # Django app: Research tools and analysis instruments
-│
-# --- Non-Django Default / Infrastructure Files ---
-├── app.py                   # ASGI/WSGI entry point wrapper or custom server script
-├── build.sh                 # Custom build script for PaaS platforms (e.g., Render)
-├── Dockerfile               # Containerization configuration for Docker deployments
-├── nixpacks.toml            # Build environment instructions for Railway/Nixpacks
-├── procfile                 # Process definitions for web and worker dynos
-├── render.yaml              # Infrastructure-as-code configuration for Render deployment
-├── tidb-ca.pem              # SSL certificate for secure connections to TiDB databases
-├── robot.txt                # Search engine crawler instructions for SEO
-├── sitemap.xml              # XML sitemap mapping out public routes for search indexing
-└── requirements.txt         # Python dependency lockfile
+- The current production stack is Django with server-rendered HTML templates.
+- Existing functionality is powered by Django-rendered pages.
+- A Next.js frontend is currently being developed and integrated.
+- A REST API has not yet been implemented.
+- The project is transitioning toward a decoupled architecture.
+
+## Target Audience
+
+AMRx Hub is intended for:
+
+- Researchers
+- Microbiologists
+- Bioinformaticians
+- Clinicians
+- Public health professionals
+- Educators
+- Students
+- Policymakers
+
+## Core Features (Current Platform)
+
+The current platform focuses on:
+
+- Centralized resource discovery
+- Curated antimicrobial resistance resources
+- Search and filtering capabilities
+- Resource categorization
+- Community resource submission
+- Educational resource access
+- Open access resource sharing
+- One Health resource organization
+
+## Resource Categories
+
+### General Categories
+
+- Databases
+- Genomic Data Repositories
+- Publications & Manuscripts
+- Software Repositories
+- Protocols & SOPs
+- Training & Educational Resources
+- Surveillance Resources
+- Guidelines & Policy Documents
+
+### Organism-Specific Categories
+
+- Mycobacterium tuberculosis Tools
+- Staphylococcus aureus Tools
+- Salmonella Tools
+- Neisseria Tools
+- Other Organism Tools
+
+## Mission
+
+AMRx Hub aims to democratize access to antimicrobial resistance resources by improving discoverability, supporting evidence-based research, and enabling cross-disciplinary collaboration. The project follows a One Health framework to strengthen integration across human, animal, and environmental health domains while supporting global AMR awareness and scientific progress.
+
+## Technology Stack
+
+### Backend
+
+- Django
+
+### Frontend
+
+- HTML
+- CSS
+- JavaScript
+
+### Database
+
+- PostgreSQL
+
+### Version Control
+
+- Git
+- GitHub
+
+> Note: Next.js frontend integration is currently under development.
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/<owner>/AMRxHub.git
+cd AMRxHub
+
+# Create and activate a virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Apply database migrations
+python manage.py migrate
+
+# Run development server
+python manage.py runserver
+```
+
+## Contributing
+
+Contributions are welcome. Areas for contribution include:
+
+- Resource submissions
+- Documentation improvements
+- Bug reports
+- Feature suggestions
+- Development contributions
+
+Please follow project standards and maintain scientific integrity when submitting changes.
+
+## Roadmap (Future Goals)
+
+- Next.js frontend integration
+- Enhanced search functionality
+- Expanded resource coverage
+- Community contribution workflows
+- Resource quality assessment
+- API development
+- Increased educational content
+
+## Citation
+
+Formal citation information will be added after manuscript publication.
+
+## License
+
+License information will be added once the project license is finalized.
+
+## Contact
+
+- **Project Lead:** _To be added_
+- **Email:** _To be added_
+- **Website:** _To be added_
+- **GitHub Repository:** https://github.com/<owner>/AMRxHub
