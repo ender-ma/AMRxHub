@@ -458,12 +458,3 @@ def password_reset_confirm(request, uidb64, token):
 
 def password_reset_complete(request):
     return render(request, "authentication/password_reset_complete.html")
-
-    if request.user.is_email_verified:
-        return JsonResponse({"success": True, "message": "Email already verified."})
-
-    try:
-        send_verification_email(request, request.user)
-        return JsonResponse({"success": True, "message": "Verification email sent."})
-    except Exception:
-        return JsonResponse({"success": False, "message": "Could not send verification email."}, status=500)
