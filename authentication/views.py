@@ -398,16 +398,16 @@ def password_reset_request(request):
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 protocol = "https" if request.is_secure() else "http"
                 domain = request.get_host()
+                message = render_to_string("registration/password_reset_email.html", {
+                    "protocol": protocol,
+                    "domain": domain,
+                    "uid": uid,
+                    "uidb64": uid,
+                    "token": token,
+                    "user": user,
+                })
 
                 try:
-                    message = render_to_string("registration/password_reset_email.html", {
-                        "protocol": protocol,
-                        "domain": domain,
-                        "uid": uid,
-                        "uidb64": uid,
-                        "token": token,
-                        "user": user,
-                    })
                     send_mail(
                         subject,
                         message,
@@ -458,3 +458,13 @@ def password_reset_confirm(request, uidb64, token):
 
 def password_reset_complete(request):
     return render(request, "authentication/password_reset_complete.html")
+
+def resend_verification_email(request):
+    if request.user.is_email_verified:
+        return JsonResponse({"success": True, "message": "Email already verified."})
+
+    try:
+        send_verification_email(request, request.user)
+        return JsonResponse({"success": True, "message": "Verification email sent."})
+    except Exception:
+        return JsonResponse({"success": False, "message": "Could not send verification email."}, status=500)
