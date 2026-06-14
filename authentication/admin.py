@@ -38,23 +38,7 @@ class CustomUserAdmin(UserAdmin):
                     self.log_deletion(request, user, f"User {user.email} deleted by admin {request.user.email}")
                     user_email = user.email
                     user_id = user.id
-                    
-                    # First, manually delete related history records
-                    with connection.cursor() as cursor:
-                        
-                        cursor.execute("DELETE FROM history_history WHERE user_id = %s", [user_id])# Clear any history records
-                        cursor.execute("DELETE FROM authentication_loginattempt WHERE user_id = %s", [user_id])# Delete any login attempts
-                        cursor.execute("DELETE FROM profil_userprofile WHERE user_id = %s", [user_id])# Delete profile if exists
-                        
-                        # Delete notifications
-                        # cursor.execute("DELETE FROM notifications_notification WHERE recipient_id = %s", [user_id])
-                    
-                    # Delete the user with foreign key checks disabled
-                    with connection.cursor() as cursor:
-                        cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
-                        cursor.execute("DELETE FROM authentication_customuser WHERE id = %s", [user_id])
-                        cursor.execute("SET FOREIGN_KEY_CHECKS=1;")
-                    
+                    user.delete()
                     deleted_count += 1
                     
                     self.message_user(

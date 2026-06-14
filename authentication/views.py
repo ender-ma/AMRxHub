@@ -321,20 +321,11 @@ def delete_account(request):
             try:
                 user = request.user
                 
-                # Clean up history first (using the new history app)
-                from django.db import connection
-                with connection.cursor() as cursor:
-                    cursor.execute("DELETE FROM history_history WHERE user_id = %s", [user.id])
-                
                 # Log user out
                 from django.contrib.auth import logout
                 logout(request)
                 
-                # Delete user directly with SQL to bypass foreign key checks
-                with connection.cursor() as cursor:
-                    cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
-                    cursor.execute("DELETE FROM authentication_customuser WHERE id = %s", [user.id])
-                    cursor.execute("SET FOREIGN_KEY_CHECKS=1;")
+                user.delete()
                 
                 from django.contrib import messages
                 messages.success(request, 'Your account has been deleted successfully.')
@@ -458,13 +449,3 @@ def password_reset_confirm(request, uidb64, token):
 
 def password_reset_complete(request):
     return render(request, "authentication/password_reset_complete.html")
-
-def resend_verification_email(request):
-    if request.user.is_email_verified:
-        return JsonResponse({"success": True, "message": "Email already verified."})
-
-    try:
-        send_verification_email(request, request.user)
-        return JsonResponse({"success": True, "message": "Verification email sent."})
-    except Exception:
-        return JsonResponse({"success": False, "message": "Could not send verification email."}, status=500)

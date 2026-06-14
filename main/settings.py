@@ -9,9 +9,10 @@ from dotenv import load_dotenv
 
 from urllib.parse import urlparse, parse_qsl
 
-load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Explicitly load .env from the project root
+load_dotenv(BASE_DIR / ".env")
 
 
 def env_bool(name: str, default: bool = False) -> bool:
@@ -200,8 +201,8 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USER_DISPLAY = lambda user: user.email
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http" if DEBUG else "https"
 
-GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
-GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "").strip()
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "").strip()
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
@@ -215,6 +216,10 @@ if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
         "client_id": GOOGLE_CLIENT_ID,
         "secret": GOOGLE_CLIENT_SECRET,
     }
+elif DEBUG:
+    # This helps you see why it's failing in your terminal
+    import warnings
+    warnings.warn("GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET missing from environment. Google login will fail.")
 
 SOCIALACCOUNT_STORE_TOKENS = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
