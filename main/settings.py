@@ -47,7 +47,6 @@ ALLOWED_HOSTS = env_list(
         ".vscode-cdn.net",
         ".gitpod.io",
         ".codespaces.app",
-        ".railway.app",
         "amrxhub.com",
         "www.amrxhub.com",
         "amrx-hub.onrender.com",
