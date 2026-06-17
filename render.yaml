@@ -50,4 +50,6 @@ projects:
       domains:
       - www.amrxhub.com
       - amrxhub.com
+      - ath-tyc6.onrender.com
+      - www.ath-tyc6.onrender.com
       autoDeployTrigger: commit
