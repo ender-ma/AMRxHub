@@ -50,7 +50,8 @@ ALLOWED_HOSTS = env_list(
         ".codespaces.app",
         "amrxhub.com",
         "www.amrxhub.com",
-        "amrx-hub.onrender.com",
+        "ath-tyc6.onrender.com",
+        "www.ath-tyc6.onrender.com",
     ],
 )
 
@@ -64,7 +65,8 @@ CSRF_TRUSTED_ORIGINS = env_list(
         "http://127.0.0.1:8000",
         "https://amrxhub.com",
         "https://www.amrxhub.com",
-        "https://amrx-hub.onrender.com",
+        "https://ath-tyc6.onrender.com",
+        "https://www.ath-tyc6.onrender.com",
     ],
 )
 
@@ -345,7 +347,7 @@ CACHES = {
 # -----------------------------------------------------------------------------
 # Site metadata
 # -----------------------------------------------------------------------------
-SITE_DOMAIN = os.environ.get("SITE_DOMAIN", "amrx-hub.onrender.com")
+SITE_DOMAIN = os.environ.get("SITE_DOMAIN", "ath-tyc6.onrender.com")
 SITE_PROTOCOL = os.environ.get("SITE_PROTOCOL", "https")
 
 
