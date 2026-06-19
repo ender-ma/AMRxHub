@@ -10,8 +10,8 @@ class Command(BaseCommand):
         site, _ = Site.objects.get_or_create(id=1)
         
         # Update site domain to match your production domain
-        site.domain = 'amrxhub.up.railway.app'
-        site.name = 'AMR X Hub'
+        site.domain = 'amrxhub.com'  # Change to your actual domain
+        site.name = 'AMRx Hub'
         site.save()
         
         self.stdout.write(self.style.SUCCESS(f'Updated site: {site.domain}'))
@@ -29,15 +29,15 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f'Kept only one Google OAuth app (ID: {app_to_keep.id})'))
             
             # Update the remaining app
-            app_to_keep.client_id = '876154968492-g59fkpqkgtrl3bpaf7h4k5qu4bue3s31.apps.googleusercontent.com'
-            app_to_keep.secret = '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'
+            app_to_keep.client_id = ''
+            app_to_keep.secret = ''
             app_to_keep.save()
             self.stdout.write(self.style.SUCCESS(f'Updated Google OAuth app (ID: {app_to_keep.id})'))
         elif existing_apps.exists():
             # Update the existing app
             app = existing_apps.first()
-            app.client_id = '876154968492-g59fkpqkgtrl3bpaf7h4k5qu4bue3s31.apps.googleusercontent.com'
-            app.secret = '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'
+            app.client_id = ''
+            app.secret = ''
             app.save()
             self.stdout.write(self.style.SUCCESS(f'Updated existing Google OAuth app (ID: {app.id})'))
         else:
@@ -45,8 +45,8 @@ class Command(BaseCommand):
             google_app = SocialApp.objects.create(
                 provider='google',
                 name='Google',
-                client_id='876154968492-g59fkpqkgtrl3bpaf7h4k5qu4bue3s31.apps.googleusercontent.com',
-                secret='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'
+                client_id='',
+                secret=''
             )
             google_app.sites.add(site)
             self.stdout.write(self.style.SUCCESS('Successfully created Google OAuth app'))

@@ -11,13 +11,13 @@ import logging
 from .forms import CustomUserCreationForm, SignupForm
 from django.db import transaction
 from django.urls import reverse
-from django.core.mail import send_mail
+from django.core.mail import get_connection, send_mail
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str 
 from django.conf import settings
 import os
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.http import url_has_allowed_host_and_scheme, urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.decorators.http import require_POST
 from .tokens import email_verification_token
 
@@ -25,6 +25,51 @@ from .tokens import email_verification_token
 logger = logging.getLogger(__name__)
 
 User = get_user_model()
+
+
+def send_mail_with_short_timeout(*args, **kwargs):
+    timeout = min(getattr(settings, "EMAIL_TIMEOUT", 5), 5)
+    kwargs.setdefault("connection", get_connection(timeout=timeout))
+    return send_mail(*args, **kwargs)
+
+
+def _safe_redirect_target(request):
+    next_page = request.POST.get("next") or request.GET.get("next")
+    if next_page and url_has_allowed_host_and_scheme(
+        next_page,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        return next_page
+    return None
+
+
+def _google_oauth_is_configured():
+    if settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_SECRET:
+        return True
+
+    try:
+        from allauth.socialaccount.models import SocialApp
+
+        return SocialApp.objects.filter(provider="google").exists()
+    except Exception as exc:
+        logger.warning("Could not check Google OAuth configuration: %s", exc)
+        return False
+
+
+def google_login(request):
+    if not _google_oauth_is_configured():
+        messages.error(
+            request,
+            "Google sign-in is not configured yet. Please use email login for now.",
+        )
+        return redirect("authentication:login")
+
+    url = "/accounts/google/login/"
+    query_string = request.META.get("QUERY_STRING", "")
+    if query_string:
+        url = f"{url}?{query_string}"
+    return redirect(url)
 
 def send_verification_email(request, user):
     uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
@@ -40,7 +85,7 @@ def send_verification_email(request, user):
         "user": user,
     })
 
-    send_mail(
+    send_mail_with_short_timeout(
         "Verify your AMRx Hub email",
         message,
         settings.DEFAULT_FROM_EMAIL,
@@ -89,6 +134,7 @@ def auth_page(request):
     return render(request, 'authentication/main_auth.html')
 
 @never_cache
+@ensure_csrf_cookie
 def register_user(request):
     """Handle user registration with email-based authentication"""
     if request.method == 'POST':
@@ -124,14 +170,6 @@ def register_user(request):
             )
             user.is_active = True
             user.save()
-
-            # Create user profile
-            from profil.models import UserProfile
-            try:
-                profile = UserProfile.objects.create(user=user)
-                profile.save()
-            except Exception as profile_error:
-                logger.error(f'Profile creation error: {str(profile_error)}')
 
             # Auto-login user after registration
             user = authenticate(request, email=email, password=password)
@@ -177,8 +215,8 @@ def login_user(request):
                         messages.success(request, f'Welcome back, {user.get_full_name() or email}!')
                         
                         # Redirect to next page or home
-                        next_page = request.POST.get('next') or request.GET.get('next')
-                        if next_page and next_page.startswith('/'):
+                        next_page = _safe_redirect_target(request)
+                        if next_page:
                             return redirect(next_page)
                         return redirect('home')
                     except Exception as login_error:
@@ -245,6 +283,8 @@ def terms_view(request):
     """Display terms and conditions"""
     return render(request, 'authentication/terms.html')
 
+@never_cache
+@ensure_csrf_cookie
 def login_view(request):
     """Display the login page"""
     # if request.user.is_authenticated:
@@ -252,19 +292,41 @@ def login_view(request):
     #     return redirect('home')
         
     if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        
-        user = authenticate(request, email=email, password=password)
-        
-        if user is not None:
+        email = request.POST.get('email', '').strip().lower()
+        password = request.POST.get('password', '')
+
+        if not email or not password:
+            messages.error(request, 'Email and password are required.')
+            return render(request, 'authentication/login.html')
+
+        try:
+            user = authenticate(request, email=email, password=password)
+
+            if user is None:
+                logger.warning("Email login failed for %s", email)
+                messages.error(request, 'Invalid email or password.')
+                return render(request, 'authentication/login.html')
+
+            if not user.is_active:
+                logger.warning("Inactive account login blocked for %s", email)
+                messages.error(request, 'Your account has been disabled.')
+                return render(request, 'authentication/login.html')
+
             login(request, user)
+            logger.info("Email login succeeded for %s", email)
+
+            next_page = _safe_redirect_target(request)
+            if next_page:
+                return redirect(next_page)
             return redirect('home')
-        else:
-            messages.error(request, 'Invalid email or password.')
+        except Exception:
+            logger.exception("Email login raised an exception for %s", email)
+            messages.error(request, 'Login failed. Please try again.')
             
     return render(request, 'authentication/login.html')
 
+@never_cache
+@ensure_csrf_cookie
 def signup_view(request):
     """Display the signup page"""
     # if request.user.is_authenticated:
@@ -359,7 +421,7 @@ def test_email(request):
     }
     
     try:
-        send_mail(
+        send_mail_with_short_timeout(
             'Test Email from AMRx Hub',
             'This is a test email to verify the email configuration is working.',
             settings.DEFAULT_FROM_EMAIL,
@@ -399,7 +461,7 @@ def password_reset_request(request):
                 })
 
                 try:
-                    send_mail(
+                    send_mail_with_short_timeout(
                         subject,
                         message,
                         settings.DEFAULT_FROM_EMAIL,

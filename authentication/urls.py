@@ -1,9 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-from django.views.generic import RedirectView
-from django.urls import reverse_lazy
-from django.conf import settings
 
 app_name = 'authentication'
 
@@ -32,7 +29,7 @@ urlpatterns = [
     path('check-email/', views.check_email_availability, name='check_email'),
     path('debug/', views.debug_auth, name='debug_auth'),
     path('delete-account/', views.delete_account, name='delete_account'),
-    path('google/login/', RedirectView.as_view(url='/accounts/google/login/'), name='google_login'),
+    path('google/login/', views.google_login, name='google_login'),
     path('test-email/', views.test_email, name='test_email'),
 
     # Email verification functionality
