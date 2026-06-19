@@ -146,5 +146,5 @@ License information can be found in the license file.
 
 - **Project Lead:** Akinloluwa Adeolu-Shittu
 - **Email:** isaacodes25@gmail.com
-- **Website:** https://ath-tyc6.onrender.com/
+- **Website:** https://amrxhub.com/
 - **GitHub Repository:** https://github.com/ender-ma/AMRxHub
