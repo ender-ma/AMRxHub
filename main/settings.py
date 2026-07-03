@@ -63,6 +63,7 @@ CSRF_TRUSTED_ORIGINS = env_list(
         "https://*.codespaces.app",
         "http://localhost:8000",
         "http://127.0.0.1:8000",
+        "http://127.0.0.1",
         "https://amrxhub.com",
         "https://www.amrxhub.com",
         "https://ath-tyc6.onrender.com",
