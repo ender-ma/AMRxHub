@@ -20,6 +20,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import url_has_allowed_host_and_scheme, urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.decorators.http import require_POST
 from .tokens import email_verification_token
+from django.core.mail import send_mail
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -137,6 +138,9 @@ def auth_page(request):
 @ensure_csrf_cookie
 def register_user(request):
     """Handle user registration with email-based authentication"""
+
+    form = CustomUserCreationForm()
+
     if request.method == 'POST':
         email = request.POST.get('email', '').strip().lower()
         password = request.POST.get('password', '')
@@ -170,6 +174,14 @@ def register_user(request):
             )
             user.is_active = True
             user.save()
+
+            send_mail_with_short_timeout(
+                "Test Subject",
+                "This is a test message.",
+                "no-reply@amrxhub.com",
+                [form.cleaned_data["email"]],
+                fail_silently=False,
+            )
 
             # Auto-login user after registration
             user = authenticate(request, email=email, password=password)

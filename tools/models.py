@@ -167,35 +167,3 @@ class ToolClick(models.Model):
         verbose_name = "Tool Click"
         verbose_name_plural = "Tool Clicks"
 
-class AnalysisHistory(models.Model):
-
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('processing', 'Processing'),
-        ('completed', 'Completed'),
-        ('failed', 'Failed'),
-    ]
-    
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    tool = models.ForeignKey('Tool', on_delete=models.CASCADE)
-    description = models.TextField(blank=True)
-    used_at = models.DateTimeField(auto_now_add=True)
-    completed_at = models.DateTimeField(null=True, blank=True)
-    
-    # Add status tracking
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    
-    # Files for input and results
-    uploaded_file = models.FileField(upload_to='user_uploads/', null=True, blank=True)
-    result_file = models.FileField(upload_to='analysis_results/', null=True, blank=True)
-    
-    # Error message if analysis fails
-    error_message = models.TextField(blank=True)
-    
-    def __str__(self):
-        return f"{self.tool.name} by {self.user.username} at {self.used_at}"
-    
-    def duration(self):
-        if not self.completed_at or self.status in ['pending', 'processing']:
-            return None
-        return self.completed_at - self.used_at

@@ -97,6 +97,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "channels",
+    "anymail",
 ]
 
 AUTH_USER_MODEL = "authentication.CustomUser"
@@ -306,18 +307,20 @@ if not DEBUG:
 # Email
 # -----------------------------------------------------------------------------
 USE_SMTP_IN_DEV = env_bool("USE_SMTP_IN_DEV", False)
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY", "").strip()
+
 if USE_SMTP_IN_DEV or ENVIRONMENT == "production":
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    if not BREVO_API_KEY:
+        raise ImproperlyConfigured("BREVO_API_KEY is required when using the Brevo email backend.")
+    EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
-EMAIL_USE_TLS = env_bool("EMAIL_USE_TLS", True)
-EMAIL_USE_SSL = env_bool("EMAIL_USE_SSL", False)
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
-DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "AMRx Hub <noreply@amrxhub.com>")
+ANYMAIL = {
+    "SENDINBLUE_API_KEY": BREVO_API_KEY,
+}
+
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "")
 EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", "5"))
 
 # -----------------------------------------------------------------------------
