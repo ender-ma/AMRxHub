@@ -176,8 +176,9 @@ def register_user(request):
             user.save()
 
             send_mail_with_short_timeout(
-                "Test Subject",
-                "This is a test message.",
+                "Wellcome to AMRx Hub!",
+                "Thank you for registering at AMRx Hub. If you have any questions, feel free to reach out to us. Or if you would prefer," \
+                "you can watch our tutorial videos on how to use the platform. We hope you enjoy your experience!",
                 "no-reply@amrxhub.com",
                 [form.cleaned_data["email"]],
                 fail_silently=False,

@@ -312,12 +312,12 @@ BREVO_API_KEY = os.environ.get("BREVO_API_KEY", "").strip()
 if USE_SMTP_IN_DEV or ENVIRONMENT == "production":
     if not BREVO_API_KEY:
         raise ImproperlyConfigured("BREVO_API_KEY is required when using the Brevo email backend.")
-    EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
+    EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 ANYMAIL = {
-    "SENDINBLUE_API_KEY": BREVO_API_KEY,
+    "BREVO_API_KEY": os.environ.get("BREVO_API_KEY"),
 }
 
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "")
@@ -351,8 +351,8 @@ CACHES = {
 # -----------------------------------------------------------------------------
 # Site metadata
 # -----------------------------------------------------------------------------
-SITE_DOMAIN = os.environ.get("SITE_DOMAIN", "ath-tyc6.onrender.com")
-SITE_PROTOCOL = os.environ.get("SITE_PROTOCOL", "https")
+SITE_DOMAIN = os.environ.get("SITE_DOMAIN", "")
+SITE_PROTOCOL = os.environ.get("SITE_PROTOCOL", "")
 
 
 # -----------------------------------------------------------------------------

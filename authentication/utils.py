@@ -32,16 +32,16 @@ def generate_verification_token():
     return uuid.uuid4().hex
 
 
-def verify_smtp_credentials():
-    try:
-        server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-        server.starttls()
-        server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-        server.quit()
-        return True
-    except Exception as e:
-        logging.error(f"SMTP verification failed: {e}")
-        return False
+# def verify_smtp_credentials():
+#     try:
+#         server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+#         server.starttls()
+#         server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+#         server.quit()
+#         return True
+#     except Exception as e:
+#         logging.error(f"SMTP verification failed: {e}")
+#         return False
 
 def email_domain_has_mx(email):
     domain = email.split('@')[-1]
