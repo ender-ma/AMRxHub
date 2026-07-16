@@ -230,7 +230,7 @@ elif DEBUG:
 SOCIALACCOUNT_STORE_TOKENS = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIALACCOUNT_LOGIN_ON_GET = False
+SOCIALACCOUNT_LOGIN_ON_GET = True # False Get the user to confirm before signing up
 SOCIALACCOUNT_ADAPTER = "authentication.adapters.CustomSocialAccountAdapter"
 
 

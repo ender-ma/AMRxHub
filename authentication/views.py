@@ -180,7 +180,7 @@ def register_user(request):
                 "Thank you for registering at AMRx Hub. If you have any questions, feel free to reach out to us. Or if you would prefer," \
                 "you can watch our tutorial videos on how to use the platform. We hope you enjoy your experience!",
                 "no-reply@amrxhub.com",
-                [form.cleaned_data["email"]],
+                [email],
                 fail_silently=False,
             )
 
