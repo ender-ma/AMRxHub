@@ -63,13 +63,6 @@ def sitemap_view(request):
         raise Http404("Sitemap not found.")
     return FileResponse(open(sitemap_path, 'rb'), content_type='application/xml')
 
-@login_required
-def documentation(request):
-    """
-    Render the documentation page for authenticated users.
-    """
-    return render(request, 'main/documentation.html')
-
 def health_check(request):
     """
     Render ghost Keep_Alive health check page for authenticated users.

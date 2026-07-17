@@ -59,6 +59,12 @@
                                 {% endif %}
                             </div>
                         </div>
+                        
+                        {% if user.is_staff %}
+                            <a href="/admin/" class="admin-link">
+                                <i class="fas fa-cog"></i> Go to Admin Page
+                            </a>
+                        {% endif %}
                         {% comment %} <div class="info-item">
                             <label>Department</label>
                             <div class="info-value">
