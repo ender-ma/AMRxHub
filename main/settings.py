@@ -50,8 +50,8 @@ ALLOWED_HOSTS = env_list(
         ".codespaces.app",
         "amrxhub.com",
         "www.amrxhub.com",
-        "ath-tyc6.onrender.com",
-        "www.ath-tyc6.onrender.com",
+        "amrxhub-production.up.railway.app",
+        "www.amrxhub-production.up.railway.app",
     ],
 )
 
@@ -66,8 +66,8 @@ CSRF_TRUSTED_ORIGINS = env_list(
         "http://127.0.0.1",
         "https://amrxhub.com",
         "https://www.amrxhub.com",
-        "https://ath-tyc6.onrender.com",
-        "https://www.ath-tyc6.onrender.com",
+        "https://amrxhub-production.up.railway.app",
+        "https://www.amrxhub-production.up.railway.app",
     ],
 )
 
