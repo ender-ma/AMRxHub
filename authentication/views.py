@@ -1,15 +1,16 @@
+import token
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, get_user_model
 from .models import CustomUser
 from django.contrib import messages
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.cache import never_cache
-from django.http import JsonResponse, HttpRequest
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm, SetPasswordForm
 import logging
 from .forms import CustomUserCreationForm, SignupForm
-from django.db import transaction
 from django.urls import reverse
 from django.core.mail import get_connection, send_mail
 from django.template.loader import render_to_string
@@ -453,40 +454,34 @@ def password_reset_request(request):
     if request.method == "POST":
         form = PasswordResetForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data["email"]
-            User = get_user_model()
-            users = User.objects.filter(email__iexact=email.strip())
+            email = form.cleaned_data["email"].strip()
+            users = get_user_model().objects.filter(email__iexact=email)
 
             if users.exists():
                 user = users.first()
                 subject = "Password Reset Requested"
                 token = default_token_generator.make_token(user)
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
-                protocol = "https" if request.is_secure() else "http"
-                domain = request.get_host()
-                message = render_to_string("registration/password_reset_email.html", {
-                    "protocol": protocol,
-                    "domain": domain,
-                    "uid": uid,
-                    "uidb64": uid,
-                    "token": token,
-                    "user": user,
-                })
 
-                try:
-                    send_mail_with_short_timeout(
-                        subject,
-                        message,
-                        settings.DEFAULT_FROM_EMAIL,
-                        [user.email],
-                        fail_silently=False,
-                    )
-                except Exception as e:
-                    logger.exception(
-                        "Password reset email failed for %s: %s",
-                        user.email,
-                        str(e),
-                    )
+                reset_url = request.build_absolute_uri(
+                    reverse("authentication:password_reset_confirm", args=[uid, token])
+                )
+
+                message = render_to_string(
+                    "registration/password_reset_email.html",
+                    {
+                        "user": user,
+                        "reset_url": reset_url,
+                    },
+                )
+
+                send_mail_with_short_timeout(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [user.email],
+                    fail_silently=False,
+                )
 
             messages.success(
                 request,
@@ -495,6 +490,7 @@ def password_reset_request(request):
             return redirect("authentication:password_reset_done")
     else:
         form = PasswordResetForm()
+
     return render(request, "registration/password_reset_form.html", {"form": form})
 
 def password_reset_done(request):
