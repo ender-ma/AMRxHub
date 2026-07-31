@@ -1,0 +1,77 @@
+{% extends "admin_layout.html" %}
+
+{% block title %}Users | AMRx Hub Admin{% endblock %}
+{% block page_title %}Users{% endblock %}
+{% block page_subtitle %}Manage accounts, verification state, and activity{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-4">
+    <div>
+        <div class="text-uppercase text-muted small">User Management</div>
+        <h3 class="mb-0 fw-bold">Directory</h3>
+    </div>
+    <div class="d-flex gap-2">
+        <input type="search" class="form-control form-control-sm bg-dark text-light border-secondary" placeholder="Search users...">
+        <select class="form-select form-select-sm bg-dark text-light border-secondary" style="width: 180px;">
+            <option>All users</option>
+            <option>Verified only</option>
+            <option>Unverified only</option>
+            <option>Staff only</option>
+        </select>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-dark table-hover align-middle">
+        <thead>
+            <tr class="text-muted small text-uppercase">
+                <th>User</th>
+                <th>Status</th>
+                <th>Joined</th>
+                <th>Last Login</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>
+                    <div class="fw-semibold">{{ user.email }}</div>
+                    <div class="text-muted small">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </div>
+                </td>
+                <td>
+                    {% if user.is_email_verified %}
+                        <span class="badge bg-success">Verified</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Unverified</span>
+                    {% endif %}
+                    {% if user.is_staff %}
+                        <span class="badge bg-info text-dark">Staff</span>
+                    {% endif %}
+                    {% if user.is_active %}
+                        <span class="badge bg-secondary">Active</span>
+                    {% else %}
+                        <span class="badge bg-danger">Inactive</span>
+                    {% endif %}
+                </td>
+                <td class="text-muted small">{{ user.date_joined|date:"M d, Y" }}</td>
+                <td class="text-muted small">{{ user.last_login|date:"M d, Y H:i" }}</td>
+                <td class="text-end">
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-light">Details</button>
+                        <button class="btn btn-outline-warning">Edit</button>
+                        <button class="btn btn-outline-danger">Disable</button>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-muted py-5">No users found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

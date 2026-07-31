@@ -18,9 +18,9 @@ def static_sitemap(request):
     return HttpResponse(content, content_type='application/xml')
 
 # Admin site customization
-admin.site.site_header = "AMR Tool House Administration"
-admin.site.site_title = "AMR Tool House Admin"
-admin.site.index_title = "Welcome to AMR Tool House Administration"
+admin.site.site_header = "AMRx Hub Administration"
+admin.site.site_title = "AMRx Hub Admin"
+admin.site.index_title = "Welcome to AMRx Hub Administration"
 
 # Disable admin password reset
 admin.site.password_change = None
@@ -40,6 +40,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('notifications/', include('notifications.urls', namespace='notifications')),
     path('history/', include('history.urls', namespace='history')),
+    path("portal/", include("admin_portal.urls", namespace="admin_portal")),
 #    path("socials/", include("socials.urls", namespace="socials")),
     
     path('tools/', include('tools.urls', namespace='tools')),

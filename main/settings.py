@@ -98,6 +98,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "channels",
     "anymail",
+    "admin_portal",
 ]
 
 AUTH_USER_MODEL = "authentication.CustomUser"

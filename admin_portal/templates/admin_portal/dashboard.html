@@ -1,0 +1,56 @@
+{% extends "admin_layout.html" %}
+
+{% block title %}Dashboard | AMRx Hub Admin{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Executive overview of AMRx Hub operations{% endblock %}
+
+{% block content %}
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="p-3 rounded-4 bg-dark border border-secondary">
+            <div class="text-muted small">Total Users</div>
+            <div class="fs-3 fw-bold">{{ total_users }}</div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="p-3 rounded-4 bg-dark border border-secondary">
+            <div class="text-muted small">Verified Users</div>
+            <div class="fs-3 fw-bold">{{ verified_users }}</div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="p-3 rounded-4 bg-dark border border-secondary">
+            <div class="text-muted small">Tools</div>
+            <div class="fs-3 fw-bold">{{ total_tools }}</div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="p-3 rounded-4 bg-dark border border-secondary">
+            <div class="text-muted small">Pending Reviews</div>
+            <div class="fs-3 fw-bold">{{ pending_reviews }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-12 col-lg-8">
+        <div class="p-3 rounded-4 bg-dark border border-secondary" style="min-height: 420px;">
+            <h5 class="mb-3">Activity Overview</h5>
+            <canvas id="overviewChart"></canvas>
+        </div>
+    </div>
+    <div class="col-12 col-lg-4">
+        <div class="p-3 rounded-4 bg-dark border border-secondary mb-3">
+            <h6 class="text-uppercase text-muted small mb-3">Pending Actions</h6>
+            <div class="d-flex justify-content-between py-2 border-top border-secondary"><span>AI jobs</span><strong>{{ ai_jobs_running }}</strong></div>
+            <div class="d-flex justify-content-between py-2 border-top border-secondary"><span>Failed jobs</span><strong>{{ ai_jobs_failed }}</strong></div>
+            <div class="d-flex justify-content-between py-2 border-top border-secondary"><span>Resources</span><strong>{{ total_resources }}</strong></div>
+        </div>
+
+        <div class="p-3 rounded-4 bg-dark border border-secondary">
+            <h6 class="text-uppercase text-muted small mb-3">Right Panel Seed</h6>
+            <div class="small text-muted">This panel will later show contextual data, alerts, and quick actions from the current page.</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

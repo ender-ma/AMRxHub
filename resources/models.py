@@ -24,3 +24,5 @@ class ResourceItem(models.Model):
 class Resource(models.Model):
     title = models.CharField(max_length=255)
     file = models.FileField(upload_to='resources/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
