@@ -49,10 +49,7 @@
         }
 
         .admin-shell {
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--context-width);
-            transition: grid-template-columns 0.24s ease;
+            grid-template-columns: minmax(0, 1fr) var(--context-width);
         }
 
         .admin-shell.sidebar-collapsed {
@@ -60,7 +57,24 @@
         }
 
         .admin-shell.context-collapsed {
-            --context-width: var(--context-collapsed-width);
+            --context-width: 28px;
+        }
+        
+        .admin-shell.context-collapsed .context-panel {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .context-panel {
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .context-panel::-webkit-scrollbar {
+            width: 0;
+            height: 0;
         }
 
         .sidebar,
@@ -434,13 +448,6 @@
 
     <div class="admin-shell">
         <aside class="sidebar" id="sidebar">
-            <div class="brand">
-                <div class="brand-mark">A</div>
-                <div class="brand-title">
-                    <strong>AMRx Hub</strong>
-                    <span>Administration Portal</span>
-                </div>
-            </div>
 
             <div class="nav-section">
                 <div class="nav-label">Core</div>
@@ -553,7 +560,7 @@
             </section>
         </main>
 
-        <aside class="context-panel">
+        {% comment %} <aside class="context-panel">
             <div class="context-card">
                 <h6>Recent Activity</h6>
                 <div class="context-item"><span>Tool review</span><strong>3m ago</strong></div>
@@ -574,7 +581,7 @@
                 <div class="context-item"><span>Create announcement</span><strong>Open</strong></div>
                 <div class="context-item"><span>Review reports</span><strong>Open</strong></div>
             </div>
-        </aside>
+        </aside> {% endcomment %}
     </div>
 
     <script>
