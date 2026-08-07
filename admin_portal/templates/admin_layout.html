@@ -29,7 +29,7 @@
             --shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
             --radius: 22px;
             --sidebar-width: 280px;
-            --context-width: 320px;
+            --context-width: 360px;
             --sidebar-collapsed-width: 72px;
             --context-collapsed-width: 72px;
         }
@@ -319,8 +319,16 @@
             padding: 22px;
             border-left: 1px solid var(--line);
             background: linear-gradient(180deg, rgba(9, 14, 28, 0.86), rgba(10, 16, 32, 0.72));
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
             transition: padding 0.24s ease, background 0.24s ease;
+        }
+
+        .context-panel::-webkit-scrollbar {
+            width: 0;
+            height: 0;
         }
 
         .admin-shell.context-collapsed .context-panel {
@@ -527,16 +535,6 @@
                         <input type="search" placeholder="Search users, tools, jobs, logs...">
                     </div>
             
-                    <button
-                        class="icon-btn"
-                        type="button"
-                        onclick="toggleContextPanel()"
-                        aria-label="Toggle right context panel"
-                        title="Toggle right context panel"
-                    >
-                        <i class="fa-solid fa-angles-right" id="contextToggleIcon"></i>
-                    </button>
-            
                     <button class="icon-btn" type="button" title="Notifications">
                         <i class="fa-regular fa-bell"></i>
                     </button>
@@ -583,28 +581,15 @@
             syncToggleIcons();
         }
     
-        function toggleContextPanel() {
-            document.querySelector(".admin-shell")?.classList.toggle("context-collapsed");
-            syncToggleIcons();
-        }
-    
         function syncToggleIcons() {
             const shell = document.querySelector(".admin-shell");
             const sidebarIcon = document.getElementById("sidebarToggleIcon");
-            const contextIcon = document.getElementById("contextToggleIcon");
     
             if (shell && sidebarIcon) {
                 const sidebarCollapsed = shell.classList.contains("sidebar-collapsed");
                 sidebarIcon.className = sidebarCollapsed
                     ? "fa-solid fa-angles-right"
                     : "fa-solid fa-angles-left";
-            }
-    
-            if (shell && contextIcon) {
-                const contextCollapsed = shell.classList.contains("context-collapsed");
-                contextIcon.className = contextCollapsed
-                    ? "fa-solid fa-angles-left"
-                    : "fa-solid fa-angles-right";
             }
         }
     
