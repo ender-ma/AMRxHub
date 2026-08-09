@@ -13,7 +13,8 @@ from tools.models import Tool
 
 from django.db.models.functions import TruncDate
 from django.db.models import Q
-from .ai_registry import list_agents
+from .ai_registry import list_agents, get_agent
+from .models import AIJob
 
 
 def _dashboard_metrics():
@@ -173,9 +174,11 @@ class UserDetailView(AdminDetailView):
 @staff_member_required
 def tools_view(request):
     tools = Tool.objects.select_related("category", "added_by", "approved_by").order_by("-created_at")
+    pending_qs = Tool.objects.filter(approval_status="pending").order_by('-created_at')[:40]
     return render(request, "admin_portal/tools.html", {
         "active_page": "tools",
         "tools": tools,
+        "pending_tools": pending_qs,
         "pending_tool_reviews": Tool.objects.filter(approval_status="pending").count(),
         "approved_tools": Tool.objects.filter(approval_status="approved").count(),
     })
@@ -199,4 +202,17 @@ def ai_workspace_view(request):
         "active_page": "ai_workspace",
         "agents": agents,
     })
-    
+
+
+@staff_member_required
+def ai_agent_view(request, key):
+    agent = get_agent(key)
+    if not agent:
+        return render(request, "admin_portal/agent_not_found.html", {"key": key}, status=404)
+    jobs = AIJob.objects.filter(agent_key=key).order_by('-created_at')[:50]
+    return render(request, "admin_portal/agent_detail.html", {
+        "agent": agent,
+        "jobs": jobs,
+        "active_page": "ai_workspace",
+    })
+

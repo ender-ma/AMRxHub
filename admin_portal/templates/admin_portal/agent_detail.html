@@ -1,0 +1,46 @@
+{% extends "admin_portal/base_three_col.html" %}
+
+{% block title %}Agent | {{ agent.label }}{% endblock %}
+
+{% block content %}
+<div class="card p-3">
+  <div class="d-flex justify-content-between align-items-start">
+    <div>
+      <h4>{{ agent.label }}</h4>
+      <div class="small muted">{{ agent.description }}</div>
+    </div>
+    <div>
+      <a class="btn btn-sm btn-outline-secondary" href="/admin/">Open Django Admin</a>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <h6>Jobs (most recent)</h6>
+    <div class="table-responsive">
+      <table class="table table-borderless small">
+        <thead>
+          <tr class="muted small text-uppercase"><th>ID</th><th>URL</th><th>Status</th><th>Created</th><th class="text-end">Actions</th></tr>
+        </thead>
+        <tbody>
+          {% for job in jobs %}
+          <tr>
+            <td>{{ job.pk }}</td>
+            <td style="max-width:360px;overflow:hidden;text-overflow:ellipsis">{{ job.url }}</td>
+            <td>{{ job.status }}</td>
+            <td class="small muted">{{ job.created_at|date:"M d, Y H:i" }}</td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-outline-secondary" href="#">View</a>
+              {% if job.status == 'pending' %}
+                <a class="btn btn-sm btn-outline-primary" href="#">Start</a>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5" class="text-center small muted">No jobs found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

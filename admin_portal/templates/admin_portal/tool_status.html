@@ -1,0 +1,10 @@
+{% if tool.approval_status == 'approved' %}
+  <div class="small"><span class="badge bg-success">Approved</span></div>
+{% elif tool.approval_status == 'rejected' %}
+  <div class="small"><span class="badge bg-danger">Rejected</span></div>
+{% else %}
+  <div class="d-flex gap-2">
+    <button class="btn btn-sm btn-outline-success" hx-post="{% url 'admin_portal:htmx_tool_approve' tool.pk %}" hx-swap="outerHTML">Approve</button>
+    <button class="btn btn-sm btn-outline-danger" hx-post="{% url 'admin_portal:htmx_tool_reject' tool.pk %}" hx-swap="outerHTML">Reject</button>
+  </div>
+{% endif %}

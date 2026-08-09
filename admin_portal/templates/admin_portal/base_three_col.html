@@ -84,12 +84,33 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.3"></script>
   <script>
     const toggle = document.getElementById('themeToggle');
     toggle?.addEventListener('click', ()=>{
       const body = document.body;
       const cur = body.getAttribute('data-theme');
       body.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    });
+
+    // HTMX CSRF integration for Django
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    document.body.addEventListener('htmx:configRequest', (evt) => {
+      const csrftoken = getCookie('csrftoken');
+      if (csrftoken) evt.detail.headers['X-CSRFToken'] = csrftoken;
     });
   </script>
   {% block extra_js %}{% endblock %}
