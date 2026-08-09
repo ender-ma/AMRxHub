@@ -1,0 +1,13 @@
+<div class="d-flex align-items-center justify-content-between">
+  <div class="small">
+    <strong>#{{ job.pk }}</strong> — <span class="muted">{{ job.url }}</span>
+  </div>
+  <div class="d-flex gap-2">
+    <div class="small muted">{{ job.status }}</div>
+    {% if job.status == 'pending' %}
+      <button class="btn btn-sm btn-outline-secondary" hx-post="{% url 'admin_portal:htmx_ai_cancel' job.pk %}" hx-swap="outerHTML">Cancel</button>
+    {% else %}
+      <a class="btn btn-sm btn-outline-secondary" href="/admin/admin_portal/aijob/{{ job.pk }}/change/">Open</a>
+    {% endif %}
+  </div>
+</div>
