@@ -1,56 +1,59 @@
-{% extends "admin_layout.html" %}
+{% extends "admin_portal/minimal_layout.html" %}
 
 {% block title %}Dashboard | AMRx Hub Admin{% endblock %}
-{% block page_title %}Dashboard{% endblock %}
-{% block page_subtitle %}Executive overview of AMRx Hub operations{% endblock %}
 
 {% block content %}
-<div class="row g-3 mb-4">
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="p-3 rounded-4 bg-dark border border-secondary">
-            <div class="text-muted small">Total Users</div>
-            <div class="fs-3 fw-bold">{{ total_users }}</div>
-        </div>
+<div class="d-flex gap-3 flex-wrap">
+  <div class="card w-100 p-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h5 class="mb-0">Overview</h5>
+        <div class="small muted">Key platform metrics</div>
+      </div>
+      <div class="small muted">Last updated: {{ now|default:"-" }}</div>
     </div>
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="p-3 rounded-4 bg-dark border border-secondary">
-            <div class="text-muted small">Verified Users</div>
-            <div class="fs-3 fw-bold">{{ verified_users }}</div>
-        </div>
+
+    <div class="d-flex gap-3 mt-3 flex-wrap">
+      <div class="card card-action p-3" style="min-width:180px">
+        <div class="small muted">Total users</div>
+        <div class="h4">{{ total_users }}</div>
+        <a class="btn btn-sm btn-outline-primary mt-2" href="/admin/authentication/customuser/">Manage users</a>
+      </div>
+
+      <div class="card card-action p-3" style="min-width:180px">
+        <div class="small muted">Verified users</div>
+        <div class="h4">{{ verified_users }}</div>
+      </div>
+
+      <div class="card card-action p-3" style="min-width:180px">
+        <div class="small muted">Tools</div>
+        <div class="h4">{{ total_tools }}</div>
+        <a class="btn btn-sm btn-outline-primary mt-2" href="/admin/tools/tool/">Manage tools</a>
+      </div>
+
+      <div class="card card-action p-3" style="min-width:180px">
+        <div class="small muted">Pending reviews</div>
+        <div class="h4">{{ pending_tool_reviews }}</div>
+      </div>
     </div>
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="p-3 rounded-4 bg-dark border border-secondary">
-            <div class="text-muted small">Tools</div>
-            <div class="fs-3 fw-bold">{{ total_tools }}</div>
-        </div>
+
+    <div class="mt-4">
+      <h6 class="mb-2">Activity (last 14 days)</h6>
+      <canvas id="overviewChart" style="max-height:260px"></canvas>
     </div>
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="p-3 rounded-4 bg-dark border border-secondary">
-            <div class="text-muted small">Pending Reviews</div>
-            <div class="fs-3 fw-bold">{{ pending_reviews }}</div>
-        </div>
-    </div>
+  </div>
 </div>
 
-<div class="row g-3">
-    <div class="col-12 col-lg-8">
-        <div class="p-3 rounded-4 bg-dark border border-secondary" style="min-height: 420px;">
-            <h5 class="mb-3">Activity Overview</h5>
-            <canvas id="overviewChart"></canvas>
-        </div>
-    </div>
-    <div class="col-12 col-lg-4">
-        <div class="p-3 rounded-4 bg-dark border border-secondary mb-3">
-            <h6 class="text-uppercase text-muted small mb-3">Pending Actions</h6>
-            <div class="d-flex justify-content-between py-2 border-top border-secondary"><span>AI jobs</span><strong>{{ ai_jobs_running }}</strong></div>
-            <div class="d-flex justify-content-between py-2 border-top border-secondary"><span>Failed jobs</span><strong>{{ ai_jobs_failed }}</strong></div>
-            <div class="d-flex justify-content-between py-2 border-top border-secondary"><span>Resources</span><strong>{{ total_resources }}</strong></div>
-        </div>
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  fetch('{% url "admin_portal:dashboard_data" %}')
+    .then(r=>r.json())
+    .then(data=>{
+      const ctx = document.getElementById('overviewChart').getContext('2d');
+      new Chart(ctx,{type:'line',data:{labels:data.charts.labels, datasets:[{label:'Users',data:data.charts.users,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.08)'},{label:'Tools',data:data.charts.tools,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.06)'}]}, options:{responsive:true,plugins:{legend:{display:true}}}});
+    }).catch(()=>{/* no-op */});
+</script>
+{% endblock %}
 
-        <div class="p-3 rounded-4 bg-dark border border-secondary">
-            <h6 class="text-uppercase text-muted small mb-3">Right Panel Seed</h6>
-            <div class="small text-muted">This panel will later show contextual data, alerts, and quick actions from the current page.</div>
-        </div>
-    </div>
-</div>
 {% endblock %}

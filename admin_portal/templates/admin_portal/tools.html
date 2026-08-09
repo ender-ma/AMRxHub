@@ -1,76 +1,40 @@
-{% extends "admin_layout.html" %}
+{% extends "admin_portal/minimal_layout.html" %}
 
 {% block title %}Tools | AMRx Hub Admin{% endblock %}
-{% block page_title %}Tools{% endblock %}
-{% block page_subtitle %}Manage tools, approval state, and metadata quality{% endblock %}
 
 {% block content %}
-<div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-4">
-    <div>
-        <div class="text-uppercase text-muted small">Tool Management</div>
-        <h3 class="mb-0 fw-bold">Catalog</h3>
+<div class="d-flex gap-3 flex-wrap">
+  <div class="card w-100 p-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h5 class="mb-0">Tool Catalog</h5>
+        <div class="small muted">Approve, review, and manage tools using Django admin.</div>
+      </div>
+      <div>
+        <a class="btn btn-sm btn-primary" href="/admin/tools/tool/add/">Add tool</a>
+        <a class="btn btn-sm btn-outline-secondary" href="/admin/tools/tool/">Open in Django Admin</a>
+      </div>
     </div>
-    <div class="d-flex gap-2">
-        <input type="search" class="form-control form-control-sm bg-dark text-light border-secondary" placeholder="Search tools...">
-        <select class="form-select form-select-sm bg-dark text-light border-secondary" style="width: 180px;">
-            <option>All statuses</option>
-            <option>Approved</option>
-            <option>Pending</option>
-            <option>Rejected</option>
-        </select>
+
+    <div class="mt-3 d-flex gap-2 flex-wrap">
+      <a class="card card-action p-3" href="/admin/tools/tool/" style="min-width:220px;text-decoration:none;color:inherit">
+        <div class="small muted">All tools</div>
+        <div class="h5">{{ total_tools }}</div>
+      </a>
+
+      <a class="card card-action p-3" href="/admin/tools/tool/?approval_status__exact=pending" style="min-width:220px;text-decoration:none;color:inherit">
+        <div class="small muted">Pending reviews</div>
+        <div class="h5">{{ pending_tool_reviews }}</div>
+      </a>
+
+      <a class="card card-action p-3" href="/admin/tools/tool/?approval_status__exact=approved" style="min-width:220px;text-decoration:none;color:inherit">
+        <div class="small muted">Approved</div>
+        <div class="h5">{{ approved_tools }}</div>
+      </a>
     </div>
+
+    <div class="mt-3 small muted">Use Django Admin for bulk actions and metadata edits.</div>
+  </div>
 </div>
 
-<div class="table-responsive">
-    <table class="table table-dark table-hover align-middle">
-        <thead>
-            <tr class="text-muted small text-uppercase">
-                <th>Tool</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Type</th>
-                <th>Updated</th>
-                <th class="text-end">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for tool in tools %}
-            <tr>
-                <td>
-                    <div class="fw-semibold">{{ tool.name }}</div>
-                    <div class="text-muted small">{{ tool.short_description|default:tool.description|truncatechars:90 }}</div>
-                </td>
-                <td class="text-muted">{{ tool.category.name }}</td>
-                <td>
-                    {% if tool.approval_status == "approved" %}
-                        <span class="badge bg-success">Approved</span>
-                    {% elif tool.approval_status == "pending" %}
-                        <span class="badge bg-warning text-dark">Pending</span>
-                    {% else %}
-                        <span class="badge bg-danger">Rejected</span>
-                    {% endif %}
-                    {% if tool.is_active %}
-                        <span class="badge bg-secondary">Active</span>
-                    {% else %}
-                        <span class="badge bg-dark">Hidden</span>
-                    {% endif %}
-                </td>
-                <td class="text-muted">{{ tool.get_tool_type_display }}</td>
-                <td class="text-muted small">{{ tool.updated_at|date:"M d, Y H:i" }}</td>
-                <td class="text-end">
-                    <div class="btn-group btn-group-sm">
-                        <button class="btn btn-outline-light">View</button>
-                        <button class="btn btn-outline-warning">Review</button>
-                        <button class="btn btn-outline-danger">Archive</button>
-                    </div>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" class="text-center text-muted py-5">No tools found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
 {% endblock %}
