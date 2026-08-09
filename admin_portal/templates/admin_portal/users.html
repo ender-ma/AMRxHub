@@ -16,21 +16,90 @@
       </div>
     </div>
 
-    <div class="mt-3 d-flex gap-2 flex-wrap">
-      <a class="card card-action p-3" href="/admin/authentication/customuser/" style="min-width:220px;text-decoration:none;color:inherit">
-        <div class="small muted">All users</div>
-        <div class="h5">{{ total_users }}</div>
-      </a>
+    <form class="d-flex gap-2 mt-3" method="get">
+      <input type="search" name="q" class="form-control form-control-sm" placeholder="Search users by email or name" value="{{ request.GET.q|default:'' }}">
+      <select name="status" class="form-select form-select-sm" style="width:180px">
+        <option value="">All</option>
+        <option value="verified" {% if request.GET.status == 'verified' %}selected{% endif %}>Verified</option>
+        <option value="unverified" {% if request.GET.status == 'unverified' %}selected{% endif %}>Unverified</option>
+        <option value="staff" {% if request.GET.status == 'staff' %}selected{% endif %}>Staff</option>
+        <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>Active</option>
+        <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>Inactive</option>
+      </select>
+      <button class="btn btn-sm btn-primary" type="submit">Filter</button>
+      <a class="btn btn-sm btn-outline-secondary" href="?">Reset</a>
+    </form>
 
-      <a class="card card-action p-3" href="/admin/authentication/customuser/?is_email_verified__exact=1" style="min-width:220px;text-decoration:none;color:inherit">
-        <div class="small muted">Verified</div>
-        <div class="h5">{{ verified_users }}</div>
-      </a>
+    <div class="mt-3">
+      <div class="table-responsive">
+        <table class="table table-borderless align-middle">
+          <thead>
+            <tr class="small muted text-uppercase">
+              <th>User</th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th>Last login</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in page_obj.object_list %}
+            <tr>
+              <td>
+                <div class="fw-semibold"><a href="{% url 'admin_portal:user_detail' user.pk %}">{{ user.email }}</a></div>
+                <div class="small muted">{{ user.first_name }} {{ user.last_name }}</div>
+              </td>
+              <td>
+                {% if user.is_email_verified %}
+                  <span class="badge bg-success">Verified</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark">Unverified</span>
+                {% endif %}
+                {% if user.is_staff %}
+                  <span class="badge bg-info text-dark">Staff</span>
+                {% endif %}
+                {% if user.is_active %}
+                  <span class="badge bg-secondary">Active</span>
+                {% else %}
+                  <span class="badge bg-danger">Inactive</span>
+                {% endif %}
+              </td>
+              <td class="small muted">{{ user.date_joined|date:"M d, Y" }}</td>
+              <td class="small muted">{{ user.last_login|date:"M d, Y H:i" }}</td>
+              <td class="text-end">
+                <div class="d-flex gap-2 justify-content-end">
+                  <a class="btn btn-sm btn-outline-primary" href="{% url 'admin_portal:user_detail' user.pk %}">Details</a>
+                  <a class="btn btn-sm btn-outline-secondary" href="/admin/authentication/customuser/{{ user.pk }}/change/">Edit</a>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center small muted py-4">No users found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
 
-      <a class="card card-action p-3" href="/admin/authentication/customuser/?is_staff__exact=1" style="min-width:220px;text-decoration:none;color:inherit">
-        <div class="small muted">Staff</div>
-        <div class="h5">Staff</div>
-      </a>
+      {% if is_paginated %}
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-sm justify-content-end">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?q={{ request.GET.q|urlencode }}&status={{ request.GET.status|urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+          {% endif %}
+
+          <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ paginator.num_pages }}</span></li>
+
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?q={{ request.GET.q|urlencode }}&status={{ request.GET.status|urlencode }}&page={{ page_obj.next_page_number }}">Next</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+
     </div>
 
     <div class="mt-3 small muted">Note: Use Django Admin for detailed edits and bulk actions.</div>

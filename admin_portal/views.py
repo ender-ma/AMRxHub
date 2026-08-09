@@ -12,6 +12,7 @@ from resources.models import Resource, ResourceCategory, ResourceItem
 from tools.models import Tool
 
 from django.db.models.functions import TruncDate
+from django.db.models import Q
 from .ai_registry import list_agents
 
 
@@ -112,21 +113,61 @@ def _daily_series(model, date_field, days=14):
 
     return labels, values
 
-@staff_member_required
-def users_view(request):
-    users = (
-        CustomUser.objects
-        .annotate(
-            notification_count=Count("notifications", distinct=True),
+from .views_base import AdminListView, AdminDetailView
+
+
+class UsersListView(AdminListView):
+    model = CustomUser
+    template_name = "admin_portal/users.html"
+    paginate_by = 25
+
+    def get_queryset(self):
+        qs = (
+            CustomUser.objects
+            .annotate(notification_count=Count("notifications", distinct=True))
+            .order_by("-date_joined")
         )
-        .order_by("-date_joined")
-    )
-    return render(request, "admin_portal/users.html", {
-        "active_page": "users",
-        "users": users,
-        "total_users": CustomUser.objects.count(),
-        "verified_users": CustomUser.objects.filter(is_email_verified=True).count(),
-    })
+        q = self.request.GET.get('q')
+        status = self.request.GET.get('status')
+        if q:
+            qs = qs.filter(Q(email__icontains=q) | Q(first_name__icontains=q) | Q(last_name__icontains=q))
+        if status:
+            if status == 'verified':
+                qs = qs.filter(is_email_verified=True)
+            elif status == 'unverified':
+                qs = qs.filter(is_email_verified=False)
+            elif status == 'staff':
+                qs = qs.filter(is_staff=True)
+            elif status == 'active':
+                qs = qs.filter(is_active=True)
+            elif status == 'inactive':
+                qs = qs.filter(is_active=False)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx.update({
+            "active_page": "users",
+            "total_users": CustomUser.objects.count(),
+            "verified_users": CustomUser.objects.filter(is_email_verified=True).count(),
+        })
+        return ctx
+
+
+class UserDetailView(AdminDetailView):
+    model = CustomUser
+    template_name = "admin_portal/user_detail.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        user = self.get_object()
+        ctx.update({
+            "active_page": "users",
+            "user_obj": user,
+            "notification_count": user.notifications.count() if hasattr(user, 'notifications') else 0,
+            "admin_edit_url": f"/admin/authentication/customuser/{user.pk}/change/",
+        })
+        return ctx
 
 
 @staff_member_required
