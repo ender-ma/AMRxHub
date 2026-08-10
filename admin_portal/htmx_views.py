@@ -4,8 +4,8 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from tools.models import Tool
 
-from admin_portal.models import AIJob
-from admin_portal.tasks import process_ai_job
+from admin_portal.models import AIJob, PipelineRun
+from admin_portal.tasks import process_ai_job, process_pipeline_run
 from admin_portal.ai_registry import get_agent
 
 
@@ -76,6 +76,32 @@ def start_agent_job(request, key):
         process_ai_job(job.id)
 
     return render(request, 'admin_portal/agent_job_row.html', {'job': job})
+
+
+@staff_member_required
+def start_pipeline(request):
+    """Start a full pipeline run for a submitted URL.
+    Creates a PipelineRun and enqueues the pipeline processor.
+    """
+    if request.method != 'POST':
+        return HttpResponseBadRequest('POST required')
+    url = request.POST.get('url') or request.POST.get('input')
+    created_by = request.user
+    pr = None
+    try:
+        pr = PipelineRun.objects.create(url=url, status='pending', created_by=created_by)
+    except Exception:
+        return HttpResponseBadRequest('Could not create pipeline run')
+
+    try:
+        if hasattr(process_pipeline_run, 'delay'):
+            process_pipeline_run.delay(pr.id)
+        else:
+            process_pipeline_run(pr.id)
+    except Exception:
+        process_pipeline_run(pr.id)
+
+    return render(request, 'admin_portal/agent_job_row.html', {'job': pr})
 
 
 @staff_member_required
