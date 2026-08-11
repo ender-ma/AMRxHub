@@ -18,4 +18,5 @@ urlpatterns = [
     path("ai/htmx/cancel/<int:job_id>/", __import__('admin_portal.htmx_views', fromlist=['']).cancel_agent_job, name='htmx_ai_cancel'),
     path("api/dashboard-data/", views.dashboard_data, name="dashboard_data"),
     path("api/metrics/", api.metrics_view, name="metrics"),
+    path("ai/htmx/start-pipeline/", __import__('admin_portal.htmx_views', fromlist=['']).start_pipeline, name='htmx_pipeline_start'),
 ]

@@ -186,17 +186,11 @@ def tools_view(request):
 
 @staff_member_required
 def ai_workspace_view(request):
-    agents = list_agents()
     agents = [
-        {"key": "pipeline", "label": "Pipeline Overview", "status": "active"},
-        {"key": "research", "label": "Research Agent", "status": "active"},
+        {"key": "research_openai", "label": "Research Agent", "status": "active"},
         {"key": "classification", "label": "Classification Agent", "status": "active"},
         {"key": "metadata", "label": "Metadata Agent", "status": "active"},
         {"key": "quality", "label": "Quality Agent", "status": "active"},
-        {"key": "prompts", "label": "Prompt Library", "status": "active"},
-        {"key": "logs", "label": "AI Logs", "status": "active"},
-        {"key": "queue", "label": "Job Queue", "status": "active"},
-        {"key": "settings", "label": "AI Settings", "status": "active"},
     ]
     return render(request, "admin_portal/ai_workspace.html", {
         "active_page": "ai_workspace",

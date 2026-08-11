@@ -8,6 +8,8 @@ from admin_portal.models import AIJob, PipelineRun
 from admin_portal.tasks import process_ai_job, process_pipeline_run
 from admin_portal.ai_registry import get_agent
 
+from admin_portal.models import AIJob, PipelineRun
+from admin_portal.tasks import process_ai_job, process_pipeline_run
 
 @staff_member_required
 def approve_tool(request, pk):
@@ -90,6 +92,15 @@ def start_pipeline(request):
     pr = None
     try:
         pr = PipelineRun.objects.create(url=url, status='pending', created_by=created_by)
+        job = AIJob.objects.create(
+        agent_key='pipeline',
+        stage_name='pipeline',
+        pipeline_run=pr,
+        url=url,
+        payload={},
+        status='running',
+        created_by=created_by,
+    )
     except Exception:
         return HttpResponseBadRequest('Could not create pipeline run')
 
@@ -101,7 +112,7 @@ def start_pipeline(request):
     except Exception:
         process_pipeline_run(pr.id)
 
-    return render(request, 'admin_portal/agent_job_row.html', {'job': pr})
+    return render(request, 'admin_portal/agent_job_row.html', {'job': pr}, {'job': job})
 
 
 @staff_member_required
