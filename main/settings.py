@@ -354,6 +354,15 @@ CACHES = {
 # -----------------------------------------------------------------------------
 # Site metadata
 # -----------------------------------------------------------------------------
+
+# OpenAI / AI defaults
+OPENAI_DEFAULT_MODEL = os.environ.get('OPENAI_DEFAULT_MODEL', 'gpt-5.6-terra')
+RESEARCH_AGENT_MODEL = os.environ.get('RESEARCH_AGENT_MODEL', '')
+CLASSIFICATION_AGENT_MODEL = os.environ.get('CLASSIFICATION_AGENT_MODEL', '')
+METADATA_AGENT_MODEL = os.environ.get('METADATA_AGENT_MODEL', '')
+QUALITY_AGENT_MODEL = os.environ.get('QUALITY_AGENT_MODEL', '')
+# Note: Keep OPENAI_API_KEY secret in environment; do not expose it in templates, logs, or source control.
+
 SITE_DOMAIN = os.environ.get("SITE_DOMAIN", "")
 SITE_PROTOCOL = os.environ.get("SITE_PROTOCOL", "")
 

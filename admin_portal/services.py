@@ -2,7 +2,7 @@ import importlib
 import logging
 from django.conf import settings
 from django.utils import timezone
-from .models import PipelineRun, AIJob
+from .models import PipelineRun, AIJob, AIContentSuggestion
 from .ai_registry import get_agent
 
 logger = logging.getLogger(__name__)
@@ -87,6 +87,26 @@ def run_pipeline(pipeline_run_id: int):
     pr.finished_at = timezone.now()
     pr.current_stage = None
     pr.save(update_fields=["status", "finished_at", "current_stage"])
+
+    # Create an AIContentSuggestion from the pipeline result for admin review
+    try:
+        suggestion_data = pipeline_result_to_tool(pr)
+        suggestion = AIContentSuggestion.objects.create(
+            object_type='tool' if suggestion_data.get('tool_type') == 'web' else 'resource',
+            title=suggestion_data.get('name') or '',
+            short_description=suggestion_data.get('short_description') or '',
+            detailed_metadata={'pipeline': pr.shared_payload},
+            provenance={'pipeline_run_id': pr.id},
+            url=suggestion_data.get('url'),
+            confidence_score=pr.shared_payload.get('classification', {}).get('confidence_score', 0.0) if isinstance(pr.shared_payload.get('classification', {}), dict) else 0.0,
+            quality_score=pr.shared_payload.get('quality', {}).get('overall_quality_score', 0.0) if isinstance(pr.shared_payload.get('quality', {}), dict) else 0.0,
+            status='pending_review',
+            pipeline_run=pr,
+            created_by=pr.created_by,
+        )
+    except Exception:
+        logger.exception('Failed to create AIContentSuggestion for pipeline %s', pr.id)
+
     return pr
 
 def pipeline_result_to_tool(pipeline_run: PipelineRun) -> dict:

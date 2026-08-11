@@ -80,3 +80,40 @@ class AIRequestLog(models.Model):
 
     def __str__(self):
         return f"Log {self.pk} for job {self.job_id} at {self.timestamp}"
+
+
+class AIContentSuggestion(models.Model):
+    OBJECT_TYPES = [
+        ("tool", "Tool"),
+        ("resource", "Resource"),
+    ]
+    STATUS_CHOICES = [
+        ("pending_review", "Pending Review"),
+        ("approved", "Approved"),
+        ("rejected", "Rejected"),
+        ("archived", "Archived"),
+    ]
+
+    object_type = models.CharField(max_length=50, choices=OBJECT_TYPES, default="tool", db_index=True)
+    title = models.CharField(max_length=300, blank=True)
+    short_description = models.TextField(blank=True)
+    detailed_metadata = models.JSONField(blank=True, default=dict)
+    provenance = models.JSONField(blank=True, default=dict)
+    url = models.TextField(blank=True, null=True)
+    confidence_score = models.FloatField(default=0.0)
+    quality_score = models.FloatField(default=0.0)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default="pending_review", db_index=True)
+    pipeline_run = models.ForeignKey(PipelineRun, on_delete=models.SET_NULL, null=True, blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='ai_suggestions')
+    approved_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='ai_suggestions_approved')
+    approved_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'AI Content Suggestion'
+        verbose_name_plural = 'AI Content Suggestions'
+
+    def __str__(self):
+        return f"Suggestion {self.pk} - {self.title or self.url or 'unnamed'}"

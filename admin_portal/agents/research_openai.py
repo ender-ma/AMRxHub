@@ -13,16 +13,22 @@ def research_openai_info():
     }
 
 
-def submit_job(url, created_by=None, payload=None, model='gpt-4o-mini'):
+def submit_job(url, created_by=None, payload=None, model=None):
+    from django.conf import settings
+    if not model:
+        model = settings.RESEARCH_AGENT_MODEL or settings.OPENAI_DEFAULT_MODEL
     job = AIJob.objects.create(agent_key='research_openai', url=url, payload=payload or {}, created_by=created_by, status='pending')
     # caller (UI) should enqueue a worker to process this job. We return the created job.
     return job
 
 
-def process_job(job: AIJob, model: str = 'gpt-4o-mini') -> AIJob:
+def process_job(job: AIJob, model: str = None) -> AIJob:
     """Synchronous processing. For production, run via a Celery worker (admin_portal.tasks.process_ai_job).
     This minimal implementation sends a chat prompt to the OpenAI model and stores a single log entry.
     """
+    from django.conf import settings
+    if not model:
+        model = settings.RESEARCH_AGENT_MODEL or settings.OPENAI_DEFAULT_MODEL
     prompt_system = "You are a metadata extraction assistant. Given a URL, extract title, summary, authors, publication_date, doi (if present), and list any missing metadata. Return JSON only."
     prompt_user = f"Process this URL and return structured JSON: {job.url}\nReturn keys: title, summary, authors, publication_date, doi, license, institution, website, screenshots, missing_fields"
 
