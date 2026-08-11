@@ -28,7 +28,7 @@ def _dashboard_metrics():
         "resource_items": ResourceItem.objects.count(),
         "resource_categories": ResourceCategory.objects.count(),
         "unread_notifications": Notification.objects.filter(is_read=False).count(),
-        "recent_notifications": Notification.objects.order_by("-created_at")[:8],
+        "recent_notifications": list(Notification.objects.order_by("-created_at").values("id","created_at")[:8]),
         "ai_jobs_running": 0,
         "ai_jobs_completed": 0,
         "ai_jobs_failed": 0,
