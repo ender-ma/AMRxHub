@@ -17,12 +17,11 @@ def submit_job(url, created_by=None, payload=None):
 
 def process_job(job: AIJob):
     payload = job.payload or {}
-    # Ensure common metadata keys exist
-    payload.setdefault('title', payload.get('title') or payload.get('meta', {}).get('title') or '')
-    payload.setdefault('authors', payload.get('authors') or [])
-    payload.setdefault('publication_date', payload.get('publication_date') or '')
-    payload.setdefault('doi', payload.get('doi') or '')
-    payload.setdefault('license', payload.get('license') or '')
+    payload['title'] = payload.get('title') or ''
+    payload['authors'] = payload.get('authors') or payload.get('research', {}).get('extracted_authors', [])
+    payload['publication_date'] = payload.get('publication_date') or ''
+    payload['doi'] = payload.get('doi') or ''
+    payload['license'] = payload.get('license') or ''
 
     job.payload = payload
     job.status = 'completed'

@@ -1,4 +1,5 @@
-﻿import logging
+import importlib
+import logging
 from django.conf import settings
 from django.utils import timezone
 from .models import PipelineRun, AIJob
@@ -54,9 +55,9 @@ def run_pipeline(pipeline_run_id: int):
                 job = callable_obj.process_job(job)
             else:
                 if hasattr(callable_obj, "__module__"):
-                    mod = __import__(callable_obj.__module__, fromlist=[""])
-                    if hasattr(mod, "process_job"):
-                        job = getattr(mod, "process_job")(job)
+                    module = importlib.import_module(callable_obj.__module__)
+                    if hasattr(module, "process_job"):
+                        job = module.process_job(job)
                     else:
                         try:
                             res = callable_obj(job)
