@@ -1,8 +1,5 @@
-﻿from . import base
-from . import research
-from . import research_openai
-from . import sample_research
-from . import collection
-from . import classification
-from . import metadata
-from . import quality
+# agents package — avoid importing submodules at package import time to prevent
+# side-effects during Django startup and test discovery. Modules are discovered
+# dynamically via admin_portal.ai_registry._discover_agents().
+from . import base
+__all__ = ["base"]

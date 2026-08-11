@@ -361,6 +361,9 @@ RESEARCH_AGENT_MODEL = os.environ.get('RESEARCH_AGENT_MODEL', '')
 CLASSIFICATION_AGENT_MODEL = os.environ.get('CLASSIFICATION_AGENT_MODEL', '')
 METADATA_AGENT_MODEL = os.environ.get('METADATA_AGENT_MODEL', '')
 QUALITY_AGENT_MODEL = os.environ.get('QUALITY_AGENT_MODEL', '')
+# Research fetcher defaults
+RESEARCH_FETCH_TIMEOUT = int(os.environ.get('RESEARCH_FETCH_TIMEOUT', '30'))
+RESEARCH_FETCH_RETRIES = int(os.environ.get('RESEARCH_FETCH_RETRIES', '3'))
 # Note: Keep OPENAI_API_KEY secret in environment; do not expose it in templates, logs, or source control.
 
 SITE_DOMAIN = os.environ.get("SITE_DOMAIN", "")
