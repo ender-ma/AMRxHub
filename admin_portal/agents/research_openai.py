@@ -2,6 +2,7 @@ from admin_portal.ai_registry import register_agent
 from admin_portal.models import AIJob, AIRequestLog
 from admin_portal.openai_client import call_chat_model
 from admin_portal import fetcher
+from admin_portal.ai_settings import get_ai_model
 from django.utils import timezone
 
 @register_agent('research_openai', 'Research Agent (OpenAI)', description='Extracts summary and metadata using OpenAI models', status='active')
@@ -15,9 +16,8 @@ def research_openai_info():
 
 
 def submit_job(url, created_by=None, payload=None, model=None):
-    from django.conf import settings
     if not model:
-        model = settings.RESEARCH_AGENT_MODEL or settings.OPENAI_DEFAULT_MODEL
+        model = get_ai_model('research')
     job = AIJob.objects.create(agent_key='research_openai', url=url, payload=payload or {}, created_by=created_by, status='pending')
     # caller (UI) should enqueue a worker to process this job. We return the created job.
     return job
@@ -27,12 +27,12 @@ def process_job(job: AIJob, model: str = None) -> AIJob:
     """Synchronous processing. For production, run via a Celery worker (admin_portal.tasks.process_ai_job).
     This implementation fetches the URL content before calling the model and stores raw_text in payload.
     """
-    from django.conf import settings
     if not model:
-        model = settings.RESEARCH_AGENT_MODEL or settings.OPENAI_DEFAULT_MODEL
+        model = get_ai_model('research')
 
     # Fetch page HTML/text with retries
     try:
+        from django.conf import settings
         fetch_timeout = getattr(settings, 'RESEARCH_FETCH_TIMEOUT', None)
         fetched = fetcher.fetch_url(job.url, timeout=fetch_timeout)
         raw_text = fetched.get('text', '')

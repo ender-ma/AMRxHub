@@ -117,3 +117,23 @@ class AIContentSuggestion(models.Model):
 
     def __str__(self):
         return f"Suggestion {self.pk} - {self.title or self.url or 'unnamed'}"
+
+
+class AIPreferences(models.Model):
+    """Singleton-ish model for AI-related site preferences editable via admin.
+    Do NOT store secrets (API keys) here.
+    """
+    default_model = models.CharField(max_length=150, blank=True, help_text='Fallback model for agents')
+    research_model = models.CharField(max_length=150, blank=True)
+    classification_model = models.CharField(max_length=150, blank=True)
+    metadata_model = models.CharField(max_length=150, blank=True)
+    quality_model = models.CharField(max_length=150, blank=True)
+    research_fetch_timeout = models.IntegerField(default=30)
+    research_fetch_retries = models.IntegerField(default=3)
+
+    class Meta:
+        verbose_name = 'AI Preferences'
+        verbose_name_plural = 'AI Preferences'
+
+    def __str__(self):
+        return 'AI Preferences'
