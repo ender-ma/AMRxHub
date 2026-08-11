@@ -1,14 +1,15 @@
+import importlib
 import logging
 from django.conf import settings
 from django.utils import timezone
 from .models import PipelineRun, AIJob
-from .ai_registry import get_agent, list_agents
+from .ai_registry import get_agent
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_PIPELINE = getattr(settings, 'ADMIN_PORTAL_PIPELINE', [
-    'sample_research',
-    'research_openai',
+    'collection',
+    'research',
     'classification',
     'metadata',
     'quality',
@@ -50,28 +51,15 @@ def run_pipeline(pipeline_run_id: int):
         pr.stages[key] = {'status': 'running', 'job_id': job.id}
         pr.save(update_fields=['stages'])
 
-        # execute the agent's process_job if available
         callable_obj = agent.get('callable')
         try:
             job.status = 'running'
             job.started_at = timezone.now()
             job.save(update_fields=['status', 'started_at'])
-            if hasattr(callable_obj, 'process_job'):
-                job = callable_obj.process_job(job)
-            else:
-                if hasattr(callable_obj, '__module__'):
-                    mod = __import__(callable_obj.__module__, fromlist=[''])
-                    if hasattr(mod, 'process_job'):
-                        job = getattr(mod, 'process_job')(job)
-                    else:
-                        # best-effort: call callable with job
-                        try:
-                            res = callable_obj(job)
-                            if isinstance(res, AIJob):
-                                job = res
-                        except TypeError:
-                            raise RuntimeError('agent callable not invokable')
-            # after success, update shared payload
+            module = importlib.import_module(callable_obj.__module__)
+            if not hasattr(module, 'process_job'):
+                raise RuntimeError(f'{key} agent does not define process_job(job)')
+            job = module.process_job(job)
             shared = job.payload or shared
             pr.shared_payload = shared
             pr.stages[key] = {'status': job.status, 'job_id': job.id}

@@ -16,14 +16,16 @@ def submit_job(url, created_by=None, payload=None):
 
 
 def process_job(job: AIJob):
-    # naive classification stub: copy shared payload and add taxonomy placeholder
     payload = job.payload or {}
-    text = payload.get('result_text') or payload.get('text') or ''
-    # For now, produce a simple classification based on keywords
-    category = 'unknown'
-    if 'genome' in (text or '').lower():
+    text = (
+        payload.get('raw_text')
+        or payload.get('result_text')
+        or payload.get('text')
+        or ''
+    ).lower()
+    if 'genome' in text or 'sequence' in text or 'bioinformatics' in text:
         category = 'Genomics'
-    elif 'workflow' in (text or '').lower():
+    elif 'workflow' in text or 'pipeline' in text or 'tool' in text:
         category = 'Workflow'
     else:
         category = 'General'

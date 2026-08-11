@@ -35,12 +35,12 @@ def process_job(job: AIJob):
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(resp.text, "html.parser")
             text = soup.get_text(separator=" ", strip=True)[:2000]
-            title = soup.title.string if soup.title else url.split("/")[-1]
+            title = soup.title.string if soup.title and soup.title.string else url.split("/")[-1]
             meta_desc = ""
             meta = soup.find("meta", attrs={"name": "description"})
             if meta:
                 meta_desc = meta.get("content", "")
-        except:
+        except Exception:
             text = resp.text[:2000]
             title = url.split("/")[-1]
             meta_desc = ""
