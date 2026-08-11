@@ -5,3 +5,4 @@ from . import sample_research
 from . import classification
 from . import metadata
 from . import quality
+from . import collection

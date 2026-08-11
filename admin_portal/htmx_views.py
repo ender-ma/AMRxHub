@@ -1,4 +1,4 @@
-from django.contrib.admin.views.decorators import staff_member_required
+﻿from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
@@ -127,3 +127,46 @@ def cancel_agent_job(request, job_id):
     job.save(update_fields=['status'])
     # attempt to revoke celery task if provided (best-effort)
     return render(request, 'admin_portal/agent_job_row.html', {'job': job})
+
+
+@staff_member_required
+def create_tool_from_pipeline(request, pipeline_id):
+    """Convert completed pipeline result to a pending Tool for review."""
+    if request.method != "POST":
+        return HttpResponseBadRequest("POST required")
+    
+    from admin_portal.services import pipeline_result_to_tool
+    from tools.models import Tool, ToolCategory
+    
+    try:
+        pr = PipelineRun.objects.get(pk=pipeline_id)
+    except PipelineRun.DoesNotExist:
+        return HttpResponseBadRequest("Pipeline not found")
+    
+    if pr.status != "completed":
+        return HttpResponseBadRequest("Pipeline not completed")
+    
+    # Convert to tool
+    tool_data = pipeline_result_to_tool(pr)
+    
+    # Get or create category
+    category_name = tool_data.pop("category_name", "General")
+    try:
+        category = ToolCategory.objects.get(name=category_name)
+    except ToolCategory.DoesNotExist:
+        category = ToolCategory.objects.create(name=category_name, description="Auto-created category")
+    
+    # Create tool
+    tool = Tool.objects.create(
+        name=tool_data["name"],
+        url=tool_data["url"],
+        description=tool_data["description"],
+        short_description=tool_data["short_description"],
+        category=category,
+        tool_type=tool_data["tool_type"],
+        approval_status="pending",
+        added_by=request.user,
+        author=tool_data.get("author", ""),
+    )
+    
+    return JsonResponse({"success": True, "tool_id": tool.id})
