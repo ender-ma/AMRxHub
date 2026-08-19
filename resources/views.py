@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import ResourceCategory, ResourceItem
 from django.http import FileResponse, Http404
 from .models import Resource  # or whatever your model is called
@@ -10,13 +10,20 @@ def resources_list(request):
 
 def resource_detail(request, pk):
     resource = get_object_or_404(ResourceItem, pk=pk)
-    if not resource.pdf_file:
-        raise Http404("No file attached to this resource.")
-    file_path = resource.pdf_file.path
-    if not os.path.exists(file_path):
-        raise Http404("File does not exist.")
-    response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
-    return response
+
+    # Prefer returning the PDF file if present and exists on disk
+    if resource.pdf_file:
+        file_path = resource.pdf_file.path
+        if os.path.exists(file_path):
+            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
+        # fall through to render detail page with a warning if file missing
+
+    # If the resource is an external link, redirect there
+    if resource.link:
+        return redirect(resource.link)
+
+    # Otherwise render a detail page (handles image-only or description-only resources)
+    return render(request, 'resources/resource_detail.html', {'resource': resource})
 
 def category_resources(request, pk):
     category = get_object_or_404(ResourceCategory, pk=pk)
