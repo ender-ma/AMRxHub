@@ -6,11 +6,12 @@
     <div class="content-header">
         <i class="{{ category.icon|default:'fas fa-book' }}"></i>
         <h2>{{ category.name }}</h2>
-    </div>
-    <div class="breadcrumb" style="position: absolute; top: 0; right: 30px;">
-        <a href="{% url 'resources:resources_list' %}" class="back-link">
-            <i class="fas fa-arrow-left"></i> Back to Categories
-        </a>
+
+        <div class="breadcrumb">
+            <a href="{% url 'resources:resources_list' %}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Categories
+            </a>
+        </div>
     </div>
     <p class="category-description">{{ category.description }}</p>
     <div class="resource-items-grid">

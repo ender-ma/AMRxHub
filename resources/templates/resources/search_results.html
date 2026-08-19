@@ -1,17 +1,57 @@
 {% extends "main_layout.html" %}
 {% block content %}
-  <h2>Search Results for "{{ query }}"</h2>
-  {% if results %}
-    <ul>
-      {% for resource in results %}
-        <li>
-          <a href="{% url 'resources:resource_detail' resource.pk %}">
-            {{ resource.title }} - {{ resource.description|truncatewords:10 }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
+<div class="content-card">
+    <div class="content-header">
+        <h2>Search Results for "{{ query }}"</h2>
+
+        <div class="breadcrumb">
+            <a href="{% url 'resources:resources_list' %}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Categories
+            </a>
+        </div>
+    </div>
+
+    {% if results %}
+    <div class="resource-search-results">
+        {% for resource in results %}
+        <div class="resource-item-card">
+            <a href="{% url 'resources:resource_detail' resource.pk %}" class="resource-link">
+                <div class="resource-thumb-wrap">
+                    {% if resource.pdf_file %}
+                        <i class="fas fa-file-pdf resource-thumb"></i>
+                    {% elif resource.image %}
+                        <img src="{{ resource.image.url }}" alt="{{ resource.title }}" class="resource-thumb">
+                    {% else %}
+                        <i class="fas fa-link resource-thumb"></i>
+                    {% endif %}
+                </div>
+                <div class="resource-info">
+                    <h4 class="resource-title">{{ resource.title }}</h4>
+                    <p class="resource-desc">{{ resource.description|truncatewords:20 }}</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
     <p>No resources found matching your search.</p>
-  {% endif %}
+    {% endif %}
+</div>
+
+<style>
+.resource-search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 18px;
+    margin-top: 18px;
+}
+.resource-item-card { background: #fff; border-radius: 12px; padding: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+.resource-link { display:flex; gap:12px; text-decoration:none; color:inherit; align-items:center; }
+.resource-thumb-wrap { width:48px; height:48px; display:flex; align-items:center; justify-content:center; background:#f3f3f3; border-radius:8px; }
+.resource-thumb { width:32px; height:32px; object-fit:cover; border-radius:6px; color:#667eea; }
+.resource-info { display:flex; flex-direction:column; }
+.resource-title { margin:0; color:#667eea; font-weight:600; }
+.resource-desc { margin:6px 0 0 0; color:#444; font-size:13px; }
+</style>
+
 {% endblock %}
