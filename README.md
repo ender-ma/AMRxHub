@@ -11,13 +11,29 @@ AMR resources are distributed across many websites, databases, repositories, pub
 
 AMRx Hub addresses this challenge by organizing AMR-related resources into a centralized, searchable platform.
 
-## Current Development Status
+## Resource Discovery Model
+
+AMRx Hub primarily functions as a discovery and access platform rather than attempting to replace the individual tools, databases, repositories, or resources it catalogues.
+
+Where appropriate, the Hub provides users with information about a resource and directs them to the original platform or source. This allows AMRx Hub to bring distributed AMR resources together while preserving links to their original providers.
+
+## Open-Source Development
+
+AMRx Hub is developed using an open-source approach to encourage transparency, reproducibility, community participation, and continued development.
+
+The project source code and development information are maintained through its public repository.
+
+## Project Status
+
+AMRx Hub is under active development. Resource coverage, metadata, search capabilities, platform functionality, and technical infrastructure will continue to evolve as the Hub grows and as new AMR resources become available.
+
+### Current Development Status
 
 AMRx Hub is under active development.
 
 - The current production stack is Django with server-rendered HTML templates.
 - Existing functionality is powered by Django-rendered pages.
-- A Next.js frontend is currently being developed and integrated.
+- A Next.js frontend is currently being developed.
 - A REST API has not yet been implemented.
 - The project is transitioning toward a decoupled architecture.
 
@@ -38,36 +54,49 @@ AMRx Hub is intended for:
 
 The current platform focuses on:
 
-- Centralized resource discovery
-- Curated antimicrobial resistance resources
-- Search and filtering capabilities
-- Resource categorization
-- Community resource submission
-- Educational resource access
-- Open access resource sharing
-- One Health resource organization
+- Web-Based Access
+- Curated AMR Resources
+- Structured Resource Categories
+- Search and Discovery
+- One Health Coverage
+- Centralized Access
+- Metadata-Driven Resource Management
+- External Resource Integration
+- Open Source and Community-Driven
+
+## Tool Categories
+
+### Organism-Specific Tools Categories 
+(This categories features majorly the ESKAPE organisms)
+
+- Enterococcus faecium
+- Staphylococcus aureus
+- Klebsiella pneumoniae
+- Acinetobacter baumannii
+- Pseudomonas aeruginosa
+- Enterobacter species
+- Mycobacterium tuberculosis
+(Note: These categories are subject to chnage and updates)
+
+### General Use Tools Categories
+
+- AMR Gene Detection
+- Pathogen Identification
+- Strain & Sequence Typing
+- Virulence Factor Detection
+- Genomic Epidemiology
+- AMR Phenotype Prediction
+(Note: These categories are subject to chnage and updates)
 
 ## Resource Categories
 
-### General Categories
-
-- Databases
-- Genomic Data Repositories
-- Publications & Manuscripts
-- Software Repositories
-- Protocols & SOPs
-- Training & Educational Resources
-- Surveillance Resources
-- Guidelines & Policy Documents
-
-### Organism-Specific Categories
-
-- Mycobacterium tuberculosis Tools
-- Staphylococcus aureus Tools
-- Salmonella Tools
-- Neisseria Tools
-- Other Organism Tools
-
+- AMR Knowledge & Publications
+- Surveillance & AMR Data
+- One Health & Sector Resources
+- Guidelines, Policies & Stewardship
+- Laboratory, Protocols & Training
+- Environmental AMR & Antimicrobial Pollution
+(Note: These categories are subject to chnage and updates)
 
 ## Technology Stack
 
@@ -123,7 +152,7 @@ Contributions are welcome. Areas for contribution include:
 - Feature suggestions
 - Development contributions
 
-Please follow project standards and maintain scientific integrity when submitting changes.
+Please follow project standards and maintain scientific integrity when submitting changes. Change and ideas can be submitted to 
 
 ## Roadmap (Future Goals)
 
@@ -134,6 +163,7 @@ Please follow project standards and maintain scientific integrity when submittin
 - Resource quality assessment
 - API development
 - Increased educational content
+- Backend Ai integration
 
 ## Citation
 
@@ -145,7 +175,7 @@ License information can be found in the license file.
 
 ## Contact
 
-- **Project Lead:** Akinloluwa Adeolu-Shittu
+- **Project Lead:** Akinloluwa Isaac Adeolu-Shittu
 - **Email:** isaacodes25@gmail.com
-- **Website:** https://amrxhub.com/
+- **Website:** https://www.amrxhub.com/
 - **GitHub Repository:** https://github.com/ender-ma/AMRxHub
