@@ -247,13 +247,6 @@
                     <i class="fas fa-history"></i><span>History</span>
                 </a>
             </li>
-            <li>
-                {% comment %} <a href="{% if user.is_authenticated %}{% url 'socials:social_hub' %}{% else %}#{% endif %}"
-                   class="menu-item {% if request.resolver_match.url_name == 'social_hub' or request.resolver_match.url_name == 'socials:social_hub' %}active{% endif %}"
-                   {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
-                    <i class="fas fa-globe-africa"></i><span>Socials</span>
-                </a> {% endcomment %}
-            </li>
             <li><a href="{% url 'about' %}" class="menu-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}"><i class="fas fa-info-circle"></i><span>About</span></a></li>
             <li><a href="{% url 'help' %}" class="menu-item {% if request.resolver_match.url_name == 'help' %}active{% endif %}"><i class="fas fa-question-circle"></i><span>Help</span></a></li>
         </ul>
@@ -271,11 +264,7 @@
                {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
                 <i class="fas fa-history"></i><span>History</span>
             </a>
-            {% comment %} <a href="{% if user.is_authenticated %}{% url 'socials:social_hub' %}{% else %}#{% endif %}"
-               class="menu-item {% if request.resolver_match.url_name == 'social_hub' or request.resolver_match.url_name == 'socials:social_hub' %}active{% endif %}"
-               {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
-                <i class="fas fa-globe-africa"></i><span>Socials</span>
-            </a> {% endcomment %}
+
             <a href="{% url 'about' %}" class="menu-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}"><i class="fas fa-info-circle"></i><span>About</span></a>
             <a href="{% url 'help' %}" class="menu-item {% if request.resolver_match.url_name == 'help' %}active{% endif %}"><i class="fas fa-question-circle"></i><span>Help</span></a>
         </div>

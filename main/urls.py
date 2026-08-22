@@ -40,8 +40,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('notifications/', include('notifications.urls', namespace='notifications')),
     path('history/', include('history.urls', namespace='history')),
-    path("portal/", include("admin_portal.urls", namespace="admin_portal")),
-#    path("socials/", include("socials.urls", namespace="socials")),
     
     path('tools/', include('tools.urls', namespace='tools')),
     path('resources/', include('resources.urls', namespace='resources')),

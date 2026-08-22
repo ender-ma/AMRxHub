@@ -91,14 +91,12 @@ INSTALLED_APPS = [
     "notifications",
     "history",
     "resources",
-#    "socials",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "channels",
     "anymail",
-    "admin_portal",
 ]
 
 AUTH_USER_MODEL = "authentication.CustomUser"
@@ -349,25 +347,6 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
     }
 }
-
-
-# -----------------------------------------------------------------------------
-# Site metadata
-# -----------------------------------------------------------------------------
-
-# OpenAI / AI defaults
-OPENAI_DEFAULT_MODEL = os.environ.get('OPENAI_DEFAULT_MODEL', 'gpt-5.6-terra')
-RESEARCH_AGENT_MODEL = os.environ.get('RESEARCH_AGENT_MODEL', '')
-CLASSIFICATION_AGENT_MODEL = os.environ.get('CLASSIFICATION_AGENT_MODEL', '')
-METADATA_AGENT_MODEL = os.environ.get('METADATA_AGENT_MODEL', '')
-QUALITY_AGENT_MODEL = os.environ.get('QUALITY_AGENT_MODEL', '')
-# Research fetcher defaults
-RESEARCH_FETCH_TIMEOUT = int(os.environ.get('RESEARCH_FETCH_TIMEOUT', '30'))
-RESEARCH_FETCH_RETRIES = int(os.environ.get('RESEARCH_FETCH_RETRIES', '3'))
-# Note: Keep OPENAI_API_KEY secret in environment; do not expose it in templates, logs, or source control.
-
-SITE_DOMAIN = os.environ.get("SITE_DOMAIN", "")
-SITE_PROTOCOL = os.environ.get("SITE_PROTOCOL", "")
 
 
 # -----------------------------------------------------------------------------
