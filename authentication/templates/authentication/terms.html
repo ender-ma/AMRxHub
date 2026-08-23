@@ -1,310 +1,93 @@
-{% load static %}
+{% extends "authentication/base.html" %}
 
-{% block title %}{% endblock %}
+{% block title %}Terms of Use - AMRx Hub{% endblock %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AMRx Hub — Terms & Conditions</title>
-  <link rel="stylesheet" href="terms.css">
-    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
-      <!-- For modern browsers, also add: -->
-      <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-      <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-      <link rel="icon" type="image/png" sizes="64x64" href="{% static 'img/favicon-64x64.jpg' %}">
-      <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
-      <!-- Add this line right after your other favicon links -->
-      <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
-      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.jpg' %}">
-</head>
-<body>
-  <header class="terms-header">
-    <h1>AMRx Hub — Terms & Conditions</h1>
-    <p>Effective date: September 1, 2025</p>
-  </header>
-
-  <main class="terms-container">
-    <section class="terms-section">
-      <h2>1. Welcome</h2>
-      <p>Welcome to AMRx Hub. These Terms & Conditions (“Terms”) govern your access to and use of the AMRx Hub website, services, content, and related features (the “Platform”). By registering, accessing, or using the Platform you agree to be bound by these Terms and by the AMRx Hub Privacy Policy and Cookie Policy, which are incorporated here by reference. If you do not agree with any part of these Terms, do not use the Platform.</p>
-    </section>
-
-    <section class="terms-section">
-      <h2>2. Definitions</h2>
-      <p><strong>AMRx Hub / we / us / our:</strong> The operator of the Platform.</p>
-      <p><strong>Platform / Service:</strong> The AMRx Hub website, web application, and any associated services, pages, content, or tools (including links to third-party resources such as AMR tools, PDFs and videos).</p>
-      <p><strong>User / you:</strong> Any person or entity who accesses, browses, registers for, or uses the Platform.</p>
-      <p><strong>Content:</strong> Any text, images, videos, documents, links, or other material made available on or through the Platform.</p>
-      <p><strong>Third-party resources:</strong> External websites, tools, applications or services that may be linked from the Platform.</p>
-    </section>
-
-    <section class="terms-section">
-      <h2>3. Acceptance and Legal Relationship</h2>
-      <p>By creating an account, verifying your email, or otherwise using the Platform, you accept and agree to these Terms and our Privacy Policy and Cookie Policy. These Terms form a legally binding contract between you and AMRx Hub.</p>
-    </section>
-
-    <section class="terms-section">
-      <h2>4. Eligibility</h2>
-      <p>You must be at least 18 years old to create an account and use the Platform. By registering you represent and warrant that you meet this requirement and that any information you provide is accurate, current, and complete.</p>
-    </section>
-
-    <section class="terms-section">
-      <h2>5. Account Registration, Security & Verification</h2>
-      <p>Registration and verified email are required to access certain parts of the Platform. You agree to provide accurate information and keep it up to date. <br>
-            <b> Authentication </b>: You are responsible for maintaining the confidentiality of your account credentials. Do not share your password or account. <br>
-            <b> Account Responsibility </b>: All activity conducted through your account is your responsibility. You must notify us immediately of any unauthorized use of your account or any other security breach. <br>
-           <b> Account Suspension & Termination </b>: We reserve the right to suspend or terminate accounts for violations of these Terms or applicable law, or for any reason in our sole discretion.
-</p>
- </section>
-
-  <section class="terms-section">
-      <h2>6. Platform Purpose and Third-Party Content</h2>
-      <p>Directory Service Only: AMRx Hub is a host/directory that collects and organizes links, PDFs, videos, and other static AMR-related resources. AMRx Hub does not host, operate, or run AMR analysis tools or provide medical diagnoses or treatment recommendations.
-Third-Party Resources: Links to tools and external resources are provided for convenience. We do not control or endorse third-party content, and we are not responsible for their availability, accuracy, completeness, or safety. Use of third-party resources is at your own risk.
-No Professional Advice: Content on the Platform is for informational and educational purposes only and does not constitute medical, legal, or professional advice.
-
-</p>
- </section>
-
-       <section class="terms-section">
-      <h2>7. Acceptable Use & Prohibited Conduct</h2>
-      <p>When using the Platform, you must not, and must not attempt to facilitate others to:</p>
-      <ul>
-        <li>Violate applicable laws, regulations, or third-party rights (including NDPA and the National Health Act).</li>
-        <li>Upload or attempt to upload viruses, malware, or any code intended to disrupt or interfere with the Platform or other users.</li>
-        <li>Attempt unauthorized access to any part of the Platform or its systems.</li>
-        <li>Post defamatory, abusive, obscene, illegal, or infringing content (note: user uploads are not currently enabled; if uploads become available, they must comply with this clause).</li>
-        <li>Use the Platform to collect or harvest personal data of other users without lawful basis and explicit consent.</li>
-        <li>Circumvent any security or functionality controls on the Platform.</li>
-        <p>Violation of these obligations may result in immediate suspension or termination of your account and may result in civil or criminal prosecution.</p>
-      </ul>
-    </section>
-
-      <section class="terms-section">
-      <h2>8. User Content (Future Feature — currently not available)</h2>
-      <p> <b>Current State </b>: At launch, the Platform does not allow user uploads or contributions. When user content features are added, the following will apply. <br>
-<b>Your Responsibility </b> : You will be solely responsible for any content you submit. You represent that you own or are authorized to submit the content and that submission does not violate any law or third-party right. <br>
-<b> Grant of License </b>: By posting content, you grant AMRx Hub a non-exclusive, worldwide, royalty-free license to use, host, distribute, and reproduce the content (for purposes of operating and improving the Platform), unless otherwise agreed. <br>
-   <b> Moderation & Removal </b>: We reserve the right (but not the obligation) to review, edit, remove, or refuse any content that violates these Terms or is otherwise objectionable. We may remove content to comply with legal obligations or to protect Platform users.
-</p>
- </section>
-
-    <section class="terms-section">
-      <h2>9. Intellectual Property</h2>
-      <p><b> Our IP </b>: All Platform content, design, images, logos, trademarks, and software are the property of AMRx Hub or licensed to us and are protected by copyright and other laws. You may not reproduce, distribute, modify, create derivative works of, publicly display, or exploit our intellectual property without prior written permission. <br>
-       <b> Third-Party IP </b>: Content linked from or included on the Platform owned by third parties remains the property of its respective owners. You must abide by third-party licensing conditions.
-</p>
- </section>
-
-       <section class="terms-section">
-      <h2>10. Privacy, Data Protection & Cookies</h2>
-      <p>Use of the Platform is also governed by our Privacy Policy and Cookie Policy. By using the Platform, you consent to processing of your personal data per those documents. </p>
-      <ul>
- <li>Data Rights: You have data subject rights under applicable law (e.g., NDPA). Note that the Platform currently does not provide a direct “download your full activity history” button in the UI. You may request access to or copies of your personal data; we will respond in accordance with applicable law. Requests for a full historical activity export will be handled on a case-by-case basis and may be subject to legal/operational limitations and verification procedures. </li>
-  <li>Prohibition on Uploading PHI: You must not upload or submit Protected Health Information (PHI) or other sensitive health records to AMRx Hub unless we specifically enable an upload feature and clearly state the safeguards in place. If you do provide any health-related information without authorization, you do so at your own risk and might be in violation of applicable privacy laws. </li>
-        </ul>
-</section>
-
-       <section class="terms-section">
-      <h2>11. Cookies & Tracking</h2>
-      <p>
-        Essential cookies required for login and security are necessary for Platform operation and cannot be disabled if you want to use the Platform. Non-essential cookies (analytics and, in the future, advertising cookies) are used only with your consent. See our Cookie Policy for details and how to manage preferences.
-      </p>
- </section>
-
-       <section class="terms-section">
-      <h2>12. Security, Data Breach & Incident Response</h2>
-      <p>
-        We implement reasonable technical and organizational measures to protect your data. In the event of a data breach, we will follow applicable law and our incident response plan, including notifying the Nigeria Data Protection Commission and affected users if required by NDPA, and taking reasonable steps to mitigate harm.
-      </p>
- </section>
-    
-    <section class="terms-section">
-      <h2>13. Disclaimers</h2>
-      <p> <b>No Warranty </b>: The Platform and all content are provided “as is” and “as available” without warranties of any kind. To the fullest extent permitted by law, AMRx Hub expressly disclaims all warranties, whether express, implied or statutory, including those of merchantability, fitness for a particular purpose, and non-infringement. <br>
-         <b> No Guarantee of Accuracy or Availability </b>: We do not guarantee that content on the Platform is complete, accurate, or up to date. We do not guarantee uninterrupted availability of the Platform or that links to external resources will be operational.
-</p>
-    </section>
-
-    <section class="terms-section">
-      <h2>14. Limitation of Liability</h2>
-      <p>To the maximum extent permitted by applicable law, AMRx Hub, its officers, directors, employees, agents, partners and suppliers shall not be liable for any indirect, incidental, consequential, special, punitive, or exemplary damages (including loss of profits, revenue, data, or goodwill) arising from your use of the Platform, even if we have been advised of the possibility of such damages. Our total liability to you for any claim arising from or related to these Terms or your use of the Platform shall not exceed the amount you paid us, if any, in the past six months. </p>
-    </section>
-
-    <section class="terms-section">
-      <h2>15. Indemnification</h2>
-      <p>You agree to indemnify, defend, and hold harmless AMRx Hub and its affiliates, officers, directors, employees, and agents from and against any and all claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising from: (a) your violation of these Terms; (b) your use or misuse of the Platform; or (c) your violation of any applicable law or third-party right.</p>
-    </section>
-
-    <section class="terms-section">
-      <h2>16. Payments, Ads & Future Monetization</h2>
-      <p> <b> Current State </b>: The Platform is currently free and has no ads. In the future we may introduce advertising, sponsorships, premium features, or other paid services. <br>
-         <b> Advertising </b>: If advertising is introduced, we will provide notice and obtain any required consent for marketing cookies or tracking. Sponsored content will be labeled as such. <br>
-         <b> Fees & Refunds </b>: Any fees or subscription terms introduced in the future will be governed by a separate agreement or amendment to these Terms. Refunds (if any) will be handled according to the published policy at the time of purchase.
-</p>
-    </section>
-
-    <section class="terms-section">
-      <h2>17. Termination & Suspension</h2>
-      <p> <b>By You </b>: You may delete your account as described in the Platform’s settings or by contacting support. Deletion requests will be processed in accordance with our Privacy Policy and applicable law. <br>
-         <b> By Us </b>: We may suspend, limit or terminate your access to the Platform at any time for cause (including violation of these Terms or law) or without cause for operational reasons, subject to any notice required by law. <br>
-          <b>  Effect of Termination </b>: Termination does not relieve you of obligations incurred prior to termination (including payment obligations, if any) or liability for past breaches.
-</p>
-    </section>
-
-    <section class="terms-section">
-      <h2>18. Changes to These Terms</h2>
-      <p>We may modify these Terms at any time. We will post the updated Terms with a new “Effective date.” For major changes, we will make reasonable efforts to notify you (for example via email or in-site notice). Your continued use after changes constitutes acceptance of the updated Terms.</p>
-    </section>
-
-     <section class="terms-section">
-      <h2>19. Governing Law & Dispute Resolution</h2>
-      <p>These Terms are governed by the laws of the Federal Republic of Nigeria. You and AMRx Hub agree to first attempt to resolve disputes informally through good faith negotiations. If we cannot resolve the dispute informally within 30 days, either party may pursue available remedies in the courts of Nigeria. Nothing in this clause prevents either party from seeking urgent equitable relief in any jurisdiction.</p>
-    </section>
-
-     <section class="terms-section">
-      <h2>20. Severability</h2>
-      <p>If any provision of these Terms is held to be invalid, illegal, or unenforceable by a court of competent jurisdiction, the remaining provisions will remain in full force and effect and be construed to the maximum extent permitted by law.</p>
-    </section>
-
-     <section class="terms-section">
-      <h2>21. Entire Agreement</h2>
-      <p>These Terms, together with the Privacy Policy, Cookie Policy and any other policies or documents expressly incorporated by reference, constitute the entire agreement between you and AMRx Hub relating to your use of the Platform.</p>
-    </section>
-
-    <section class="terms-section">
-      <h2>22. Contact Information</h2>
-      <p>If you have any questions about these Terms or need assistance with AMRx Hub, please feel free to reach out to us at <a href="mailto:amrtool344@gmail.com">amrtool344@gmail.com</a>. We welcome inquiries related to support, feedback, or legal matters and will do our best to respond promptly.</p>
-      </section>
-       <footer class="pp-footer">
-      <p>© <span id="year"></span> AMRx Hub</p>
-    </footer>
-  </main>
-    <script>
-    // Year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
-<div class="action-buttons">
-  <button onclick="window.history.back()" class="btn btn-primary">Go Back</button>
+<div class="container my-5">
+<div class="row">
+<div class="col-md-10 offset-md-1">
+<p>Terms of Use</p>
+<p>AMRx Hub</p>
+<p>Effective Date: 22 August 2026
+Last Updated: 22 August 2026</p>
+<p>These Terms of Use (“Terms”) govern access to and use of the AMRx Hub website, web application, content, and related services (collectively, the “Platform”). By accessing or using the Platform, you agree to these Terms and the AMRx Hub Privacy &amp; Data Protection Policy and Cookie Policy, as applicable. If you do not agree, do not use the Platform.</p>
+<h2 class="mt-4 mb-3">1. Definitions</h2>
+<p>“AMRx Hub”, “we”, “us”, or “our” means the person, organisation, or legal entity that operates AMRx Hub.</p>
+<p>“Platform” means the AMRx Hub website, web application, pages, directory, account features, and related services.</p>
+<p>“User” or “you” means a person or entity accessing or using the Platform.</p>
+<p>“Content” means information, text, images, links, metadata, documents, videos, software references, and other material made available through the Platform.</p>
+<p>“Third-party resources” means external websites, databases, software, publications, repositories, videos, services, or other resources linked or referenced by AMRx Hub.</p>
+<h2 class="mt-4 mb-3">2. Platform Purpose</h2>
+<p>AMRx Hub is a curated discovery and directory platform for antimicrobial-resistance resources. It organises and presents information about resources such as databases, software tools, publications, educational materials, surveillance resources, PDFs, videos, and related scientific resources.</p>
+<p>Unless a specific feature expressly states otherwise, AMRx Hub does not operate the third-party AMR tools or external resources to which it links. AMRx Hub is not a substitute for a scientific database owner, software developer, publisher, healthcare professional, legal adviser, or other qualified professional.</p>
+<h2 class="mt-4 mb-3">3. Acceptance and Changes</h2>
+<p>By accessing, registering for, or using the Platform, you agree to these Terms. We may update these Terms from time to time. Material changes will be communicated by an appropriate notice where required. The updated Terms will state a new effective date. Continued use after the effective date may constitute acceptance where legally effective.</p>
+<h2 class="mt-4 mb-3">4. Eligibility</h2>
+<p>You must meet the minimum age and legal capacity requirements applicable to your use of the Platform. AMRx Hub currently requires users creating an account to be at least 18 years old. If you use the Platform on behalf of an organisation, you represent that you have authority to act for that organisation.</p>
+<h2 class="mt-4 mb-3">5. Accounts, Verification and Security</h2>
+<p>Provide accurate and current information when creating an account.</p>
+<p>Complete email verification where required.</p>
+<p>Keep authentication credentials confidential and use reasonable measures to protect your account.</p>
+<p>Notify AMRx Hub promptly if you believe your account has been compromised or used without authorisation.</p>
+<p>Do not create accounts for impersonation, fraud, abuse, or unlawful purposes.</p>
+<p>We may suspend or terminate an account where reasonably necessary for security, legal compliance, violation of these Terms, abuse of the Platform, or operational reasons, subject to applicable law.</p>
+<h2 class="mt-4 mb-3">6. Permitted Use</h2>
+<p>Subject to these Terms, you may access and use the Platform for lawful research, educational, informational, and other legitimate purposes. AMRx Hub does not grant you ownership of the Platform or its intellectual property.</p>
+<p>Any licence to software, publications, datasets, images, videos, or other third-party resources is governed by the licence or terms applicable to that third-party resource.</p>
+<h2 class="mt-4 mb-3">7. Acceptable Use and Prohibited Conduct</h2>
+<p>Use the Platform in violation of applicable law or third-party rights.</p>
+<p>Attempt unauthorised access to the Platform, infrastructure, accounts, or systems.</p>
+<p>Introduce malware, malicious code, or other material intended to disrupt or compromise the Platform.</p>
+<p>Interfere with Platform security, availability, or normal operation.</p>
+<p>Use the Platform to harvest or misuse another person&#x27;s personal data without a lawful basis.</p>
+<p>Impersonate another person or organisation or provide materially false account information.</p>
+<p>Use automated methods in a manner that unreasonably burdens, disrupts, circumvents, or abuses the Platform or its controls.</p>
+<p>Infringe copyright, trademark, privacy, confidentiality, or other rights.</p>
+<p>Use the Platform for unlawful, fraudulent, abusive, or harmful purposes.</p>
+<h2 class="mt-4 mb-3">8. User-Generated Content</h2>
+<p>At the time of publication of these Terms, AMRx Hub does not generally enable public user uploads or community contributions unless a specific feature states otherwise.</p>
+<p>If AMRx Hub later introduces user-generated content, the applicable feature terms or an updated version of these Terms will specify the submission rules, moderation rights, licences, privacy implications, and other requirements before or when the feature becomes available. Users must not assume that a future feature is governed by provisions that have not yet been published.</p>
+<h2 class="mt-4 mb-3">9. Intellectual Property</h2>
+<p>AMRx Hub&#x27;s original software, branding, interface, original editorial material, taxonomy, metadata structures, documentation, and other materials owned by AMRx Hub are protected by applicable intellectual-property laws and are used subject to any applicable open-source or other licence.</p>
+<p>Third-party resources remain owned by their respective owners. Their use is subject to the licences, terms, copyright notices, and other restrictions imposed by those owners.</p>
+<p>Nothing in these Terms transfers ownership of third-party material to AMRx Hub or grants users rights beyond those available under the applicable licence.</p>
+<h2 class="mt-4 mb-3">10. Scientific, Medical and Professional Disclaimer</h2>
+<p>AMRx Hub provides scientific and educational information and resource-discovery functionality. Content on the Platform is not medical, clinical, legal, financial, or other professional advice and should not be relied upon as a substitute for advice from an appropriately qualified professional.</p>
+<p>AMRx Hub does not diagnose disease, prescribe treatment, determine antimicrobial therapy, or guarantee the scientific, clinical, legal, or operational suitability of any third-party resource. Users are responsible for independently evaluating information and following applicable professional, institutional, regulatory, and safety requirements.</p>
+<h2 class="mt-4 mb-3">11. Third-Party Resources and External Links</h2>
+<p>AMRx Hub may link to or describe third-party databases, software, repositories, journals, websites, videos, documents, and services. Such links are provided for discovery and convenience and do not necessarily constitute endorsement.</p>
+<p>AMRx Hub does not control third-party resources and cannot guarantee their accuracy, availability, security, legality, licensing status, or continued operation. Your use of a third-party resource is governed by that third party&#x27;s own terms and policies.</p>
+<h2 class="mt-4 mb-3">12. Privacy and Data Protection</h2>
+<p>Processing of personal data through the Platform is described in the AMRx Hub Privacy &amp; Data Protection Policy. The Cookie Policy describes cookies and similar technologies.</p>
+<p>Users must not submit identifiable patient records, clinical records, or other sensitive health information through a feature that has not been expressly enabled for such information. If AMRx Hub introduces a feature intended to handle such information, it will publish appropriate requirements and safeguards before or when the feature becomes available.</p>
+<h2 class="mt-4 mb-3">13. Availability, Accuracy and Changes to Resources</h2>
+<p>AMRx Hub may add, modify, classify, update, remove, or discontinue resources and Platform features. We do not guarantee that every listing is complete, current, error-free, or continuously available. We may correct metadata or remove broken, obsolete, unsafe, infringing, or otherwise unsuitable resources.</p>
+<p>Users should verify important scientific information against authoritative primary sources and the current materials provided by the relevant resource owner.</p>
+<h2 class="mt-4 mb-3">14. Disclaimer of Warranties</h2>
+<p>To the maximum extent permitted by applicable law, the Platform is provided on an “as available” and “as is” basis. AMRx Hub does not warrant that the Platform or third-party resources will be uninterrupted, error-free, secure, complete, or suitable for a particular purpose. Nothing in these Terms excludes or limits a right, remedy, or liability that cannot lawfully be excluded or limited.</p>
+<h2 class="mt-4 mb-3">15. Limitation of Liability</h2>
+<p>To the maximum extent permitted by applicable law, AMRx Hub will not be liable for indirect, incidental, special, consequential, or punitive losses arising from or connected with use of the Platform or third-party resources. Nothing in these Terms excludes or limits liability where doing so would be unlawful, including any liability that applicable Nigerian law does not permit a party to exclude or limit.</p>
+<p>Any monetary liability cap, if adopted, should be reviewed against the final legal structure of AMRx Hub, applicable Nigerian consumer and contract law, and the nature of the users and services before publication. The previous fixed six-month-payment cap has therefore been removed from this draft rather than treated as automatically lawful.</p>
+<h2 class="mt-4 mb-3">16. Indemnification</h2>
+<p>To the extent permitted by applicable law, you agree to be responsible for losses, claims, liabilities, and reasonable costs arising from your unlawful use of the Platform, material breach of these Terms, or infringement of third-party rights caused by your conduct. This provision does not require you to indemnify AMRx Hub for losses caused by AMRx Hub&#x27;s own unlawful conduct.</p>
+<h2 class="mt-4 mb-3">17. Advertising, Sponsorship and Future Paid Features</h2>
+<p>AMRx Hub is currently intended to provide its core directory/discovery service without requiring payment from ordinary users. We may introduce advertising, sponsorships, premium services, or other monetisation in the future. Where applicable, sponsored content will be identified and any required privacy, cookie, pricing, subscription, or consumer notices will be provided.</p>
+<p>Future paid services may be subject to additional terms, pricing, refund, subscription, or cancellation policies that will be presented before purchase.</p>
+<h2 class="mt-4 mb-3">18. Suspension and Termination</h2>
+<p>You may stop using the Platform and request account deletion through available account controls or by contacting AMRx Hub. We may suspend or terminate access where reasonably necessary because of a breach of these Terms, unlawful activity, security concerns, abuse, legal requirements, or operational reasons, subject to applicable law.</p>
+<p>Termination does not automatically extinguish rights or obligations that by their nature should continue, including intellectual-property protections, applicable disclaimers, dispute provisions, or obligations arising from conduct before termination.</p>
+<h2 class="mt-4 mb-3">19. Dispute Resolution and Governing Law</h2>
+<p>These Terms are governed by the laws of the Federal Republic of Nigeria, subject to any mandatory legal rights or rules that apply to a particular user or transaction.</p>
+<p>The parties should first attempt in good faith to resolve disputes informally. If a dispute cannot be resolved informally, either party may seek remedies available under applicable law in a court of competent jurisdiction in Nigeria, subject to any mandatory jurisdictional rules.</p>
+<h2 class="mt-4 mb-3">20. Severability</h2>
+<p>If a provision of these Terms is found to be invalid or unenforceable, the remaining provisions will remain effective to the extent permitted by law.</p>
+<h2 class="mt-4 mb-3">21. Entire Agreement</h2>
+<p>These Terms, together with the Privacy &amp; Data Protection Policy, Cookie Policy, and any other documents expressly incorporated by reference, constitute the agreement governing your use of the Platform, subject to any additional terms presented for specific services or features.</p>
+<h2 class="mt-4 mb-3">22. Contact</h2>
+<p>For questions concerning these Terms, legal notices, or Platform use, contact: amrtool344@gmail.com</p>
+<h2 class="mt-4 mb-3">23. Publication and Legal Review Note</h2>
+<p>Before publication, AMRx Hub should confirm the legal identity of the operator, the correct notice/contact details, the actual services and features offered, applicable consumer-law requirements, and any required regulatory registrations or compliance obligations. This document is a platform draft and should receive professional legal review before being represented as AMRx Hub&#x27;s final legally reviewed Terms.</p>
 </div>
-</html>
-
-<style> 
-    body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-  line-height: 1.7;
-  background: #f9fafb;
-  color: #333;
-}
-
-.terms-header {
-  text-align: center;
-  padding: 3rem 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.terms-header h1 {
-  margin-bottom: 0.5rem;
-  font-size: 2.2rem;
-  font-weight: bold;
-}
-
-.terms-header p {
-  font-size: 1.1rem;
-  opacity: 0.95;
-}
-
-.terms-container {
-  max-width: 950px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-.terms-section {
-  margin-bottom: 2.5rem;
-}
-
-.terms-section h2 {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  border-left: 5px solid #667eea;
-  padding-left: 12px;
-  color: #333;
-  font-weight: bold;
-}
-
-.terms-section p,
-.terms-section li {
-  color: #555;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  
-}
-.terms-container a {
-  text-decoration: none;
-  color: #667eea;
-}
-
-
-ul {
-  margin: 1rem 0 1rem 2rem;
-  padding: 0;
-}
-
-li {
-  margin-bottom: 0.5rem;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .terms-header h1 {
-    font-size: 1.6rem;
-  }
-
-  .terms-section h2 {
-    font-size: 1.2rem;
-  }
-}
-/* Footer */
-.pp-footer {
-  text-align: center;
-  color: var(--amrx-muted);
-  margin-top: 2rem;
-  font-size: 0.95rem;
-}
-.action-buttons {
-  text-align: center;
-  margin: 2rem 0;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.8rem 1.6rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
-</style>
-
-
+</div>
+</div>
 {% endblock %}
