@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AMRx Hub Legal Information{% endblock %}</title>
+    <style>
+        :root { --legal-bg: #f4f8fb; --legal-card: #fff; --legal-border: #dbe7ef; --legal-text: #122033; --legal-muted: #475569; --legal-link: #0369a1; --legal-shadow: 0 18px 45px rgba(15, 23, 42, .08); }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: linear-gradient(180deg, #f8fbfd 0%, var(--legal-bg) 100%); color: var(--legal-text); font-family: Georgia, "Times New Roman", serif; }
+        .legal-shell { width: min(1100px, calc(100% - 32px)); margin: 32px auto 48px; }
+        .legal-card { background: var(--legal-card); border: 1px solid var(--legal-border); border-radius: 18px; box-shadow: var(--legal-shadow); padding: 28px clamp(20px, 4vw, 52px) 40px; }
+        .legal-header { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-bottom: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--legal-border); }
+        .legal-brand { margin: 0 0 8px; color: var(--legal-link); font-family: Arial, Helvetica, sans-serif; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+        .legal-heading { margin: 0; color: var(--legal-text); font-family: Arial, Helvetica, sans-serif; font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.2; }
+        .legal-content { color: var(--legal-muted); font-size: 1.05rem; line-height: 1.8; }
+        .legal-content p { margin: 0 0 1rem; }
+        .legal-content h2 { margin: 2rem 0 .8rem; color: var(--legal-text); font-family: Arial, Helvetica, sans-serif; font-size: 1.3rem; line-height: 1.35; }
+        .legal-content h2:first-child { margin-top: 0; }
+        .legal-back { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 108px; padding: 10px 16px; border: 1px solid #bae6fd; border-radius: 999px; background: linear-gradient(135deg, #ecfeff, #f8fafc); color: var(--legal-text); font-family: Arial, Helvetica, sans-serif; font-size: .92rem; font-weight: 700; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
+        .legal-back:hover { color: var(--legal-text); text-decoration: none; transform: translateY(-1px); box-shadow: 0 10px 18px rgba(14, 165, 233, .14); }
+        .legal-footer { display: flex; justify-content: center; padding-top: 28px; margin-top: 28px; border-top: 1px solid var(--legal-border); }
+        @media (max-width: 640px) { .legal-shell { width: min(100% - 20px, 1100px); margin-top: 10px; } .legal-card { padding: 22px 16px 28px; } .legal-header { align-items: flex-start; flex-direction: column; } .legal-header .legal-back { width: 100%; } .legal-content { font-size: 1rem; } }
+    </style>
+</head>
+<body>
+    <main class="legal-shell">
+        <article class="legal-card">
+            <header class="legal-header">
+                <div>
+                    <p class="legal-brand">AMRx Hub</p>
+                    <h1 class="legal-heading">{% block heading %}Legal Information{% endblock %}</h1>
+                </div>
+                <a class="legal-back" href="javascript:history.back()" aria-label="Go back">&#8592; Back</a>
+            </header>
+            <section class="legal-content">{% block content %}{% endblock %}</section>
+            <footer class="legal-footer">
+                <a class="legal-back" href="javascript:history.back()" aria-label="Go back">&#8592; Back</a>
+            </footer>
+        </article>
+    </main>
+</body>
+</html>
+
