@@ -33,7 +33,7 @@
             <div class="content-card" id="personal">
                 <div class="card-header">
                     <h3><i class="fas fa-user"></i> Personal Information</h3>
-                    <button class="edit-btn" onclick="toggleEdit('personal')">
+                    <button type="button" class="edit-btn" data-edit-section="personal" onclick="toggleEdit('personal')">
                         <i class="fas fa-edit"></i> Edit
                     </button>
                 </div>
@@ -157,7 +157,7 @@
             <div class="content-card" id="research">
                 <div class="card-header">
                     <h3><i class="fas fa-microscope"></i> Research Interests & Background</h3>
-                    <button class="edit-btn" onclick="toggleEdit('research')">
+                    <button type="button" class="edit-btn" data-edit-section="research" onclick="toggleEdit('research')">
                         <i class="fas fa-edit"></i> Edit
                     </button>
                 </div>
@@ -758,20 +758,29 @@
     function toggleEdit(section) {
         const displayView = document.getElementById(`${section}-display-view`);
         const editForm = document.getElementById(`${section}-edit-form`);
-        
-        if (displayView && editForm) {
-            if (displayView.style.display !== 'none') {
-                // Switch to edit mode
-                displayView.style.display = 'none';
-                editForm.style.display = 'block';
-            } else {
-                // Switch to display mode
-                displayView.style.display = 'block';
-                editForm.style.display = 'none';
-            }
+        const editButton = document.querySelector(`[data-edit-section="${section}"]`);
+
+        if (!displayView || !editForm) {
+            console.warn(`Could not toggle edit for ${section}: missing form/view`);
+            return;
         }
-        
-        console.log(`Toggled ${section}: displayView=${displayView ? displayView.style.display : 'not found'}, editForm=${editForm ? editForm.style.display : 'not found'}`);
+
+        const isFormVisible = editForm.hidden !== true && getComputedStyle(editForm).display !== 'none';
+        const shouldShowForm = !isFormVisible;
+
+        displayView.hidden = shouldShowForm;
+        editForm.hidden = !shouldShowForm;
+
+        displayView.style.display = shouldShowForm ? 'none' : 'block';
+        editForm.style.display = shouldShowForm ? 'block' : 'none';
+
+        if (editButton) {
+            editButton.innerHTML = shouldShowForm
+                ? '<i class="fas fa-times"></i> Cancel'
+                : '<i class="fas fa-edit"></i> Edit';
+            editButton.setAttribute('aria-expanded', String(shouldShowForm));
+            editButton.classList.toggle('cancel-mode', shouldShowForm);
+        }
     }
     
     function saveChanges(section) {

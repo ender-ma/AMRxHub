@@ -22,7 +22,6 @@ admin.site.site_header = "AMRx Hub Administration"
 admin.site.site_title = "AMRx Hub Admin"
 admin.site.index_title = "Welcome to AMRx Hub Administration"
 
-# Disable admin password reset
 admin.site.password_change = None
 admin.site.password_change_done = None
 admin.site.password_reset = None
@@ -49,12 +48,11 @@ urlpatterns = [
     path('glossary/', views.glossary, name='glossary'),
     path('collaborators/', views.collaborators, name='collaborators'),
     path('affiliations/', views.affiliations, name='affiliations'),
+    path('documentation/', views.documentation, name='documentation'),
 
     path('announcements/', views.all_announcements, name='all_announcements'),
 
     path('sitemap.xml', static_sitemap, name='static_sitemap'),
-
-    path("health/", views.health_check, name="health_check"),
 ] 
 
 if settings.DEBUG:

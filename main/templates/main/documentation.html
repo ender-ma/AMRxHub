@@ -1,0 +1,136 @@
+{% extends "legal_base.html" %}
+{% load static %}
+
+{% block title %}Documentation{% endblock %}
+
+{% block content %}
+
+<div class="documentation-section">
+    <h1>Documentation</h1>
+    <p class="intro">Access AMRx Hub guidance, policy, and operational documents.</p>
+
+    <div class="documentation-list">
+        {% for document in documents %}
+            <div class="doc-card">
+                <div class="doc-meta">
+                    <h2>{{ document.title }}</h2>
+                    <p>Official document</p>
+                </div>
+
+                <div class="doc-actions">
+                    {% comment %} <a class="doc-action view" href="{% static document.file %}" target="_blank" rel="noopener noreferrer">Open</a> {% endcomment %}
+                    <a class="doc-action download" href="{% static document.file %}" download="{{ document.title }}">Download</a>
+                </div>
+            </div>
+        {% empty %}
+            <p>No documentation files are available yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .documentation-section {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px 48px;
+    }
+
+    .documentation-section h1 {
+        margin-bottom: 8px;
+        font-size: 2rem;
+        color: #1f2937;
+    }
+
+    .documentation-section .intro {
+        margin: 0 0 24px;
+        color: #4b5563;
+        font-size: 1rem;
+    }
+
+    .documentation-list {
+        display: grid;
+        gap: 16px;
+    }
+
+    .doc-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px 22px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+
+    .doc-meta {
+        flex: 1;
+    }
+
+    .doc-meta h2 {
+        margin: 0 0 6px;
+        font-size: 1.1rem;
+        color: #111827;
+        line-height: 1.4;
+    }
+
+    .doc-meta p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 0.9rem;
+    }
+
+    .doc-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .doc-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        padding: 10px 16px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.92rem;
+        transition: all 0.2s ease;
+    }
+
+    .doc-action.view {
+        background: #eef4ff;
+        color: #1d4ed8;
+        border: 1px solid #c7d9ff;
+    }
+
+    .doc-action.download {
+        background: #111827;
+        color: #ffffff;
+        border: 1px solid #111827;
+    }
+
+    .doc-action:hover {
+        opacity: 0.92;
+        text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+        .doc-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .doc-actions {
+            width: 100%;
+        }
+
+        .doc-action {
+            flex: 1;
+            min-width: 120px;
+        }
+    }
+</style>
+{% endblock %}

@@ -56,15 +56,25 @@ def affiliations(request):
     """
     return render(request, 'main/affiliations.html')
 
+def documentation(request):
+    """
+    Render the documentation page for authenticated users.
+    """
+    documents = [
+        {
+            'title': 'AMRx Hub Taxonomy System Hierarchy v0.5.0',
+            'file': 'documents/AMRx_Hub_Taxonomy_System_Hierarchy_v0.5.0.docx',
+        },
+        {
+            'title': 'AMRx Hub Admin Staff System v0.5.0',
+            'file': 'documents/AMRx_Hub_Admin_Staff_System_v0.5.0.docx',
+        },
+    ]
+    return render(request, 'main/documentation.html', {'documents': documents})
+
 def sitemap_view(request):
     sitemap_path = os.path.join(os.path.dirname(__file__), '..', 'sitemap.xml')
     sitemap_path = os.path.abspath(sitemap_path)
     if not os.path.exists(sitemap_path):
         raise Http404("Sitemap not found.")
     return FileResponse(open(sitemap_path, 'rb'), content_type='application/xml')
-
-def health_check(request):
-    """
-    Render ghost Keep_Alive health check page for authenticated users.
-    """
-    return JsonResponse({"status": "ok"}, status=200)
