@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import ResourceCategory
+from .models import ResourceCategory, ResourceItem
+from django.http import FileResponse
+import os
 
 def resources_list(request):
     categories = ResourceCategory.objects.prefetch_related('items').all()
@@ -9,6 +11,10 @@ def resources_list(request):
 def category_resources(request, pk):
     category = get_object_or_404(ResourceCategory, pk=pk)
     return render(request, 'resources/category_resources.html', {'category': category})
+
+def resource_detail(request, pk):
+    resource = get_object_or_404(ResourceItem, pk=pk)
+    return render(request, 'resources/resource_detail.html', {'resource': resource})
 
 # def resource_detail(request, pk):
 #     resource = get_object_or_404(ResourceItem, pk=pk)
