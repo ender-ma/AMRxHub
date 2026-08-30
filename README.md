@@ -1,5 +1,5 @@
 # AMRx Hub
-[[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21302426.svg)](https://doi.org/10.5281/zenodo.21302426)](https://doi.org/10.5281/zenodo.22180074)
+https://doi.org/10.5281/zenodo.22180074
 
 AMRx Hub is an open-access web platform for centralized discovery of antimicrobial resistance (AMR) resources across the scientific ecosystem. It brings together databases, analytical tools, publications, protocols, surveillance systems, educational content, and policy references into a single searchable repository.
 
