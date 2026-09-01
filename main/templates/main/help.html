@@ -79,14 +79,21 @@
         <h3><i class="fas fa-video"></i> Video Tutorials</h3>
         <div class="video-grid">
             <div class="video-item">
-                <iframe src="#" title="Getting Started with AMRx Hub" frameborder="0" allowfullscreen></iframe>
+                <iframe
+                    src="https://www.youtube.com/embed/DFF-EhoydX8"
+                    title="Getting Started with AMRx Hub"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
                 <h4>Getting Started with AMRx Hub</h4>
             </div>
 
-            <div class="video-item">
+            {% comment %} <div class="video-item">
                 <iframe src="#" title="How to use our features" frameborder="0" allowfullscreen></iframe>
                 <h4>How to use our features</h4>
-            </div>
+            </div> {% endcomment %}
         </div>
     </div>
 
@@ -297,6 +304,36 @@
         height: 100%;
         border: none;
     }
+    {% comment %} Temporary {% endcomment %}
+    .video-item {
+        width: min(320px, 100%);
+        aspect-ratio: 1 / 1;
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+    
+    .video-item iframe {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        border: none;
+        aspect-ratio: 1 / 1;
+    }
+    
+    .video-item h4 {
+        font-size: 16px;
+        color: #333;
+        text-align: center;
+        margin: 0;
+    }
+    {% comment %} Very temporary lines at least until a second video is mad {% endcomment %}
 
     /* Support options */
     .support-options {
