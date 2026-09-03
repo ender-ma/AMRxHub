@@ -177,5 +177,5 @@ License information can be found in the license file.
 
 - **Project Lead:** Akinloluwa Isaac Adeolu-Shittu
 - **Email:** isaacodes25@gmail.com
-- **Website:** https://www.amrxhub.com/
+- **Website:** https://amrxhub-production.up.railway.app/
 - **GitHub Repository:** https://github.com/ender-ma/AMRxHub
