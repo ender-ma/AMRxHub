@@ -21,7 +21,6 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import url_has_allowed_host_and_scheme, urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.decorators.http import require_POST
 from .tokens import email_verification_token
-from django.core.mail import send_mail
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -177,7 +176,7 @@ def register_user(request):
             user.save()
 
             send_mail_with_short_timeout(
-                "Wellcome to AMRx Hub!",
+                "Welcome to AMRx Hub!",
                 "Thank you for registering at AMRx Hub. If you have any questions, feel free to reach out to us. Or if you would prefer," \
                 "you can watch our tutorial videos on how to use the platform. We hope you enjoy your experience!",
                 "no-reply@amrxhub.com",

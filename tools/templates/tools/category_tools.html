@@ -94,9 +94,6 @@
             </div>
 
             <div class="flag-actions">
-                <button type="button" id="removeFlagBtn" class="secondary-btn" style="display:none;" onclick="removeFlag()">
-                    Remove Flag
-                </button>
                 <button type="button" id="submitFlagBtn" class="primary-btn" onclick="submitFlag()">
                     Submit Flag
                 </button>
@@ -452,6 +449,7 @@
 <script>
     let currentFlagToolId = null;
     let currentFlaggedState = false;
+    let flagCooldown = false;
 
     function openFlagModal(toolId, toolName, isFlaggedByMe) {
         currentFlagToolId = toolId;
@@ -461,9 +459,8 @@
         document.getElementById("flagModalTitle").textContent = `Flag ${toolName}`;
         document.getElementById("flagModalText").textContent = currentFlaggedState
             ? "You already flagged this tool. You can remove the flag."
-            : "Write a reason and submit your flag.";
+            : "Write a reason for your flag and submit it for review. You must have an account to submit a flag. Your email address will be sent to an administrator along with your report for review. By submitting a flag, you acknowledge and agree that your email address will be included in the report.";
 
-        document.getElementById("removeFlagBtn").style.display = currentFlaggedState ? "inline-flex" : "none";
         document.getElementById("submitFlagBtn").style.display = currentFlaggedState ? "none" : "inline-flex";
         document.getElementById("flagReasonWrap").style.display = currentFlaggedState ? "none" : "block";
         document.getElementById("flagReason").value = "";
@@ -476,13 +473,33 @@
     }
 
     async function submitFlag() {
+        if (flagCooldown) {
+            return;
+        }
+        
+        flagCooldown = true;
+        
+        const submitButton = document.getElementById("submitFlagBtn");
+        submitButton.disabled = true;
+        submitButton.textContent = "Please wait...";
+
+        setTimeout(() => {
+            flagCooldown = false;
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit Flag";
+        }, 30000);
+
         const reason = document.getElementById("flagReason").value.trim();
+
+        const csrfToken = document.querySelector(
+            '#flagForm input[name="csrfmiddlewaretoken"]'
+        ).value;
 
         const response = await fetch("/api/flag-tool", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCookie("csrftoken")
+                "X-CSRFToken": csrfToken
             },
             body: JSON.stringify({
                 tool_id: currentFlagToolId,
@@ -491,7 +508,11 @@
             })
         });
 
-        const data = await response.json();
+        const data = await response.json();        
+        if (response.status === 429) {
+            alert(data.message);
+            return;
+        }        
         if (data.success) {
             closeFlagModal();
             alert(data.message || "Tool flagged.");
@@ -500,45 +521,8 @@
         }
     }
 
-    async function removeFlag() {
-        const response = await fetch("/api/flag-tool", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCookie("csrftoken")
-            },
-            body: JSON.stringify({
-                tool_id: currentFlagToolId,
-                action: "remove"
-            })
-        });
-
-        const data = await response.json();
-        if (data.success) {
-            closeFlagModal();
-            alert(data.message || "Flag removed.");
-        } else {
-            alert(data.message || "Unable to remove flag.");
-        }
-    }
-
     document.getElementById("flagModal")?.addEventListener("click", function(e) {
         if (e.target === this) closeFlagModal();
     });
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== "") {
-            const cookies = document.cookie.split(";");
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + "=")) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
 </script>
 {% endblock %}

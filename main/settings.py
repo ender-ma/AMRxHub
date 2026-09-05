@@ -232,6 +232,7 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET = True # False Get the user to confirm before signing up
 SOCIALACCOUNT_ADAPTER = "authentication.adapters.CustomSocialAccountAdapter"
 
+TOOL_FLAG_EMAIL = os.environ.get("TOOL_FLAG_EMAIL", "")
 
 # -----------------------------------------------------------------------------
 # I18N / TZ

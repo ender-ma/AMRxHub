@@ -16,6 +16,12 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from history.signals import object_viewed_signal
 from authentication.utils import email_verified_required
+import json
+from django.conf import settings
+from django.core.mail import send_mail
+from django.views.decorators.http import require_POST
+from django.core.cache import cache
+
 
 def my_view(request, pk):
     obj = get_object_or_404(Tool, pk=pk)
@@ -118,3 +124,47 @@ def admin_dashboard(request):
         'pending_tools': Tool.objects.filter(approval_status='pending').count()
     }
     return render(request, 'tools/admin_dashboard.html', context)
+
+@login_required
+@require_POST
+def flag_tool(request):
+    data = json.loads(request.body)
+    tool = get_object_or_404(Tool, id=data.get("tool_id"))
+    reason = data.get("reason", "").strip()
+
+    if not reason:
+        return JsonResponse({
+            "success": False,
+            "message": "Please provide a reason."
+        }, status=400)
+
+    cooldown_key = f"tool-flag-cooldown:{request.user.pk}"
+
+    if not cache.add(cooldown_key, True, timeout=30):
+        return JsonResponse({
+            "success": False,
+            "message": "Please wait 30 seconds before sending another flag."
+        }, status=429)
+
+    send_mail(
+        subject=f"Tool flagged: {tool.name}",
+        message=(
+            f"Tool: {tool.name}\n"
+            f"Tool URL: {tool.url}\n"
+            f"Tool ID: {tool.id}\n"
+            f"Tool Category: {tool.category.name}\n"
+            f"Tool Created: {tool.created_at}\n"
+            f"Tool Last Updated: {tool.updated_at}\n"
+            f"Tool Creator: {tool.added_by or 'Unknown'}\n"        
+            f"Flagged by: {request.user.email}\n\n"
+            f"Reason:\n{reason}"
+        ),
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[settings.TOOL_FLAG_EMAIL],
+        fail_silently=False,
+    )
+
+    return JsonResponse({
+        "success": True,
+        "message": "Thank you. The tool has been flagged."
+    })

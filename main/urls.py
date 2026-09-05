@@ -9,6 +9,7 @@ from .views import sitemap_view
 from django.http import HttpResponse
 from django.views.decorators.http import require_GET
 import os
+from tools.views import flag_tool
 
 @require_GET
 def static_sitemap(request):
@@ -49,8 +50,10 @@ urlpatterns = [
     path('collaborators/', views.collaborators, name='collaborators'),
     path('affiliations/', views.affiliations, name='affiliations'),
     path('documentation/', views.documentation, name='documentation'),
-
     path('announcements/', views.all_announcements, name='all_announcements'),
+
+    path("api/flag-tool", flag_tool, name="flag_tool"),
+
 
     path('sitemap.xml', static_sitemap, name='static_sitemap'),
 ] 
