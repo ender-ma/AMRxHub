@@ -19,7 +19,7 @@ def email_verified_required(view_func):
         if not request.user.is_email_verified:
             messages.warning(
                 request,
-                "Please verify your email to access the Social and history page.",
+                "Please verify your email to access the history page.",
                 extra_tags="auto-dismiss-5s",
             )
             return redirect("profil:profile")

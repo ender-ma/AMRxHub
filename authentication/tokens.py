@@ -18,7 +18,10 @@ class EmailVerificationTokenGenerator(PasswordResetTokenGenerator):
             return False
 
         # Constant-time comparison against expected token
-        if not constant_time_compare(self._make_token_with_timestamp(user, ts), token):
+        if not constant_time_compare(
+            self._make_token_with_timestamp(user, ts, self.secret),
+            token,
+        ):
             return False
 
         timeout = getattr(settings, "EMAIL_VERIFICATION_TIMEOUT", 60 * 60 * 24)

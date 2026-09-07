@@ -177,8 +177,8 @@ def register_user(request):
 
             send_mail_with_short_timeout(
                 "Welcome to AMRx Hub!",
-                "Thank you for registering at AMRx Hub. If you have any questions, feel free to reach out to us. Or if you would prefer," \
-                "you can watch our tutorial videos on how to use the platform. We hope you enjoy your experience!",
+                "Thank you for registering at AMRx Hub. If you have any questions, feel free to reach out to us. Or if you would prefer, " \
+                "you can watch our tutorial videos here: https://youtu.be/DFF-EhoydX8?si=9CQ0YXwB0Rf85-RN, on how to use the platform. We hope you enjoy your experience",
                 "no-reply@amrxhub.com",
                 [email],
                 fail_silently=False,

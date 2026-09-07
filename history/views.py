@@ -15,3 +15,6 @@ class HistoryDeleteView(LoginRequiredMixin, DeleteView):
     model = History
     success_url = reverse_lazy('history:history')
     template_name = 'history/history_confirm_delete.html'
+
+    def get_queryset(self):
+        return History.objects.filter(user=self.request.user)
