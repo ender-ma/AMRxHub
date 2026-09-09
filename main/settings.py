@@ -40,36 +40,9 @@ if not SECRET_KEY:
 # -----------------------------------------------------------------------------
 # Hosts / CSRF
 # -----------------------------------------------------------------------------
-ALLOWED_HOSTS = env_list(
-    "ALLOWED_HOSTS",
-    [
-        "localhost",
-        "127.0.0.1",
-        ".vscode-cdn.net",
-        ".gitpod.io",
-        ".codespaces.app",
-        "amrxhub.com",
-        "www.amrxhub.com",
-        "amrxhub-production.up.railway.app",
-        "www.amrxhub-production.up.railway.app",
-    ],
-)
+ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", [])
 
-CSRF_TRUSTED_ORIGINS = env_list(
-    "CSRF_TRUSTED_ORIGINS",
-    [
-        "https://*.vscode-cdn.net",
-        "https://*.gitpod.io",
-        "https://*.codespaces.app",
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-        "http://127.0.0.1",
-        "https://amrxhub.com",
-        "https://www.amrxhub.com",
-        "https://amrxhub-production.up.railway.app",
-        "https://www.amrxhub-production.up.railway.app",
-    ],
-)
+CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS", [])
 
 
 # -----------------------------------------------------------------------------
