@@ -12,18 +12,23 @@
 
 <div class="resources-grid">
     {% for category in categories %}
-    <div class="resource-category">
-        <a href="{% url 'resources:category_resources' category.pk %}" class="resource-category-link">
-            <div class="resource-category-header">
-                <i class="{{ category.icon }}"></i>
-                <h3>{{ category.name }}</h3>
-            </div>
-        </a>
+    <div class="resource-category"
+         data-href="{% url 'resources:category_resources' category.pk %}"
+         tabindex="0"
+         role="link"
+         onclick="handleCategoryClick(event, this)"
+         onkeydown="if(event.key==='Enter') window.location.href=this.dataset.href;">
 
-        <p class="resource-category-description">{{ category.description }}</p>
+        <div class="resource-category-head">
+            <div class="resource-category-icon"><i class="{{ category.icon }}"></i></div>
+            <div class="resource-category-title">
+                <h3>{{ category.name }}</h3>
+                <p class="resource-category-description">{{ category.description }}</p>
+            </div>
+        </div>
 
         <div class="resource-items-list">
-            {% for item in category.items.all %}
+            {% for item in category.items.all|slice:":4" %}
             <div class="resource-item">
                 <h4>{{ item.title }}</h4>
                 <p>{{ item.description }}</p>
@@ -47,6 +52,12 @@
                 <span class="no-resource">No resources yet</span>
             </div>
             {% endfor %}
+            {% if category.items.count > 3 %}<div class="resource-fade"></div>{% endif %}
+        </div>
+
+        <div class="resource-category-foot">
+            <span class="resource-count">{{ category.items.count }} resource{{ category.items.count|pluralize }}</span>
+            <span class="view-resources-hint">View all <i class="fas fa-arrow-right"></i></span>
         </div>
     </div>
     {% endfor %}
@@ -65,120 +76,119 @@
     }
 
     .resource-category {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e0e7ff 100%);
+        background: #ffffff;
         border: 1px solid #e1e8ed;
-        border-radius: 15px;
-            padding: 18px;
+        border-radius: 16px;
+        padding: 20px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            height: 360px; /* fixed category card height to prevent stretching */
-            overflow: hidden;
-        }
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        height: 420px;
+        overflow: hidden;
+        cursor: pointer;
+    }
 
     .resource-category:hover {
         transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
     }
 
-    .resource-category-link {
-        text-decoration: none;
-        color: inherit;
+    .resource-category:focus-visible {
+        outline: 3px solid #667eea;
+        outline-offset: 2px;
     }
 
-    .resource-category-header {
+    .resource-category-head {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .resource-category-icon {
+        flex: 0 0 auto;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: rgba(102, 126, 234, 0.1);
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 10px;
-        color: #000000;
+        justify-content: center;
+        color: #667eea;
+        font-size: 16px;
     }
 
-    .resource-category-header i {
-        font-size: 24px;
+    .resource-category-title {
+        min-width: 0;
     }
 
-    .resource-category-header h3 {
-        margin: 0;
-        font-size: 20px;
+    .resource-category-title h3 {
+        margin: 0 0 4px;
+        font-size: 18px;
         font-weight: 700;
         color: #222;
     }
 
     .resource-category-description {
-        color: #444;
-        font-size: 14px;
+        color: #5b6072;
+        font-size: 13px;
         line-height: 1.5;
-        margin-bottom: 18px;
+        margin: 0;
     }
 
     .resource-items-list {
         display: flex;
         flex-direction: column;
-            gap: 12px;
-            {% comment %} overflow-y: auto; /* make list scrollable when many items */ {% endcomment %}
-            padding-right: 8px;
-            max-height: 180px; /* ensures category cards keep fixed height */
-        }
+        gap: 10px;
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+    }
 
-        .resource-item {
-            background: rgba(102, 126, 234, 0.05);
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid rgba(102, 126, 234, 0.1);
-            transition: all 0.3s;
-            flex: 0 0 auto; /* prevent items from stretching */
-        }
-
-        .resource-item p {
-            color: #666;
-            margin-bottom: 10px;
-            line-height: 1.5;
-            font-size: 14px;
-            max-height: 3.6em; /* clamp description to ~3 lines */
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-        }
+    .resource-fade {
+        position: absolute;
+        left: 0; right: 0; bottom: 0;
+        height: 40px;
+        background: linear-gradient(to bottom, rgba(255,255,255,0), #ffffff 85%);
+        pointer-events: none;
+    }
 
     .resource-item {
         background: rgba(102, 126, 234, 0.05);
-        padding: 15px;
+        padding: 12px;
         border-radius: 10px;
         border: 1px solid rgba(102, 126, 234, 0.1);
-        transition: all 0.3s;
-    }
-
-    .resource-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        flex: 0 0 auto;
     }
 
     .resource-item h4 {
         color: #333;
-        margin-bottom: 8px;
-        font-size: 16px;
+        margin: 0 0 6px;
+        font-size: 14.5px;
     }
 
     .resource-item p {
         color: #666;
-        margin-bottom: 10px;
+        margin: 0 0 8px;
         line-height: 1.5;
-        font-size: 14px;
+        font-size: 13px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .resource-link {
         color: #667eea;
         text-decoration: none;
         font-weight: 600;
+        font-size: 13px;
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        transition: color 0.3s;
+        position: relative;
+        z-index: 1; /* keeps link above the card's own click handler */
     }
 
     .resource-link:hover {
@@ -188,6 +198,40 @@
     .no-resource {
         color: #aaa;
         font-size: 13px;
+    }
+
+    .resource-category-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 10px;
+        border-top: 1px solid #eef0fb;
+    }
+
+    .resource-count {
+        font-size: 12px;
+        color: #8b8fa3;
+    }
+
+    .view-resources-hint {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #667eea;
+        background: rgba(102, 126, 234, 0.1);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 7px 12px;
+        border-radius: 999px;
+    }
+
+    .view-resources-hint i {
+        font-size: 10px;
+        transition: transform 0.2s ease;
+    }
+
+    .resource-category:hover .view-resources-hint i {
+        transform: translateX(3px);
     }
 
     .microorganism-pattern {
@@ -208,15 +252,25 @@
         50% { transform: translateY(-15px) rotate(180deg); }
     }
 
-    /* Responsive: let category cards expand on small screens */
     @media (max-width: 900px) {
         .resource-category {
             height: auto;
             overflow: visible;
         }
         .resource-items-list {
-            max-height: none;
+            flex: none;
+            overflow: visible;
+        }
+        .resource-fade {
+            display: none;
         }
     }
 </style>
+
+<script>
+    function handleCategoryClick(e, el) {
+        if (e.target.closest('a')) return; // let PDF/external item links behave normally
+        window.location.href = el.dataset.href;
+    }
+</script>
 {% endblock %}
