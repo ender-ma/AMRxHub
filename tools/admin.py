@@ -32,7 +32,7 @@ class ToolAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description', 'institution', 'author']
     ordering = ['-created_at']
     list_editable = ['is_featured', 'is_active']
-    readonly_fields = ['added_by', 'approved_by', 'approved_at', 'click_count']
+    readonly_fields = ['added_by', 'created_at', 'updated_by', 'updated_at', 'approved_by', 'approved_at', 'click_count']
     fieldsets = (
         ('Basic Information', {'fields': ('name', 'short_description', 'description', 'category')}),
         ('Tool Access', {'fields': ('url', 'tool_type')}),
@@ -40,6 +40,7 @@ class ToolAdmin(admin.ModelAdmin):
         ('Media', {'fields': ('logo', 'screenshot'), 'classes': ('collapse',)}),
         ('Features & Requirements', {'fields': ('features', 'requirements'), 'classes': ('collapse',)}),
         ('Management', {'fields': ('approval_status', 'rejection_reason', 'is_featured', 'is_active'), 'classes': ('collapse',)}),
+        ('Audit', {'fields': ('added_by', 'created_at', 'updated_by', 'updated_at', 'approved_by', 'approved_at', 'click_count')}),
     )
     actions = ['approve_tools', 'reject_tools', 'feature_tools', 'unfeature_tools']
 
@@ -51,42 +52,26 @@ class ToolAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not obj.pk:
             obj.added_by = request.user
-            if request.user.is_staff:
-                obj.approval_status = 'approved'
+        obj.updated_by = request.user
+        if obj.approval_status == 'approved':
+            if not obj.approved_by_id or 'approval_status' in form.changed_data:
                 obj.approved_by = request.user
                 obj.approved_at = timezone.now()
-        elif obj.approval_status == 'approved' and not obj.approved_by:
-            obj.approved_by = request.user
-            obj.approved_at = timezone.now()
+        else:
+            obj.approved_by = None
+            obj.approved_at = None
         super().save_model(request, obj, form, change)
 
     def approve_tools(self, request, queryset):
-        updated = queryset.update(approval_status='approved', approved_by=request.user, approved_at=timezone.now())
+        updated = queryset.update(approval_status='approved', approved_by=request.user, approved_at=timezone.now(), updated_by=request.user)
         self.message_user(request, f'{updated} tools approved successfully.')
     approve_tools.short_description = 'Approve selected tools'
 
     def reject_tools(self, request, queryset):
-        updated = queryset.update(approval_status='rejected')
+        updated = queryset.update(approval_status='rejected', approved_by=None, approved_at=None, updated_by=request.user)
         self.message_user(request, f'{updated} tools rejected.')
     reject_tools.short_description = 'Reject selected tools'
 
-    def feature_tools(self, request, queryset):
-        updated = queryset.update(is_featured=True)
-        self.message_user(request, f'{updated} tools featured.')
-    feature_tools.short_description = 'Feature selected tools'
-
-    def unfeature_tools(self, request, queryset):
-        updated = queryset.update(is_featured=False)
-        self.message_user(request, f'{updated} tools unfeatured.')
-    unfeature_tools.short_description = 'Unfeature selected tools'
-    
-    def total_views(self, obj):
-        return History.objects.filter(content_type__model='tool', object_id=obj.id).count()
-    total_views.short_description = 'Total Views'
-
-    def unique_users(self, obj):
-        return History.objects.filter(content_type__model='tool', object_id=obj.id).values('user').distinct().count()
-    unique_users.short_description = 'Unique Users'
 
 @admin.register(ToolClick)
 class ToolClickAdmin(admin.ModelAdmin):

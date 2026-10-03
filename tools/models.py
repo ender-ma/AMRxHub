@@ -118,6 +118,14 @@ class Tool(models.Model):
         blank=True,
         related_name='approved_tools'
     )
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='updated_tools'
+    )
+
     rejection_reason = models.TextField(blank=True)
     
     # Timestamps
