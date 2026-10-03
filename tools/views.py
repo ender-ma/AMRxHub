@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib import messages
-from .models import ToolCategory, Tool, ToolClick
+from .models import ToolCategory, Tool
+from .tracking import record_tool_click
 from django.urls import reverse
 from rapidfuzz import process
 from django.db.models import Q
@@ -43,6 +44,7 @@ class ToolDetailView(ObjectViewMixin, DetailView):
     
 def tool_access(request, tool_id):
     tool = get_object_or_404(Tool, pk=tool_id)
+    record_tool_click(request, tool)
     if request.user.is_authenticated:
         ct = ContentType.objects.get_for_model(tool)
         History.objects.create(user=request.user, content_type=ct, object_id=tool.pk)
@@ -70,13 +72,7 @@ def history(request):
 
 def tool_redirect(request, tool_id):
     tool = get_object_or_404(Tool, id=tool_id, is_active=True, approval_status='approved')
-    ToolClick.objects.create(
-        tool=tool,
-        user=request.user if request.user.is_authenticated else None,
-        ip_address=request.META.get('REMOTE_ADDR', '')
-    )
-    tool.click_count = (tool.click_count or 0) + 1
-    tool.save(update_fields=['click_count'])
+    record_tool_click(request, tool)
     if request.user.is_authenticated:
         ct = ContentType.objects.get_for_model(tool)
         History.objects.create(user=request.user, content_type=ct, object_id=tool.pk)

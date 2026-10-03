@@ -161,17 +161,25 @@ class Tool(models.Model):
         return []
 
 class ToolClick(models.Model):
+    """One anonymous click on a tool's access link.
+
+    New clicks store no user and no IP address, only a daily-rotating hash so
+    unique visitors can be counted without identifying anyone. `user` and
+    `ip_address` are kept only so older rows are not lost.
+    """
     tool = models.ForeignKey(Tool, on_delete=models.CASCADE, related_name='clicks')
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.SET_NULL, 
-        null=True, 
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
         blank=True
     )
-    ip_address = models.GenericIPAddressField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-    
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    visitor_hash = models.CharField(max_length=64, blank=True, db_index=True)
+    timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
+
     class Meta:
         verbose_name = "Tool Click"
         verbose_name_plural = "Tool Clicks"
+        indexes = [models.Index(fields=['tool', 'timestamp'])]
 

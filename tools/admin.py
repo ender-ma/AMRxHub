@@ -1,7 +1,9 @@
 from django.contrib import admin
+from django.db.models import Count, Q
 from django.utils.html import format_html
 from django.utils import timezone
 from .models import ToolCategory, Tool, ToolClick
+from .tracking import click_statistics, period_starts
 
 @admin.register(ToolCategory)
 class ToolCategoryAdmin(admin.ModelAdmin):
@@ -27,7 +29,7 @@ class ToolCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Tool)
 class ToolAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category', 'tool_type', 'get_approval_status_display', 'institution', 'click_count', 'is_featured', 'is_active', 'created_at']
+    list_display = ['name', 'category', 'tool_type', 'get_approval_status_display', 'institution', 'clicks_7d', 'clicks_30d', 'click_count', 'is_featured', 'is_active', 'created_at']
     list_filter = ['approval_status', 'category', 'tool_type', 'is_active', 'is_featured', 'created_at']
     search_fields = ['name', 'description', 'institution', 'author']
     ordering = ['-created_at']
@@ -72,13 +74,50 @@ class ToolAdmin(admin.ModelAdmin):
         self.message_user(request, f'{updated} tools rejected.')
     reject_tools.short_description = 'Reject selected tools'
 
+    def feature_tools(self, request, queryset):
+        updated = queryset.update(is_featured=True)
+        self.message_user(request, f'{updated} tools featured.')
+    feature_tools.short_description = 'Feature selected tools'
+
+    def unfeature_tools(self, request, queryset):
+        updated = queryset.update(is_featured=False)
+        self.message_user(request, f'{updated} tools unfeatured.')
+    unfeature_tools.short_description = 'Unfeature selected tools'
+
+    def get_queryset(self, request):
+        starts = period_starts()
+        return super().get_queryset(request).annotate(
+            clicks_7d=Count('clicks', filter=Q(clicks__timestamp__gte=starts['week']), distinct=True),
+            clicks_30d=Count('clicks', filter=Q(clicks__timestamp__gte=starts['month']), distinct=True),
+        )
+
+    @admin.display(description='Clicks (7d)', ordering='clicks_7d')
+    def clicks_7d(self, obj):
+        return obj.clicks_7d
+
+    @admin.display(description='Clicks (30d)', ordering='clicks_30d')
+    def clicks_30d(self, obj):
+        return obj.clicks_30d
+
 
 @admin.register(ToolClick)
 class ToolClickAdmin(admin.ModelAdmin):
-    list_display = ['tool', 'user', 'ip_address', 'timestamp']
+    change_list_template = 'admin/tools/toolclick/change_list.html'
+    list_display = ['tool', 'tool_category', 'timestamp']
     list_filter = ['timestamp', 'tool__category']
-    search_fields = ['tool__name', 'user__username', 'ip_address']
-    readonly_fields = ['tool', 'user', 'ip_address', 'timestamp']
+    search_fields = ['tool__name']
+    date_hierarchy = 'timestamp'
+    list_select_related = ['tool__category']
+    fields = ['tool', 'timestamp']
+    readonly_fields = ['tool', 'timestamp']
+
+    @admin.display(description='Category', ordering='tool__category__name')
+    def tool_category(self, obj):
+        return obj.tool.category
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = {**(extra_context or {}), 'stats': click_statistics()}
+        return super().changelist_view(request, extra_context=extra_context)
 
     def has_add_permission(self, request):
         return False

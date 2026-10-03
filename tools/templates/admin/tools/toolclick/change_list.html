@@ -1,0 +1,116 @@
+{% extends "admin/change_list.html" %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  .tc-stats { margin: 0 0 24px; }
+  .tc-stats h2 { margin: 0 0 6px; font-size: 1.1rem; }
+  .tc-note { color: var(--body-quiet-color); margin: 0 0 16px; font-size: .8rem; }
+  .tc-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .tc-card { border: 1px solid var(--hairline-color); border-radius: 6px; padding: 12px 14px; background: var(--darkened-bg); }
+  .tc-card .label { color: var(--body-quiet-color); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+  .tc-card .value { font-size: 1.6rem; font-weight: 600; color: var(--body-fg); margin: 2px 0; }
+  .tc-card .sub { color: var(--body-quiet-color); font-size: .8rem; }
+  .tc-panel { border: 1px solid var(--hairline-color); border-radius: 6px; padding: 12px 14px; margin-bottom: 20px; }
+  .tc-panel h3 { margin: 0 0 10px; font-size: .9rem; color: var(--body-fg); background: none; padding: 0; text-transform: none; }
+  .tc-trend { display: flex; align-items: flex-end; gap: 3px; height: 120px; }
+  .tc-trend .bar { flex: 1; background: var(--link-fg); border-radius: 2px 2px 0 0; min-height: 2px; opacity: .85; }
+  .tc-trend .bar.zero { background: var(--hairline-color); }
+  .tc-axis { display: flex; justify-content: space-between; color: var(--body-quiet-color); font-size: .75rem; margin-top: 4px; }
+  .tc-tops { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .tc-tops table, .tc-panel table { width: 100%; }
+  .tc-tops td.num, .tc-panel td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .tc-empty { color: var(--body-quiet-color); font-style: italic; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="tc-stats">
+  <h2>Tool usage</h2>
+  <p class="tc-note">Clicks are anonymous: no user account or IP address is stored. Bots and repeat clicks by the same visitor within 10 minutes are not counted. Visitors are counted per day.</p>
+
+  <div class="tc-cards">
+    {% for p in stats.periods %}
+    <div class="tc-card">
+      <div class="label">{{ p.label }}</div>
+      <div class="value">{{ p.clicks }}</div>
+      <div class="sub">{{ p.visitors }} visitor{{ p.visitors|pluralize }}</div>
+    </div>
+    {% endfor %}
+    <div class="tc-card">
+      <div class="label">All time</div>
+      <div class="value">{{ stats.all_time }}</div>
+      <div class="sub">recorded clicks</div>
+    </div>
+  </div>
+
+  <div class="tc-panel">
+    <h3>Daily clicks, last 30 days (peak {{ stats.trend_peak }})</h3>
+    <div class="tc-trend">
+      {% for d in stats.trend %}
+      <div class="bar{% if not d.total %} zero{% endif %}" style="height: {{ d.percent }}%" title="{{ d.day|date:'D j M' }}: {{ d.total }} click{{ d.total|pluralize }}"></div>
+      {% endfor %}
+    </div>
+    <div class="tc-axis">
+      <span>{{ stats.trend.0.day|date:"j M" }}</span>
+      <span>Today</span>
+    </div>
+  </div>
+
+  <div class="tc-tops">
+    {% for p in stats.periods %}
+    <div class="tc-panel">
+      <h3>Top tools: {{ p.label|lower }}</h3>
+      {% if p.top_tools %}
+      <table>
+        <tbody>
+          {% for t in p.top_tools %}
+          <tr>
+            <td><a href="{% url 'admin:tools_tool_change' t.tool__id %}">{{ t.tool__name }}</a><br><small>{{ t.tool__category__name }}</small></td>
+            <td class="num">{{ t.total }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="tc-empty">No clicks yet.</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="tc-tops">
+    <div class="tc-panel">
+      <h3>Clicks by category: last 30 days</h3>
+      {% if stats.categories %}
+      <table>
+        <tbody>
+          {% for c in stats.categories %}
+          <tr><td>{{ c.tool__category__name }}</td><td class="num">{{ c.total }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="tc-empty">No clicks yet.</p>
+      {% endif %}
+    </div>
+    <div class="tc-panel">
+      <h3>Active tools with no clicks: last 30 days ({{ stats.unused_tools|length }})</h3>
+      {% if stats.unused_tools %}
+      <table>
+        <tbody>
+          {% for t in stats.unused_tools %}
+          <tr><td><a href="{% url 'admin:tools_tool_change' t.id %}">{{ t.name }}</a></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="tc-empty">Every active tool was used.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <h2>Click log</h2>
+</div>
+{{ block.super }}
+{% endblock %}
