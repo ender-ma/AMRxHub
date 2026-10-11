@@ -9,8 +9,20 @@ class Migration(migrations.Migration):
         ('tools', '0010_alter_tool_name_alter_tool_short_description_and_more'),
     ]
 
+    # 0008/0009 already dropped the table with raw SQL, so only the model state
+    # is removed here; IF EXISTS keeps fresh databases (and tests) migrating.
     operations = [
-        migrations.DeleteModel(
-            name='AnalysisHistory',
+        migrations.SeparateDatabaseAndState(
+            database_operations=[
+                migrations.RunSQL(
+                    "DROP TABLE IF EXISTS tools_analysishistory;",
+                    migrations.RunSQL.noop,
+                ),
+            ],
+            state_operations=[
+                migrations.DeleteModel(
+                    name='AnalysisHistory',
+                ),
+            ],
         ),
     ]

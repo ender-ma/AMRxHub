@@ -1,4 +1,6 @@
 import os
+import sys
+import tempfile
 from pathlib import Path
 
 import cloudinary
@@ -32,7 +34,10 @@ def env_list(name: str, default: list[str]) -> list[str]:
 DEBUG = env_bool("DEBUG", False)
 ENVIRONMENT = os.environ.get("ENVIRONMENT", "development").strip().lower()
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-insecure-key" if DEBUG else "")
+# `python manage.py test` runs offline: see the overrides at the end of this file
+TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
+
+SECRET_KEY = os.environ.get("SECRET_KEY") or ("dev-only-insecure-key" if DEBUG or TESTING else "")
 if not SECRET_KEY:
     raise ImproperlyConfigured("SECRET_KEY environment variable is required when DEBUG=False")
 
@@ -127,7 +132,7 @@ TEMPLATES = [
 # -----------------------------------------------------------------------------
 database_url = os.getenv("DATABASE_URL", "").strip().strip("'\"")
 if not database_url:
-    if DEBUG:
+    if DEBUG or TESTING:
         # Build-time fallback so collectstatic can import settings
         database_url = "postgresql://placeholder:placeholder@localhost:5432/placeholder"
     else:
@@ -284,7 +289,7 @@ if not DEBUG:
 USE_SMTP_IN_DEV = env_bool("USE_SMTP_IN_DEV", False)
 BREVO_API_KEY = os.environ.get("BREVO_API_KEY", "").strip()
 
-if USE_SMTP_IN_DEV or ENVIRONMENT == "production":
+if not TESTING and (USE_SMTP_IN_DEV or ENVIRONMENT == "production"):
     if not BREVO_API_KEY:
         raise ImproperlyConfigured("BREVO_API_KEY is required when using the Brevo email backend.")
     EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
@@ -350,3 +355,25 @@ LOGGING = {
         },
     },
 }
+
+
+# -----------------------------------------------------------------------------
+# Tests: never touch Neon, Cloudinary or Brevo
+# -----------------------------------------------------------------------------
+if TESTING:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "test_db.sqlite3",  # tests use an in-memory copy
+        }
+    }
+    STORAGES = {
+        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    }
+    MEDIA_ROOT = Path(tempfile.gettempdir()) / "amrxhub-test-media"
+    EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+    PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False

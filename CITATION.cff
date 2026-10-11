@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use AMRx Hub, please cite it using the metadata below."
+type: software
+title: "AMRx Hub: A Curated Web Platform for Discovery of Antimicrobial Resistance Resources"
+abstract: >-
+  AMRx Hub is an open-access web platform for centralized discovery of
+  antimicrobial resistance (AMR) resources, bringing together databases,
+  analytical tools, publications, protocols, surveillance systems,
+  educational content and policy references in one searchable repository.
+authors:
+  - given-names: "Elijah Kolawole"
+    family-names: "Oladipo"
+  - given-names: "Akinloluwa Isaac"
+    family-names: "Adeolu-Shittu"
+  - given-names: "Adeniyi Daniel"
+    family-names: "Fatuyi-Adene"
+  - given-names: "Joy Olamiposi"
+    family-names: "Emmanuel"
+version: "0.9.5"
+date-released: "2026-08-29"
+doi: "10.5281/zenodo.22180074"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.22180074"
+    description: "Zenodo archive of AMRx Hub"
+license: Apache-2.0
+repository-code: "https://github.com/ender-ma/AMRxHub"
+url: "https://amrxhub.helixbiogeninstitute.org/"
+keywords:
+  - antimicrobial resistance
+  - AMR
+  - bioinformatics
+  - resource discovery
+  - Django

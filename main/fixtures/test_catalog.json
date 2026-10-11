@@ -1,0 +1,157 @@
+[
+  {
+    "model": "tools.toolcategory",
+    "pk": 9001,
+    "fields": {
+      "name": "Escherichia coli",
+      "description": "Tools for analysing resistance in E. coli.",
+      "detailed_description": "",
+      "icon": "fas fa-bacterium",
+      "color": "#667eea",
+      "order": 1,
+      "is_active": true,
+      "category_type": "organism",
+      "created_at": "2026-01-15T10:00:00Z",
+      "updated_at": "2026-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "tools.toolcategory",
+    "pk": 9002,
+    "fields": {
+      "name": "Resistance Gene Detection",
+      "description": "Identify antimicrobial resistance genes in sequence data.",
+      "detailed_description": "",
+      "icon": "fas fa-dna",
+      "color": "#4caf50",
+      "order": 2,
+      "is_active": true,
+      "category_type": "general",
+      "created_at": "2026-01-15T10:00:00Z",
+      "updated_at": "2026-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "tools.tool",
+    "pk": 9101,
+    "fields": {
+      "name": "ResFinder",
+      "short_description": "Identifies acquired resistance genes and chromosomal mutations.",
+      "description": "Web service that identifies acquired antimicrobial resistance genes and chromosomal point mutations in sequenced isolates.",
+      "category": 9002,
+      "url": "https://genepi.food.dtu.dk/resfinder",
+      "tool_type": "web",
+      "approval_status": "approved",
+      "is_active": true,
+      "is_featured": true,
+      "institution": "Technical University of Denmark",
+      "features": "Acquired gene detection\nPoint mutation detection",
+      "click_count": 0,
+      "created_at": "2026-01-15T10:00:00Z",
+      "updated_at": "2026-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "tools.tool",
+    "pk": 9102,
+    "fields": {
+      "name": "AMRFinderPlus",
+      "short_description": "Finds resistance genes and point mutations in protein or nucleotide sequences.",
+      "description": "NCBI tool that identifies antimicrobial resistance genes, stress response and virulence genes, and resistance-associated point mutations.",
+      "category": 9002,
+      "url": "https://www.ncbi.nlm.nih.gov/pathogens/antimicrobial-resistance/AMRFinder/",
+      "tool_type": "download",
+      "approval_status": "approved",
+      "is_active": true,
+      "is_featured": false,
+      "institution": "NCBI",
+      "click_count": 0,
+      "created_at": "2026-01-16T10:00:00Z",
+      "updated_at": "2026-01-16T10:00:00Z"
+    }
+  },
+  {
+    "model": "tools.tool",
+    "pk": 9103,
+    "fields": {
+      "name": "Pending Example Tool",
+      "short_description": "Submitted but not yet reviewed.",
+      "description": "Should never be visible to the public.",
+      "category": 9002,
+      "url": "https://example.com/pending",
+      "tool_type": "web",
+      "approval_status": "pending",
+      "is_active": true,
+      "is_featured": false,
+      "click_count": 0,
+      "created_at": "2026-01-17T10:00:00Z",
+      "updated_at": "2026-01-17T10:00:00Z"
+    }
+  },
+  {
+    "model": "tools.tool",
+    "pk": 9104,
+    "fields": {
+      "name": "Retired Example Tool",
+      "short_description": "Approved but switched off.",
+      "description": "Should never be visible to the public.",
+      "category": 9002,
+      "url": "https://example.com/retired",
+      "tool_type": "web",
+      "approval_status": "approved",
+      "is_active": false,
+      "is_featured": false,
+      "click_count": 0,
+      "created_at": "2026-01-18T10:00:00Z",
+      "updated_at": "2026-01-18T10:00:00Z"
+    }
+  },
+  {
+    "model": "resources.resourcecategory",
+    "pk": 9201,
+    "fields": {
+      "name": "Surveillance Reports",
+      "icon": "fas fa-chart-line",
+      "description": "National and global AMR surveillance publications.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "resources.resourceitem",
+    "pk": 9301,
+    "fields": {
+      "category": 9201,
+      "title": "GLASS Report",
+      "description": "WHO Global Antimicrobial Resistance and Use Surveillance System report.",
+      "link": "https://www.who.int/initiatives/glass",
+      "link_text": "Open report",
+      "link_icon": "fas fa-external-link-alt",
+      "pdf_file": "",
+      "image": "",
+      "approval_status": "approved",
+      "is_active": true
+    }
+  },
+  {
+    "model": "main.announcement",
+    "pk": 9401,
+    "fields": {
+      "title": "Test Catalog Announcement",
+      "content": "New AMR tools have been added.",
+      "date": "2026-01-20T09:00:00Z",
+      "link": "",
+      "is_deleted": false
+    }
+  },
+  {
+    "model": "main.announcement",
+    "pk": 9402,
+    "fields": {
+      "title": "Deleted Announcement",
+      "content": "Should not be shown.",
+      "date": "2026-01-21T09:00:00Z",
+      "link": "",
+      "is_deleted": true
+    }
+  }
+]
