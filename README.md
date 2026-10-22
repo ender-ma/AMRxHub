@@ -1,5 +1,15 @@
 # AMRx Hub
-https://doi.org/10.5281/zenodo.22180074
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22180074.svg)](https://doi.org/10.5281/zenodo.22180074)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Django 5.2](https://img.shields.io/badge/django-5.2-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
+[![PostgreSQL](https://img.shields.io/badge/postgresql-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/docker-ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
+[![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Famrxhub.helixbiogeninstitute.org)](https://amrxhub.helixbiogeninstitute.org)
+[![Last commit](https://img.shields.io/github/last-commit/ender-ma/AMRxHub)](https://github.com/ender-ma/AMRxHub/commits/main)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](#contributing)
+
 
 AMRx Hub is an open-access web platform for centralized discovery of antimicrobial resistance (AMR) resources across the scientific ecosystem. It brings together databases, analytical tools, publications, protocols, surveillance systems, educational content, and policy references into a single searchable repository.
 
@@ -152,7 +162,7 @@ Contributions are welcome. Areas for contribution include:
 - Feature suggestions
 - Development contributions
 
-Please follow project standards and maintain scientific integrity when submitting changes. Change and ideas can be submitted to 
+Please follow project standards and maintain scientific integrity when submitting changes. Changes and ideas can be submitted to amrtool344@gmail.com
 
 ## Roadmap (Future Goals)
 
@@ -175,7 +185,7 @@ License information can be found in the license file.
 
 ## Contact
 
-- **Project Lead:** Akinloluwa Isaac Adeolu-Shittu
+- **Technical Lead:** Akinloluwa Isaac Adeolu-Shittu
 - **Email:** isaacodes25@gmail.com
-- **Website:** https://amrxhub-production.up.railway.app/
+- **Website:** https://amrxhub.helixbiogeninstitute.org
 - **GitHub Repository:** https://github.com/ender-ma/AMRxHub
