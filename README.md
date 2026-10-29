@@ -1,5 +1,6 @@
 # AMRx Hub
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22180074.svg)](https://doi.org/10.5281/zenodo.22180074)
+[![MRA](https://img.shields.io/badge/MRA-10.1128%2Fmra.00997--26-1f6feb)](https://doi.org/10.1128/mra.00997-26)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Django 5.2](https://img.shields.io/badge/django-5.2-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
@@ -177,7 +178,41 @@ Please follow project standards and maintain scientific integrity when submittin
 
 ## Citation
 
-Formal citation information will be added after manuscript publication.
+If AMRx Hub supports your work, please cite the publication and the software release you used.
+
+**Publication (Microbiology Resource Announcements)**
+
+> Oladipo EK, Adeolu-Shittu AI, Fatuyi-Adene AD, Emmanuel JO. 2026. AMRx Hub: a curated web platform for discovery of antimicrobial resistance resources. Microbiol Resour Announc e00997-26. https://doi.org/10.1128/mra.00997-26
+
+**Software (Zenodo)**
+
+> Oladipo, E. K., Adeolu-Shittu, A. I., Fatuyi-Adene, A. D., & Emmanuel, J. O. (2026). *AMRx Hub: A Curated Web Platform for Discovery of Antimicrobial Resistance Resources* (Version 0.9.5) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22180074
+
+<details>
+<summary>BibTeX</summary>
+
+```bibtex
+@article{oladipo2026amrxhub,
+  author  = {Oladipo, Elijah Kolawole and Adeolu-Shittu, Akinloluwa Isaac and Fatuyi-Adene, Adeniyi Daniel and Emmanuel, Joy Olamiposi},
+  title   = {{AMRx Hub}: a curated web platform for discovery of antimicrobial resistance resources},
+  journal = {Microbiology Resource Announcements},
+  year    = {2026},
+  pages   = {e00997-26},
+  doi     = {10.1128/mra.00997-26}
+}
+
+@software{oladipo2026amrxhub_software,
+  author    = {Oladipo, Elijah Kolawole and Adeolu-Shittu, Akinloluwa Isaac and Fatuyi-Adene, Adeniyi Daniel and Emmanuel, Joy Olamiposi},
+  title     = {{AMRx Hub}: A Curated Web Platform for Discovery of Antimicrobial Resistance Resources},
+  version   = {0.9.5},
+  publisher = {Zenodo},
+  year      = {2026},
+  doi       = {10.5281/zenodo.22180074},
+  url       = {https://doi.org/10.5281/zenodo.22180074}
+}
+```
+
+</details>
 
 ## License
 

@@ -378,13 +378,15 @@ body {
     min-width: 200px;
 }
 
-.footer-col h4 {
+.footer-col h4,
+.footer-cite h4 {
     margin: 0 0 16px;
     font-size: 1rem;
     position: relative;
 }
 
-.footer-col h4::before {
+.footer-col h4::before,
+.footer-cite h4::before {
     content: "";
     position: absolute;
     left: 0;
@@ -435,6 +437,62 @@ body {
 .footer-col .social-links a:hover {
     background: #fff;
     color: #24262b;
+}
+
+.footer-cite {
+    max-width: 1200px;
+    margin: 28px auto 0;
+    padding: 24px 24px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-cite-intro {
+    margin: 0 0 14px;
+    color: #c9cbd2;
+    font-size: 0.9rem;
+}
+
+.footer-cite-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: 16px;
+}
+
+.footer-cite-list li {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-1);
+    padding: 14px 16px;
+}
+
+.footer-cite-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: #c9cbd2;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.footer-cite-list p {
+    margin: 0;
+    color: #e5e7eb;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.footer-cite-list a {
+    color: #a5b4fc;
+    overflow-wrap: anywhere;
+}
+
+.footer-cite-list a:hover {
+    color: #fff;
 }
 
 /* ==========================================================================
@@ -577,6 +635,10 @@ body {
 
     .footer-col .social-links {
         justify-content: center;
+    }
+
+    .footer-cite {
+        padding: 20px 14px 0;
     }
 
     .content-card,
