@@ -249,39 +249,9 @@
                     </a>
                 </div>
             {% endif %}
-
-            <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Open menu" type="button">
-                <i class="fas fa-bars"></i>
-            </button>
         </div>
     </header>
 
-    <aside class="mobile-sidebar" id="mobile-sidebar" aria-hidden="true">
-        <div class="sidebar-header">
-            <h2>Menu</h2>
-            <button class="close-btn" id="mobile-sidebar-close" type="button" aria-label="Close menu">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    
-        <ul class="sidebar-menu">
-            <li><a href="{% url 'home' %}" class="menu-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}"><i class="fas fa-home"></i><span>Home</span></a></li>
-            <li><a href="{% url 'tools:tools' %}" class="menu-item {% if request.resolver_match.url_name == 'tools' %}active{% endif %}"><i class="fas fa-tools"></i><span>Tools</span></a></li>
-            <li><a href="{% url 'resources:resources_list' %}" class="menu-item {% if request.resolver_match.url_name == 'resources' %}active{% endif %}"><i class="fas fa-book"></i><span>Resources</span></a></li>
-            <li>
-                <a href="{% if user.is_authenticated %}{% url 'tools:history' %}{% else %}#{% endif %}"
-                   class="menu-item {% if request.resolver_match.url_name == 'history' or request.resolver_match.url_name == 'tools:history' %}active{% endif %}"
-                   {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
-                    <i class="fas fa-history"></i><span>History</span>
-                </a>
-            </li>
-            <li><a href="{% url 'about' %}" class="menu-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}"><i class="fas fa-info-circle"></i><span>About</span></a></li>
-            <li><a href="{% url 'help' %}" class="menu-item {% if request.resolver_match.url_name == 'help' %}active{% endif %}"><i class="fas fa-question-circle"></i><span>Help</span></a></li>
-        </ul>
-    </aside>
-    
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
-    
     <nav class="sidebar">
         <div class="sidebar-menu">
             <a href="{% url 'home' %}" class="menu-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}"><i class="fas fa-home"></i><span>Home</span></a>
@@ -404,7 +374,18 @@
         <a href="{% url 'resources:resources_list' %}" class="bottom-nav-item {% if ns == 'resources' %}active{% endif %}">
             <i class="fas fa-book"></i><span>Resources</span>
         </a>
-        {% if user.is_authenticated %}
+        <a href="{% if user.is_authenticated %}{% url 'tools:history' %}{% else %}#{% endif %}"
+           class="bottom-nav-item {% if url_name == 'history' %}active{% endif %}"
+           {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
+            <i class="fas fa-history"></i><span>History</span>
+        </a>
+        <a href="{% url 'about' %}" class="bottom-nav-item {% if url_name == 'about' %}active{% endif %}">
+            <i class="fas fa-info-circle"></i><span>About</span>
+        </a>
+        <a href="{% url 'help' %}" class="bottom-nav-item {% if url_name == 'help' %}active{% endif %}">
+            <i class="fas fa-question-circle"></i><span>Help</span>
+        </a>
+        {% comment %} {% if user.is_authenticated %}
             <a href="{% url 'profil:profile' %}" class="bottom-nav-item {% if ns == 'profil' %}active{% endif %}">
                 <i class="fas fa-user"></i><span>Profile</span>
             </a>
@@ -412,7 +393,7 @@
             <a href="{% url 'authentication:login' %}" class="bottom-nav-item">
                 <i class="fas fa-sign-in-alt"></i><span>Login</span>
             </a>
-        {% endif %}
+        {% endif %} {% endcomment %}
     </nav>
     {% endwith %}
 
@@ -431,41 +412,9 @@
             if (modal) modal.style.display = "none";
         }
 
-        function openMobileSidebar() {
-            const sidebar = document.getElementById("mobile-sidebar");
-            const overlay = document.getElementById("sidebar-overlay");
-            if (!sidebar || !overlay) return;
-
-            sidebar.classList.add("active");
-            overlay.classList.add("active");
-            sidebar.setAttribute("aria-hidden", "false");
-            if (window.innerWidth <= 768) document.body.style.overflow = "hidden";
-        }
-
-        function closeMobileSidebar() {
-            const sidebar = document.getElementById("mobile-sidebar");
-            const overlay = document.getElementById("sidebar-overlay");
-            if (!sidebar || !overlay) return;
-
-            sidebar.classList.remove("active");
-            overlay.classList.remove("active");
-            sidebar.setAttribute("aria-hidden", "true");
-            document.body.style.overflow = "";
-        }
-
-        function toggleMobileSidebar() {
-            const sidebar = document.getElementById("mobile-sidebar");
-            if (!sidebar) return;
-            if (sidebar.classList.contains("active")) closeMobileSidebar();
-            else openMobileSidebar();
-        }
-
         document.addEventListener("DOMContentLoaded", function () {
             const profileTrigger = document.getElementById("profile-trigger");
             const profileMenu = document.getElementById("profile-menu");
-            const sidebarToggle = document.getElementById("sidebar-toggle");
-            const sidebarClose = document.getElementById("mobile-sidebar-close");
-            const sidebarOverlay = document.getElementById("sidebar-overlay");
             const loginPromptClose = document.getElementById("login-prompt-close");
             const verificationModal = document.getElementById("verification-prompt");
             const verificationClose = document.querySelector(".close-verification-modal");
@@ -484,9 +433,6 @@
                 }
             });
 
-            if (sidebarToggle) sidebarToggle.addEventListener("click", toggleMobileSidebar);
-            if (sidebarClose) sidebarClose.addEventListener("click", closeMobileSidebar);
-            if (sidebarOverlay) sidebarOverlay.addEventListener("click", closeMobileSidebar);
             if (loginPromptClose) loginPromptClose.addEventListener("click", closeLoginPrompt);
 
             window.addEventListener("click", function (event) {
@@ -504,7 +450,6 @@
 
             document.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
-                    closeMobileSidebar();
                     closeLoginPrompt();
                     if (verificationModal) verificationModal.style.display = "none";
                 }

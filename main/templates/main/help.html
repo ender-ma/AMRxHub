@@ -548,6 +548,7 @@
         width: 100% !important;
     }
 
+    /* Phones: flat sections and two-column tiles, matching Tools and Resources */
     @media (max-width: 600px) {
         .quick-links,
         .faq-section,
@@ -556,8 +557,18 @@
         .contact-support,
         .tips-section,
         .video-tutorials-section {
-            padding: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
+            padding: 0 0 18px;
+            background: none;
+            border-left: 0;
+            border-radius: 0;
+            border-bottom: 1px solid #eef0fb;
+        }
+
+        .contact-support {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: 0;
         }
 
         .quick-links h3,
@@ -565,28 +576,117 @@
         .resources-section h3,
         .tutorials-section h3,
         .contact-support h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+            font-size: 17px;
+            color: #1f2937;
+        }
+
+        .quick-links h3 i,
+        .contact-support h3 i {
+            color: #667eea;
+        }
+
+        .quick-intro {
+            margin: 0 0 12px;
+            font-size: 14px;
         }
 
         .link-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
         }
 
-        .help-link,
-        .help-more,
-        .tutorial-item,
-        .support-option,
-        .tip-header {
+        .help-link {
+            justify-content: center;
+            min-height: 112px;
+            padding: 14px 8px;
+            text-align: center;
+            border: 1px solid #e1e8ed;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .help-link:hover {
+            transform: none;
+        }
+
+        .help-link > div > i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 8px;
+            border-radius: 10px;
+            background: rgba(102, 126, 234, 0.1);
+            font-size: 18px;
+        }
+
+        .help-link span {
+            display: block;
+            color: #222;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        /* The whole tile is the link, so the blurb and call-to-action are redundant here */
+        .help-link .quick-desc,
+        .help-link strong {
+            display: none;
+        }
+
+        .help-more {
+            margin-top: 12px;
             padding: 14px;
+            border: 1px solid #e1e8ed;
+            border-radius: 14px;
         }
 
         .help-more h4 {
-            font-size: 17px;
+            font-size: 15px;
         }
 
         .help-more p {
+            font-size: 13px;
+        }
+
+        .support-options {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .support-option {
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid #e1e8ed;
+            border-radius: 14px;
+            box-shadow: none;
+        }
+
+        .support-option i {
+            display: flex;
+            flex: 0 0 40px;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            margin: 0;
+            border-radius: 10px;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .support-option h4 {
+            margin-bottom: 2px;
             font-size: 14px;
+        }
+
+        .support-option p {
+            margin: 0;
+            font-size: 12.5px;
+            font-weight: 500;
         }
     }
 </style>
