@@ -127,14 +127,22 @@
         background: #e0e7ff;
         color: #333;
     }
+    /* !important: these elements carry inline styles */
     @media (max-width: 900px) {
         .content-card {
-            padding: 24px 8px;
+            padding: 24px 16px !important;
+            margin: 16px auto !important;
         }
         .content-header {
             flex-direction: column;
-            gap: 18px;
+            gap: 18px !important;
             text-align: center;
+        }
+        .tool-description p {
+            text-align: left !important;
+        }
+        .tool-actions {
+            flex-wrap: wrap;
         }
     }
 </style>

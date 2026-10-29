@@ -151,6 +151,7 @@ DATABASES = {
 # -----------------------------------------------------------------------------
 
 if os.getenv("CLOUDINARY_URL"):
+    cloudinary.reset_config()  # cloudinary reads CLOUDINARY_URL on import, before .env was loaded
     cloudinary.config(secure=True)
 
 

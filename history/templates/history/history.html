@@ -158,6 +158,17 @@
         0%, 100% { transform: translateY(0px) rotate(0deg); }
         50% { transform: translateY(-15px) rotate(180deg); }
     }
+    @media (max-width: 600px) {
+        /* Drop the row number and category columns on phones */
+        .history-table th:nth-child(1), .history-table td:nth-child(1),
+        .history-table th:nth-child(3), .history-table td:nth-child(3) {
+            display: none;
+        }
+        .history-table th, .history-table td {
+            padding: 8px 4px;
+            font-size: 0.9rem;
+        }
+    }
 </style>
 
 <script>

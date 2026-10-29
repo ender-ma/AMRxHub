@@ -420,7 +420,7 @@
     
     .info-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
         gap: 25px;
     }
     
@@ -520,7 +520,7 @@
     
     .interest-checkboxes {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
         gap: 12px;
         margin: 15px 0 25px;
     }
@@ -743,6 +743,28 @@
         
         .info-grid {
             grid-template-columns: 1fr;
+        }
+
+        .card-header {
+            padding: 12px 14px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 14px;
+        }
+
+        .info-value {
+            overflow-wrap: anywhere;
+        }
+
+        .setting-item {
+            gap: 12px;
+        }
+
+        .toggle-switch {
+            flex-shrink: 0;
         }
     }
 </style>
@@ -1030,7 +1052,7 @@
             z-index: 10000;
             animation: slideIn 0.3s ease-out;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
+            max-width: min(400px, calc(100vw - 40px));
             ${type === 'success' ? 'background-color: #22c55e;' : 'background-color: #dc2626;'}
         `;
         

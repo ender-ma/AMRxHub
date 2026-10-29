@@ -200,7 +200,7 @@
 
     .link-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
         gap: 15px;
     }
 
@@ -231,7 +231,7 @@
     /* Tutorials */
     .tutorial-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
         gap: 20px;
     }
 
@@ -338,7 +338,7 @@
     /* Support options */
     .support-options {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
         gap: 20px;
     }
 
@@ -491,7 +491,7 @@
 
     .video-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
         gap: 20px;
     }
 
@@ -548,7 +548,34 @@
         width: 100% !important;
     }
 
+    @media (max-width: 600px) {
+        .quick-links,
+        .faq-section,
+        .resources-section,
+        .tutorials-section,
+        .contact-support,
+        .tips-section,
+        .video-tutorials-section {
+            padding: 16px;
+            margin-bottom: 24px;
+        }
 
+        .quick-links h3,
+        .faq-section h3,
+        .resources-section h3,
+        .tutorials-section h3,
+        .contact-support h3 {
+            font-size: 20px;
+        }
+
+        .help-link,
+        .help-more,
+        .tutorial-item,
+        .support-option,
+        .tip-header {
+            padding: 16px;
+        }
+    }
 </style>
 
 <script>

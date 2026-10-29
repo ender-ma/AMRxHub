@@ -222,7 +222,7 @@ Discover and access antimicrobial resistance analysis tools organized by categor
 
     .feature-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
         gap: 20px;
         margin-top: 20px;
     }
@@ -259,7 +259,7 @@ Discover and access antimicrobial resistance analysis tools organized by categor
 
     .team-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
         gap: 25px;
         margin-top: 20px;
     }
@@ -312,7 +312,7 @@ Discover and access antimicrobial resistance analysis tools organized by categor
 
     .contact-info {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
         gap: 25px;
         margin-top: 20px;
     }
@@ -361,6 +361,25 @@ Discover and access antimicrobial resistance analysis tools organized by categor
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-20px); }
+    }
+
+    @media (max-width: 600px) {
+        .mission-section, .features-section, .team-section, .contact-section {
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .mission-section h3, .features-section h3, .team-section h3, .contact-section h3 {
+            font-size: 20px;
+        }
+
+        .mission-section p {
+            font-size: 16px;
+        }
+
+        .feature-box, .team-member, .contact-item {
+            padding: 16px;
+        }
     }
 </style>
 {% endblock %}

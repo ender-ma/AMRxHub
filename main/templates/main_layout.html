@@ -171,6 +171,34 @@
         html {
             scroll-behavior: smooth;
         }
+
+        @media (max-width: 520px) {
+            .header-logo {
+                height: 44px;
+                width: 44px;
+                margin-right: -4px;
+            }
+
+            .auth-buttons {
+                gap: 6px;
+            }
+
+            .auth-buttons .login-btn,
+            .auth-buttons .signup-btn {
+                padding: 7px 12px;
+                font-size: 0.85rem;
+            }
+
+            .auth-buttons i {
+                display: none;
+            }
+
+            .messages-container {
+                left: 12px;
+                right: 12px;
+                max-width: none;
+            }
+        }
     </style>
 
     {% block extra_css %}{% endblock %}
@@ -211,10 +239,6 @@
                         </form>
                     </div>
                 </div>
-
-                <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Open menu" type="button">
-                    <i class="fas fa-bars"></i>
-                </button>
             {% else %}
                 <div class="auth-buttons">
                     <a href="{% url 'authentication:login' %}" class="login-btn">
@@ -225,6 +249,10 @@
                     </a>
                 </div>
             {% endif %}
+
+            <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Open menu" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 

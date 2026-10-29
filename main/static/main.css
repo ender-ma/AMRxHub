@@ -275,7 +275,7 @@ body {
 
 .tools-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr));
     gap: var(--space-4);
 }
 
@@ -655,6 +655,11 @@ body {
     .tools-grid {
         grid-template-columns: 1fr;
     }
+
+    /* Decorative fixed-position backgrounds spill past the screen edge on phones */
+    .microorganism-pattern {
+        display: none;
+    }
 }
 
 @media (max-width: 520px) {
@@ -663,7 +668,16 @@ body {
     }
 
     .logo {
-        font-size: 1.15rem;
+        font-size: 1.05rem;
+        white-space: nowrap;
+    }
+
+    .header-right {
+        gap: 8px;
+    }
+
+    .profile-trigger span {
+        display: none;
     }
 
     .main-content {
@@ -678,6 +692,12 @@ body {
     .login-btn {
         padding: 8px 12px;
         font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 359px) {
+    .logo span {
+        display: none;
     }
 }
 

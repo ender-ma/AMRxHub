@@ -518,4 +518,4 @@ def password_reset_confirm(request, uidb64, token):
         return render(request, "registration/password_reset_confirm.html", {"validlink": False})
 
 def password_reset_complete(request):
-    return render(request, "authentication/password_reset_complete.html")
+    return render(request, "registration/password_reset_complete.html")
