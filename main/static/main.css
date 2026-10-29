@@ -4,6 +4,7 @@
 
 :root {
     --header-height: 70px;
+    --bottom-nav-height: 60px;
     --sidebar-width: 250px;
     --content-max-width: 1400px;
     --space-1: 8px;
@@ -586,6 +587,49 @@ body {
     visibility: visible;
 }
 
+/* App-style bottom tab bar, shown only at the mobile breakpoint */
+.bottom-nav {
+    position: fixed;
+    inset: auto 0 0 0;
+    height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    display: none;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+    z-index: var(--z-header);
+}
+
+.bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.bottom-nav-item i {
+    font-size: 1.1rem;
+    padding: 4px 16px;
+    border-radius: 999px;
+    transition: background-color 0.2s ease;
+}
+
+.bottom-nav-item:hover,
+.bottom-nav-item.active {
+    color: var(--brand);
+}
+
+.bottom-nav-item.active i {
+    background: rgba(102, 126, 234, 0.14);
+}
+
 /* ==========================================================================
    7) Responsive Rules
    ========================================================================== */
@@ -624,7 +668,8 @@ body {
     }
 
     .footer-col {
-        flex: 1 1 100%;
+        flex: 1 1 calc(50% - 18px);
+        min-width: 0;
         text-align: center;
     }
 
@@ -660,6 +705,67 @@ body {
     .microorganism-pattern {
         display: none;
     }
+
+    .bottom-nav {
+        display: flex;
+    }
+
+    body {
+        padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+    }
+}
+
+/* Phones: compact, app-like sizing */
+@media (max-width: 600px) {
+    .main-content {
+        padding: 10px 8px;
+    }
+
+    .content-card,
+    .welcome-box {
+        padding: 16px 14px;
+        border-radius: var(--radius-2);
+        margin-bottom: 12px;
+    }
+
+    .content-header {
+        gap: 6px;
+        margin-bottom: 14px;
+        padding-bottom: 12px;
+    }
+
+    .content-header h2 {
+        font-size: 1.35rem;
+    }
+
+    .content-header i {
+        font-size: 1.5rem;
+    }
+
+    .content-header p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .footer {
+        padding: 18px 0;
+    }
+
+    .footer .row {
+        gap: 14px 10px;
+    }
+
+    .footer-col h4 {
+        font-size: 0.95rem;
+    }
+
+    .footer-col a {
+        font-size: 0.875rem;
+    }
+
+    .footer-col ul li + li {
+        margin-top: 4px;
+    }
 }
 
 @media (max-width: 520px) {
@@ -678,10 +784,6 @@ body {
 
     .profile-trigger span {
         display: none;
-    }
-
-    .main-content {
-        padding: 14px 10px;
     }
 
     .mobile-sidebar {

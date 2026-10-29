@@ -202,5 +202,65 @@
         color: #4c51bf;
         text-decoration: underline;
     }
+
+    /* Phones: compact app-style list */
+    @media (max-width: 600px) {
+        .breadcrumb {
+            margin-top: 6px;
+        }
+
+        .back-link,
+        .breadcrumb .back-link {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-width: 1px;
+        }
+
+        .back-link i {
+            font-size: 13px;
+        }
+
+        .content-header i {
+            font-size: 26px;
+        }
+
+        .category-description {
+            margin-bottom: 14px;
+            font-size: 14px;
+        }
+
+        .resource-items-grid {
+            gap: 10px;
+        }
+
+        .resource-item-card {
+            min-height: 0;
+            padding: 12px;
+        }
+
+        .resource-link {
+            gap: 12px;
+        }
+
+        .resource-thumb-wrap {
+            width: 40px;
+            height: 40px;
+        }
+
+        .resource-thumb {
+            width: 24px;
+            height: 24px;
+            font-size: 22px;
+        }
+
+        .resource-title {
+            font-size: 14.5px;
+            margin-bottom: 4px;
+        }
+
+        .resource-desc {
+            font-size: 12.5px;
+        }
+    }
 </style>
 {% endblock %}

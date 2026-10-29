@@ -393,6 +393,29 @@
         </div>
     </footer>
 
+    {% with ns=request.resolver_match.namespace url_name=request.resolver_match.url_name %}
+    <nav class="bottom-nav" aria-label="Primary">
+        <a href="{% url 'home' %}" class="bottom-nav-item {% if url_name == 'home' %}active{% endif %}">
+            <i class="fas fa-home"></i><span>Home</span>
+        </a>
+        <a href="{% url 'tools:tools_home' %}" class="bottom-nav-item {% if ns == 'tools' and url_name != 'history' %}active{% endif %}">
+            <i class="fas fa-tools"></i><span>Tools</span>
+        </a>
+        <a href="{% url 'resources:resources_list' %}" class="bottom-nav-item {% if ns == 'resources' %}active{% endif %}">
+            <i class="fas fa-book"></i><span>Resources</span>
+        </a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'profil:profile' %}" class="bottom-nav-item {% if ns == 'profil' %}active{% endif %}">
+                <i class="fas fa-user"></i><span>Profile</span>
+            </a>
+        {% else %}
+            <a href="{% url 'authentication:login' %}" class="bottom-nav-item">
+                <i class="fas fa-sign-in-alt"></i><span>Login</span>
+            </a>
+        {% endif %}
+    </nav>
+    {% endwith %}
+
     <script src="{% static 'notifications/js/notifications.js' %}"></script>
     {% block extra_js %}{% endblock %}
 

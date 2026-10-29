@@ -413,6 +413,66 @@ Discover and access antimicrobial resistance analysis tools organized by categor
             flex-direction: column;
         }
     }
+
+    /* Phones: two-column app-style tiles (!important beats the inline styles) */
+    @media (max-width: 600px) {
+        #organism-categories-section {
+            padding: 4px 0 0 !important;
+        }
+
+        #organism-categories-section + div {
+            margin: 18px 0 !important;
+            padding: 0 !important;
+            border-bottom: 1px solid #e5e7eb !important;
+        }
+
+        .categories-section h3,
+        .featured-section h3 {
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+
+        .categories-grid,
+        .featured-tools {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .category-card,
+        .featured-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 112px;
+            padding: 14px 8px;
+            border-radius: 14px;
+        }
+
+        .category-card:hover,
+        .featured-tool:hover {
+            transform: none;
+        }
+
+        .category-icon i,
+        .featured-tool i {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .category-card h3,
+        .featured-tool h4 {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+
+        .category-card p,
+        .featured-tool p {
+            display: none;
+        }
+    }
 </style>
 
 <script>

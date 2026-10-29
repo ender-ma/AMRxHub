@@ -145,5 +145,41 @@
             flex-wrap: wrap;
         }
     }
+    @media (max-width: 600px) {
+        .content-header img,
+        .content-header > span {
+            width: 64px !important;
+            height: 64px !important;
+        }
+        .content-header > span i {
+            font-size: 40px !important;
+        }
+        .content-header h2 {
+            font-size: 1.5rem !important;
+        }
+        .content-card h4 {
+            font-size: 1.05rem !important;
+        }
+        .tool-meta {
+            gap: 8px 16px !important;
+            margin-bottom: 18px !important;
+            font-size: 0.9rem !important;
+        }
+        .tool-description p {
+            font-size: 0.95rem !important;
+            line-height: 1.6 !important;
+        }
+        .tool-features ul,
+        .tool-requirements p {
+            font-size: 0.9rem !important;
+        }
+        .tool-actions {
+            margin-top: 24px !important;
+        }
+        .btn {
+            padding: 10px 16px;
+            font-size: 15px;
+        }
+    }
 </style>
 {% endblock %}

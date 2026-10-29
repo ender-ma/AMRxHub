@@ -211,5 +211,15 @@ Discover and access curated antimicrobial-resistance tools, datasets, educationa
         font-style: italic;
     }
     .home-overview .lead { margin-bottom: 0.75rem; }
+    @media (max-width: 600px) {
+        .home-overview { margin-top: 0 !important; }
+        .home-overview p,
+        .home-overview li { font-size: 0.95rem !important; }
+        .home-overview h4 { font-size: 1.05rem; }
+        .announcements h3 { font-size: 1.1rem; }
+        .announcement-item { padding: 12px; margin-bottom: 10px; }
+        .announcement-item h4 { font-size: 1rem; }
+        .announcement-item p { font-size: 0.9rem; margin-bottom: 6px; }
+    }
 </style>
 {% endblock %}
