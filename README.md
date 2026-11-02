@@ -12,9 +12,9 @@
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](#contributing)
 
 
-AMRx Hub is an open-access web platform for centralized discovery of antimicrobial resistance (AMR) resources across the scientific ecosystem. It brings together databases, analytical tools, publications, protocols, surveillance systems, educational content, and policy references into a single searchable repository.
+## Impact & Institutional Version
 
-The platform is designed to reduce fragmentation in AMR research and practice by improving access for researchers, clinicians, educators, students, policymakers, and public health professionals.
+As part of Helix Biogen Institute’s mission to strengthen global health security and surveillance, the institute developed AMRx Hub—an open-access digital gateway for the centralized discovery of antimicrobial resistance (AMR) resources. The platform unites disparate databases, computational tools, research protocols, surveillance data, and policy references within a centralized, searchable architecture, directly resolving resource fragmentation and improving equitable access to essential AMR assets for researchers, clinicians, and policymakers.
 
 ## Problem Statement
 
@@ -163,7 +163,7 @@ Contributions are welcome. Areas for contribution include:
 - Feature suggestions
 - Development contributions
 
-Please follow project standards and maintain scientific integrity when submitting changes. Changes and ideas can be submitted to amrtool344@gmail.com
+Please follow project standards and maintain scientific integrity when submitting changes. Changes and ideas can be submitted to info@helixbiogeninstitute.org or amrtool344@gmail.com
 
 ## Roadmap (Future Goals)
 
@@ -218,9 +218,13 @@ If AMRx Hub supports your work, please cite the publication and the software rel
 
 License information can be found in the license file.
 
-## Contact
+## Contact AMRx Hub Project Leadership
 
+- **Principal Investigator & Institutional Lead:** Dr. Oladipo Elijah Kolawole, Ph.D. (Founder & Director of Science, Helix Biogen Institute)
+- **Email:** koladipo2k3@helixbiogeninstutute.org 
 - **Technical Lead:** Akinloluwa Isaac Adeolu-Shittu
 - **Email:** isaacodes25@gmail.com
+
 - **Website:** https://amrxhub.helixbiogeninstitute.org
 - **GitHub Repository:** https://github.com/ender-ma/AMRxHub
+- **Zenodo Link:** https://zenodo.org/records/22180074 
