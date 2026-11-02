@@ -11,9 +11,6 @@
 [![Last commit](https://img.shields.io/github/last-commit/ender-ma/AMRxHub)](https://github.com/ender-ma/AMRxHub/commits/main)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](#contributing)
 
-
-## Impact & Institutional Version
-
 As part of Helix Biogen Institute’s mission to strengthen global health security and surveillance, the institute developed AMRx Hub—an open-access digital gateway for the centralized discovery of antimicrobial resistance (AMR) resources. The platform unites disparate databases, computational tools, research protocols, surveillance data, and policy references within a centralized, searchable architecture, directly resolving resource fragmentation and improving equitable access to essential AMR assets for researchers, clinicians, and policymakers.
 
 ## Problem Statement
@@ -74,6 +71,7 @@ The current platform focuses on:
 - Metadata-Driven Resource Management
 - External Resource Integration
 - Open Source and Community-Driven
+- Mobile responsiveness
 
 ## Tool Categories
 
@@ -145,6 +143,8 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Update .env.example file
 
 # Apply database migrations
 python manage.py migrate
