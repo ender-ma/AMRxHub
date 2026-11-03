@@ -13,4 +13,4 @@ User-agent: PerplexityBot
 Allow: /
 
 # Sitemap reference
-Sitemap: https://amrxhub.com/sitemap.xml
+Sitemap: https://amrxhub.helixbiogeninstitute.org/sitemap.xml
