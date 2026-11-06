@@ -1,0 +1,86 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>{{ status }} {{ title }} | AMRx Hub</title>
+    <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #1f2937;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .error-card {
+            width: 100%;
+            max-width: 520px;
+            padding: 40px 32px;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+            text-align: center;
+        }
+        .error-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: #1f2937;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .error-brand img { width: 56px; height: 56px; object-fit: contain; }
+        .error-code {
+            margin: 16px 0 0;
+            color: #5a67d8;
+            font-size: clamp(4rem, 18vw, 6rem);
+            font-weight: 800;
+            line-height: 1;
+        }
+        .error-title { margin: 12px 0 8px; font-size: 1.5rem; }
+        .error-message { margin: 0 0 28px; color: #6b7280; line-height: 1.6; }
+        .error-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+        .error-btn {
+            padding: 10px 20px;
+            border: 1px solid #5a67d8;
+            border-radius: 20px;
+            background: #fff;
+            color: #5a67d8;
+            font: inherit;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .error-btn:hover { background: #eef0fd; }
+        .error-btn-primary { background: #5a67d8; color: #fff; }
+        .error-btn-primary:hover { background: #4c56c0; }
+        @media (max-width: 420px) {
+            .error-card { padding: 32px 20px; }
+            .error-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <main class="error-card">
+        <a class="error-brand" href="/">
+            <img src="{% static 'img/AMRx HUB Logo.png' %}" alt="">
+            <span>AMRx Hub</span>
+        </a>
+        <p class="error-code">{{ status }}</p>
+        <h1 class="error-title">{{ title }}</h1>
+        <p class="error-message">{{ message }}</p>
+        <div class="error-actions">
+            <a class="error-btn error-btn-primary" href="/">Go to Home</a>
+            <button class="error-btn" type="button" onclick="history.back()">Go Back</button>
+            <a class="error-btn" href="/help/">Help</a>
+        </div>
+    </main>
+</body>
+</html>

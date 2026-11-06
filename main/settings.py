@@ -48,6 +48,7 @@ if not SECRET_KEY:
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", [])
 
 CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS", [])
+CSRF_FAILURE_VIEW = "main.errors.csrf_failure"
 
 
 # -----------------------------------------------------------------------------
@@ -89,6 +90,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "main.errors.ErrorPageMiddleware",
 ]
 
 if not DEBUG:
