@@ -364,12 +364,19 @@ LOGGING = {
 # Tests: never touch Neon, Cloudinary or Brevo
 # -----------------------------------------------------------------------------
 if TESTING:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "test_db.sqlite3",  # tests use an in-memory copy
+    if env_bool("TEST_USE_DATABASE_URL"):
+        # CI runs tests on a throwaway Postgres container. Tests create and drop
+        # databases, so refuse any host that isn't local before connecting.
+        # RuntimeError because manage.py swallows ImproperlyConfigured at startup.
+        if DATABASES["default"].get("HOST") not in {"localhost", "127.0.0.1"}:
+            raise RuntimeError("TEST_USE_DATABASE_URL only allows a local database.")
+    else:
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": BASE_DIR / "test_db.sqlite3",  # tests use an in-memory copy
+            }
         }
-    }
     STORAGES = {
         "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
