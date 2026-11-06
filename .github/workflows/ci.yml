@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # The main ruleset requires a check called "test". GitHub names the check
+  # after this job id, so don't rename it or give the job a separate `name:`.
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:18 # keep on the same major version as Neon
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: amrxhub_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d amrxhub_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    # Placeholders only. Never add real secrets here. CLOUDINARY_URL and
+    # BREVO_API_KEY are left unset on purpose so CI can't reach those services.
+    env:
+      DEBUG: "False"
+      ENVIRONMENT: ci
+      SECRET_KEY: ci-only-placeholder-not-a-real-secret
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/amrxhub_ci
+      TEST_USE_DATABASE_URL: "true"
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11" # same as the Dockerfile
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      # mysqlclient in requirements.txt compiles from source, same as the Dockerfile
+      - name: Install system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends default-libmysqlclient-dev pkg-config
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Django system check
+        run: python manage.py check
+
+      - name: Check for missing migrations
+        run: python manage.py makemigrations --check --dry-run
+
+      # collectstatic is skipped: CompressedStaticFilesStorage has no manifest,
+      # so a missing static file can't break rendering. Add it here if the
+      # storage ever changes to a Manifest backend.
+
+      - name: Run tests
+        run: python manage.py test --noinput
