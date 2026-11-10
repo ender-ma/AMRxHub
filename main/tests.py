@@ -123,6 +123,15 @@ class GlossaryTests(TestCase):
         self.assertEqual(entry['references'], ['CLSI M100', 'EUCAST breakpoints'])
         self.assertEqual(entry['related'], ['amr'])
 
+    def test_page_renders_terms_from_the_database(self):
+        # Guards against the template falling back to a hard-coded word list
+        from main.models import GlossaryCategory, GlossaryTerm
+        GlossaryTerm.objects.create(category=GlossaryCategory.objects.get(slug='core'),
+                                    term='Carbapenemase', definition='Enzyme that breaks down carbapenems.')
+        response = self.client.get(reverse('glossary'))
+        self.assertContains(response, 'id="glossary-data"')
+        self.assertContains(response, 'Carbapenemase')
+
     def test_term_text_is_not_rendered_as_html(self):
         from main.models import GlossaryCategory, GlossaryTerm
         GlossaryTerm.objects.create(category=GlossaryCategory.objects.get(slug='core'),
