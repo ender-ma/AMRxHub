@@ -3,170 +3,174 @@
 
 {% block title %}Analysis History - AMRx Hub{% endblock %}
 
+{% block hero_class %}page-hero--compact{% endblock %}
+{% block hero_label %}Your Account{% endblock %}
+{% block hero_title %}Analysis History{% endblock %}
+{% block hero_text %}Track the tools you have used and jump back into them.{% endblock %}
+
 {% block content %}
-<div class="content-card">
-    <div class="content-header">
-        <i class="fas fa-history"></i>
-        <h2>Analysis History</h2>
-        <p class="text-muted">Track your tool usage.</p>
-    </div>
 
 <!-- Im Akin aka Ender-ma on github if you want to improve this site hit me up on isaacodes25@gmail.com -->
 
+<section class="page-section">
+    <div class="section-top">
+        <div class="section-heading">
+            <h2>Recently Used Tools</h2>
+            <p>Each tool appears once, with the last time you opened it.</p>
+        </div>
+        <a href="{% url 'tools:tools_home' %}" class="back-button"><i class="fas fa-tools"></i> Explore Tools</a>
+    </div>
+
     {% if history_items %}
-    <div class="table-responsive">
-        <table class="history-table">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Tool</th>
-                    <th>Tool Category</th>
-                    <!-- <th>Description</th> -->
-                    <th>Date/Time</th>
-                    <th>View</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% regroup history_items by content_object as tool_history %}
-                {% for group in tool_history %}
-                    {% if group.grouper %}
+    <div class="panel history-panel">
+        <div class="table-responsive">
+            <table class="history-table">
+                <thead>
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>
-                            {% if group.grouper.id %}
-                                <a href="{% url 'tools:tool_detail' group.grouper.id %}" class="history-link">
-                                    <!-- <i class="fas fa-toolbox"></i> -->
-                                    {{ group.grouper.name }}
-                                </a>
-                            {% else %}
-                                <span class="text-muted"><i class="fas fa-question-circle"></i> Unknown Tool</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ group.grouper.category.name|default:"-" }}
-                        </td>
-                        <!-- <td>
-                            <span class="desc-hover" tabindex="0">
-                                {{ group.grouper.description|truncatechars:50|default:"-" }}
-                                <span class="desc-overlay">
-                                    {{ group.grouper.description|default:"No description" }}
-                                </span>
-                            </span>
-                        </td> -->
-                        <td>
-                            {{ group.list.0.viewed_on|date:"M d, Y H:i" }}
-                        </td>
-                        <td>
-                            {% if group.grouper.id %}
-                                <a href="{% url 'tools:tool_detail' group.grouper.id %}" class="btn btn-sm btn-primary">
-                                    View
-                                </a>
-                            {% else %}
-                                <span class="text-muted">-</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <form method="post" action="{% url 'history:delete' group.list.0.id %}" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="button" class="btn btn-sm btn-danger delete-history-btn" data-id="{{ group.list.0.id }}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
+                        <th>No.</th>
+                        <th>Tool</th>
+                        <th>Tool Category</th>
+                        <th>Date/Time</th>
+                        <th>View</th>
+                        <th><span class="visually-hidden">Delete</span></th>
                     </tr>
-                    {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% regroup history_items by content_object as tool_history %}
+                    {% for group in tool_history %}
+                        {% if group.grouper %}
+                        <tr>
+                            <td class="row-number">{{ forloop.counter }}</td>
+                            <td>
+                                {% if group.grouper.id %}
+                                    <a href="{% url 'tools:tool_detail' group.grouper.id %}" class="history-link">
+                                        {{ group.grouper.name }}
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted"><i class="fas fa-question-circle"></i> Unknown Tool</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="card-meta">{{ group.grouper.category.name|default:"-" }}</span>
+                            </td>
+                            <td class="history-date">
+                                {{ group.list.0.viewed_on|date:"M d, Y H:i" }}
+                            </td>
+                            <td>
+                                {% if group.grouper.id %}
+                                    <a href="{% url 'tools:tool_detail' group.grouper.id %}" class="card-button">
+                                        View
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="post" action="{% url 'history:delete' group.list.0.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="button" class="history-delete delete-history-btn" data-id="{{ group.list.0.id }}" aria-label="Delete {{ group.grouper.name }} from history">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     {% else %}
-    <div class="alert alert-info">
-        <i class="fas fa-info-circle"></i> You haven't used any analysis tools yet.
-        <a href="{% url 'tools:tools_home' %}" class="alert-link">Explore available tools</a>.
+    <div class="empty-state">
+        <i class="fas fa-history"></i>
+        <h3>No history yet</h3>
+        <p>You haven't used any analysis tools yet. <a href="{% url 'tools:tools_home' %}">Explore available tools</a>.</p>
     </div>
     {% endif %}
-</div>
-
-<div class="microorganism-pattern" style="top: 15%; left: 85%;"></div>
-<div class="microorganism-pattern" style="top: 45%; left: 5%;"></div>
-<div class="microorganism-pattern" style="top: 75%; left: 80%;"></div>
+</section>
 
 <style>
-    .history-table {
-        border-collapse: collapse;
-        width: 100%;
+    .history-panel {
+        padding: 6px 0;
     }
-    .history-table th, .history-table td {
-        border-right: 1px solid #e2e8f0;
-        padding: 12px 8px;
+
+    .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    .history-table th {
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    .history-table td {
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--border);
         vertical-align: middle;
     }
-    .history-table th:last-child, .history-table td:last-child {
-        border-right: none;
+
+    .history-table tbody tr:last-child td {
+        border-bottom: none;
     }
-    .history-table tr {
-        border-bottom: 1px solid #e2e8f0;
+
+    .history-table tbody tr:hover {
+        background: var(--primary-soft);
     }
-    .desc-hover {
-        position: relative;
-        cursor: pointer;
+
+    .row-number,
+    .history-date {
+        color: var(--muted);
+        white-space: nowrap;
     }
-    .desc-overlay {
-        display: none;
-        position: absolute;
-        left: 0;
-        top: 100%;
-        z-index: 10;
-        background: #fff;
-        color: #222;
-        border: 1px solid #667eea;
-        border-radius: 8px;
-        padding: 10px;
-        min-width: 220px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-        white-space: normal;
-    }
-    .desc-hover:hover .desc-overlay,
-    .desc-hover:focus .desc-overlay {
-        display: block;
-    }
+
     .history-link {
-        color: #667eea;
+        color: var(--dark);
+        font-weight: 700;
         text-decoration: none;
-        font-weight: 600;
+    }
+
+    .history-link:hover {
+        color: var(--primary);
+    }
+
+    .history-delete {
+        width: 34px;
+        height: 34px;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        transition: color 0.3s;
+        justify-content: center;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: #fff;
+        color: #dc2626;
+        font-size: 13px;
+        transition: border-color 0.2s ease, background-color 0.2s ease;
     }
-    .history-link:hover {
-        color: #5a67d8;
+
+    .history-delete:hover {
+        border-color: #fca5a5;
+        background: #fef2f2;
     }
-    .microorganism-pattern {
-        position: fixed;
-        opacity: 0.1;
-        pointer-events: none;
-        z-index: -1;
-    }
-    .microorganism-pattern::before {
-        content: '🦠';
-        font-size: 80px;
-        animation: float 8s ease-in-out infinite;
-    }
-    @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-15px) rotate(180deg); }
-    }
-    @media (max-width: 600px) {
+
+    @media (max-width: 650px) {
         /* Drop the row number and category columns on phones */
         .history-table th:nth-child(1), .history-table td:nth-child(1),
         .history-table th:nth-child(3), .history-table td:nth-child(3) {
             display: none;
         }
-        .history-table th, .history-table td {
-            padding: 8px 4px;
-            font-size: 0.9rem;
+
+        .history-table th,
+        .history-table td {
+            padding: 10px 12px;
+            font-size: 13px;
         }
     }
 </style>

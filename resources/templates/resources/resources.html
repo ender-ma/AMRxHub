@@ -2,327 +2,40 @@
 
 {% block title %}Resources - AMRx Hub{% endblock %}
 
+{% block hero_label %}AMRx Resource Library{% endblock %}
+{% block hero_title %}AMR Resources{% endblock %}
+{% block hero_text %}
+    Publications, datasets, guidelines and learning materials for
+    antimicrobial resistance research and practice.
+{% endblock %}
+
 {% block content %}
-<div class="content-card">
-    <div class="content-header">
-        <i class="fas fa-book" color="#000000"></i>
-        <h2>AMR Resources</h2>
+<section class="page-section">
+    <div class="section-heading">
+        <h2>Explore Categories</h2>
+        <p>Browse curated AMR resources by subject area.</p>
     </div>
-</div>
 
-<div class="resources-grid">
-    {% for category in categories %}
-    <div class="resource-category"
-         data-href="{% url 'resources:category_resources' category.pk %}"
-         tabindex="0"
-         role="link"
-         onclick="handleCategoryClick(event, this)"
-         onkeydown="if(event.key==='Enter') window.location.href=this.dataset.href;">
-
-        <div class="resource-category-head">
-            <div class="resource-category-icon"><i class="{{ category.icon }}"></i></div>
-            <div class="resource-category-title">
-                <h3>{{ category.name }}</h3>
-                <p class="resource-category-description">{{ category.description }}</p>
+    <div class="card-grid">
+        {% for category in categories %}
+        <a href="{% url 'resources:category_resources' category.pk %}" class="info-card">
+            <div class="card-icon"><i class="{{ category.icon|default:'fas fa-book' }}"></i></div>
+            <h3>{{ category.name }}</h3>
+            <p class="card-body-text">{{ category.description|truncatewords:28 }}</p>
+            <div class="card-bottom">
+                {% with count=category.items.count %}
+                <span>{{ count }} resource{{ count|pluralize }}</span>
+                {% endwith %}
+                <span class="card-cta">Explore <i class="fas fa-arrow-right"></i></span>
             </div>
+        </a>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fas fa-book"></i>
+            <h3>No resource categories yet</h3>
+            <p>Resource categories will appear here when added by administrators.</p>
         </div>
-
-        <div class="resource-items-list">
-            {% for item in category.items.all|slice:":4" %}
-            <div class="resource-item">
-                <h4>{{ item.title }}</h4>
-                <p>{{ item.description }}</p>
-
-                {% if item.pdf_file %}
-                    <a href="{{ item.pdf_file.url }}" class="resource-link" download>
-                        <i class="fas fa-file-pdf"></i>
-                        Download PDF
-                    </a>
-                {% elif item.link %}
-                    <a href="{{ item.link }}" class="resource-link" target="_blank">
-                        {% if item.link_icon %}
-                            <i class="{{ item.link_icon }}"></i>
-                        {% endif %}
-                        {{ item.link_text|default:"View" }}
-                    </a>
-                {% endif %}
-            </div>
-            {% empty %}
-            <div class="resource-item">
-                <span class="no-resource">No resources yet</span>
-            </div>
-            {% endfor %}
-            {% if category.items.count > 3 %}<div class="resource-fade"></div>{% endif %}
-        </div>
-
-        <div class="resource-category-foot">
-            <span class="resource-count">{{ category.items.count }} resource{{ category.items.count|pluralize }}</span>
-            <span class="view-resources-hint">View all <i class="fas fa-arrow-right"></i></span>
-        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
-
-<div class="microorganism-pattern" style="top: 15%; left: 85%;"></div>
-<div class="microorganism-pattern" style="top: 45%; left: 5%;"></div>
-<div class="microorganism-pattern" style="top: 75%; left: 80%;"></div>
-
-<style>
-    .resources-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
-        gap: 25px;
-        margin-top: 20px;
-    }
-
-    .resource-category {
-        background: #ffffff;
-        border: 1px solid #e1e8ed;
-        border-radius: 16px;
-        padding: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        height: 420px;
-        overflow: hidden;
-        cursor: pointer;
-    }
-
-    .resource-category:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
-    }
-
-    .resource-category:focus-visible {
-        outline: 3px solid #667eea;
-        outline-offset: 2px;
-    }
-
-    .resource-category-head {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .resource-category-icon {
-        flex: 0 0 auto;
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        background: rgba(102, 126, 234, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #667eea;
-        font-size: 16px;
-    }
-
-    .resource-category-title {
-        min-width: 0;
-    }
-
-    .resource-category-title h3 {
-        margin: 0 0 4px;
-        font-size: 18px;
-        font-weight: 700;
-        color: #222;
-    }
-
-    .resource-category-description {
-        color: #5b6072;
-        font-size: 13px;
-        line-height: 1.5;
-        margin: 0;
-    }
-
-    .resource-items-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        flex: 1;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .resource-fade {
-        position: absolute;
-        left: 0; right: 0; bottom: 0;
-        height: 40px;
-        background: linear-gradient(to bottom, rgba(255,255,255,0), #ffffff 85%);
-        pointer-events: none;
-    }
-
-    .resource-item {
-        background: rgba(102, 126, 234, 0.05);
-        padding: 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(102, 126, 234, 0.1);
-        flex: 0 0 auto;
-    }
-
-    .resource-item h4 {
-        color: #333;
-        margin: 0 0 6px;
-        font-size: 14.5px;
-    }
-
-    .resource-item p {
-        color: #666;
-        margin: 0 0 8px;
-        line-height: 1.5;
-        font-size: 13px;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .resource-link {
-        color: #667eea;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 13px;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        position: relative;
-        z-index: 1; /* keeps link above the card's own click handler */
-    }
-
-    .resource-link:hover {
-        color: #5a67d8;
-    }
-
-    .no-resource {
-        color: #aaa;
-        font-size: 13px;
-    }
-
-    .resource-category-foot {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-top: 10px;
-        border-top: 1px solid #eef0fb;
-    }
-
-    .resource-count {
-        font-size: 12px;
-        color: #8b8fa3;
-    }
-
-    .view-resources-hint {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        color: #667eea;
-        background: rgba(102, 126, 234, 0.1);
-        font-size: 12px;
-        font-weight: 600;
-        padding: 7px 12px;
-        border-radius: 999px;
-    }
-
-    .view-resources-hint i {
-        font-size: 10px;
-        transition: transform 0.2s ease;
-    }
-
-    .resource-category:hover .view-resources-hint i {
-        transform: translateX(3px);
-    }
-
-    .microorganism-pattern {
-        position: fixed;
-        opacity: 0.1;
-        pointer-events: none;
-        z-index: -1;
-    }
-
-    .microorganism-pattern::before {
-        content: '🦠';
-        font-size: 80px;
-        animation: float 8s ease-in-out infinite;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-15px) rotate(180deg); }
-    }
-
-    @media (max-width: 900px) {
-        .resource-category {
-            height: auto;
-            overflow: visible;
-        }
-        .resource-items-list {
-            flex: none;
-            overflow: visible;
-        }
-        .resource-fade {
-            display: none;
-        }
-    }
-
-    /* Phones: two-column app-style tiles; the category page lists every item */
-    @media (max-width: 600px) {
-        .resources-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-            margin-top: 0;
-        }
-
-        .resource-category {
-            padding: 14px 8px;
-            gap: 6px;
-            border-radius: 14px;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .resource-category:hover {
-            transform: none;
-        }
-
-        .resource-category-head {
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .resource-category-icon {
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
-        }
-
-        .resource-category-title h3 {
-            margin: 0;
-            font-size: 14px;
-            line-height: 1.25;
-            overflow-wrap: anywhere;
-        }
-
-        .resource-category-description,
-        .resource-items-list,
-        .view-resources-hint {
-            display: none;
-        }
-
-        .resource-category-foot {
-            justify-content: center;
-            padding-top: 0;
-            border-top: 0;
-        }
-    }
-</style>
-
-<script>
-    function handleCategoryClick(e, el) {
-        if (e.target.closest('a')) return; // let PDF/external item links behave normally
-        window.location.href = el.dataset.href;
-    }
-</script>
+</section>
 {% endblock %}
