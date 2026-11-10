@@ -41,102 +41,18 @@ Glossary of key terms related to Antimicrobial Resistance (AMR) - definitions an
     }
 </style>
 
+{{ glossary_data|json_script:"glossary-data" }}
 <script>
 (() => {
     /* =========================================
        GLOSSARY DATA
     ========================================= */
 
-    const categories = [
-        {
-            id: "core",
-            name: "Core Terms",
-            icon: "fas fa-star",
-            description: "The must-have terms everyone should know when talking about AMR."
-        },
-        {
-            id: "technical",
-            name: "Technical but Important",
-            icon: "fas fa-hospital",
-            description: "Awareness-level terms used in clinical and surveillance settings."
-        },
-        {
-            id: "genetics",
-            name: "Genetics and Mechanisms",
-            icon: "fas fa-dna",
-            description: "How resistance arises and spreads, for a deeper understanding."
-        },
-        {
-            id: "additional",
-            name: "Additional Useful Terms",
-            icon: "fas fa-book-open",
-            description: "Further concepts that help explain how resistance develops and is tackled."
-        }
-    ];
-
-    const terms = [
-        // Core terms
-        { id: "amr", term: "Antimicrobial Resistance", abbreviation: "AMR", category: "core",
-          definition: "When microorganisms (bacteria, viruses, fungi, parasites) evolve and stop responding to medicines that used to kill them." },
-        { id: "antimicrobials", term: "Antimicrobials", abbreviation: "", category: "core",
-          definition: "Medicines that treat infections, including antibiotics (bacteria), antivirals (viruses), antifungals (fungi), and antiparasitics (parasites)." },
-        { id: "antibiotic-resistance", term: "Antibiotic Resistance", abbreviation: "", category: "core",
-          definition: "A specific type of AMR where bacteria no longer respond to antibiotics." },
-        { id: "superbugs", term: "Superbugs", abbreviation: "", category: "core",
-          definition: "Strains of bacteria that are resistant to multiple antibiotics, making infections hard to treat." },
-        { id: "misuse", term: "Misuse of Antimicrobials", abbreviation: "", category: "core",
-          definition: "Incorrect use of medicines, such as wrong drug choice, wrong dose, overuse, or stopping treatment too early." },
-        { id: "stewardship", term: "Antimicrobial Stewardship", abbreviation: "", category: "core",
-          definition: "Coordinated strategies to use antimicrobials wisely and responsibly to preserve their effectiveness." },
-        { id: "ipc", term: "Infection Prevention and Control", abbreviation: "IPC", category: "core",
-          definition: "Measures like hand hygiene, vaccination, safe hospital practices, and clean environments to prevent the spread of infections, including resistant ones." },
-        { id: "one-health", term: "One Health Approach", abbreviation: "", category: "core",
-          definition: "A strategy recognizing the interconnection between human health, animal health, and the environment in tackling AMR." },
-
-        // Technical but important
-        { id: "mdr", term: "Multidrug-Resistant", abbreviation: "MDR", category: "technical",
-          definition: "Microorganisms resistant to at least one medicine in three or more antimicrobial categories." },
-        { id: "xdr", term: "Extensively Drug-Resistant", abbreviation: "XDR", category: "technical",
-          definition: "Resistant to almost all available antimicrobials, with only a few treatment options left." },
-        { id: "pdr", term: "Pan-Drug Resistant", abbreviation: "PDR", category: "technical",
-          definition: "Resistant to all known antimicrobials, leaving no effective treatments." },
-        { id: "last-resort", term: "Last-Resort Antibiotics", abbreviation: "", category: "technical",
-          definition: "Potent antibiotics (like colistin or carbapenems) reserved for infections that don't respond to other treatments." },
-        { id: "nosocomial", term: "Nosocomial Infections (Hospital-Acquired Infections)", abbreviation: "HAI", category: "technical",
-          definition: "Infections acquired in healthcare settings, often involving resistant pathogens." },
-        { id: "surveillance", term: "Surveillance", abbreviation: "", category: "technical",
-          definition: "The systematic monitoring of AMR trends in humans, animals, and the environment to guide interventions." },
-
-        // Genetics and mechanisms
-        { id: "resistance-genes", term: "Resistance Genes", abbreviation: "", category: "genetics",
-          definition: "Segments of DNA that provide microorganisms with the ability to survive treatment with antimicrobials." },
-        { id: "hgt", term: "Horizontal Gene Transfer", abbreviation: "HGT", category: "genetics",
-          definition: "The process by which bacteria exchange genetic material (including resistance genes) with one another." },
-        { id: "plasmid", term: "Plasmid", abbreviation: "", category: "genetics",
-          definition: "Small, circular DNA molecules in bacteria that often carry and transfer resistance genes between cells." },
-        { id: "efflux-pump", term: "Efflux Pump", abbreviation: "", category: "genetics",
-          definition: "Protein systems that bacteria use to pump antimicrobial drugs out of their cells before the drugs can act." },
-        { id: "integrons", term: "Integrons", abbreviation: "", category: "genetics",
-          definition: "Genetic elements that capture, store, and express resistance genes, contributing to the spread of AMR." },
-        { id: "transposons", term: "Transposons (“Jumping Genes”)", abbreviation: "", category: "genetics",
-          definition: "DNA sequences that can move within and between genomes, spreading resistance traits." },
-        { id: "mutation", term: "Mutation", abbreviation: "", category: "genetics",
-          definition: "A permanent change in DNA sequence that can create or enhance resistance." },
-        { id: "mge", term: "Mobile Genetic Elements", abbreviation: "MGEs", category: "genetics",
-          definition: "Pieces of DNA (like plasmids, transposons, and integrons) that move between organisms, helping spread resistance." },
-
-        // Additional useful terms
-        { id: "selective-pressure", term: "Selective Pressure", abbreviation: "", category: "additional",
-          definition: "The survival advantage microorganisms gain when exposed to antimicrobials, allowing resistant ones to thrive while others die off." },
-        { id: "biofilm", term: "Biofilm", abbreviation: "", category: "additional",
-          definition: "A protective layer formed by communities of microbes that makes them more resistant to antimicrobials and immune responses." },
-        { id: "intrinsic-resistance", term: "Intrinsic Resistance", abbreviation: "", category: "additional",
-          definition: "Natural resistance that certain microorganisms already have, without needing new mutations or gene acquisition." },
-        { id: "acquired-resistance", term: "Acquired Resistance", abbreviation: "", category: "additional",
-          definition: "Resistance developed through mutations or by picking up resistance genes from other microbes." },
-        { id: "gap", term: "Global Action Plan", abbreviation: "GAP", category: "additional",
-          definition: "The World Health Organization's framework to guide countries in combating AMR." }
-    ];
+    // Managed in Django admin (Main > Glossary categories / Glossary terms).
+    // Only approved, active terms are sent by the view.
+    const glossaryData = JSON.parse(document.getElementById("glossary-data").textContent);
+    const categories = glossaryData.categories;
+    const terms = glossaryData.terms;
 
     /* =========================================
        HELPERS
@@ -183,12 +99,12 @@ Glossary of key terms related to Antimicrobial Resistance (AMR) - definitions an
             : term.definition;
 
         return `
-            <button type="button" class="list-card glossary-term-card" data-term="${term.id}">
+            <button type="button" class="list-card glossary-term-card" data-term="${escapeHTML(term.id)}">
                 <div class="list-card-body">
-                    <h3>${term.term}</h3>
-                    <p>${preview}</p>
+                    <h3>${escapeHTML(term.term)}</h3>
+                    <p>${escapeHTML(preview)}</p>
                     <span class="card-meta">
-                        ${term.abbreviation ? term.abbreviation + " · " : ""}${category ? category.name : ""}
+                        ${term.abbreviation ? escapeHTML(term.abbreviation) + " · " : ""}${category ? escapeHTML(category.name) : ""}
                     </span>
                 </div>
             </button>
@@ -249,10 +165,10 @@ Glossary of key terms related to Antimicrobial Resistance (AMR) - definitions an
         const categoryCards = categories.map(category => {
             const count = termsIn(category.id).length;
             return `
-                <button type="button" class="info-card" data-category="${category.id}">
-                    <div class="card-icon"><i class="${category.icon}"></i></div>
-                    <h3>${category.name}</h3>
-                    <p class="card-body-text">${category.description}</p>
+                <button type="button" class="info-card" data-category="${escapeHTML(category.id)}">
+                    <div class="card-icon"><i class="${escapeHTML(category.icon)}"></i></div>
+                    <h3>${escapeHTML(category.name)}</h3>
+                    <p class="card-body-text">${escapeHTML(category.description)}</p>
                     <div class="card-bottom">
                         <span>${count} ${count === 1 ? "term" : "terms"}</span>
                         <span class="card-cta">Explore <i class="fas fa-arrow-right"></i></span>
@@ -261,22 +177,32 @@ Glossary of key terms related to Antimicrobial Resistance (AMR) - definitions an
             `;
         }).join("");
 
+        if (!terms.length) {
+            content.innerHTML = emptyState("fas fa-book-open", "The glossary is being prepared", "New terms will appear here once they are published.");
+            return;
+        }
+
+        // Featured row: the first category (lowest admin "order") gives the starter terms
+        const starter = categories.length ? termsIn(categories[0].id).slice(0, 4) : [];
+
         content.innerHTML = `
             <section class="page-section">
                 <div class="section-heading">
                     <h2>Explore Categories</h2>
-                    <p>Browse ${terms.length} AMR terms by level and subject area.</p>
+                    <p>Browse ${terms.length} AMR ${terms.length === 1 ? "term" : "terms"} by level and subject area.</p>
                 </div>
-                <div class="card-grid card-grid--2">${categoryCards}</div>
+                <div class="card-grid ${categories.length % 3 === 0 ? "" : "card-grid--2"}">${categoryCards}</div>
             </section>
 
+            ${starter.length ? `
             <section class="page-section">
                 <div class="section-heading">
-                    <h2>Start With the Essentials</h2>
-                    <p>Core terms everyone should know.</p>
+                    <h2>Start With ${escapeHTML(categories[0].name)}</h2>
+                    <p>${escapeHTML(categories[0].description)}</p>
                 </div>
-                <div class="list-grid">${termsIn("core").slice(0, 4).map(termCard).join("")}</div>
+                <div class="list-grid">${starter.map(termCard).join("")}</div>
             </section>
+            ` : ""}
         `;
     }
 
@@ -292,8 +218,8 @@ Glossary of key terms related to Antimicrobial Resistance (AMR) - definitions an
         content.innerHTML = `
             <div class="section-top">
                 <div class="section-heading">
-                    <h2><i class="${category.icon}"></i> ${category.name}</h2>
-                    <p>${category.description}</p>
+                    <h2><i class="${escapeHTML(category.icon)}"></i> ${escapeHTML(category.name)}</h2>
+                    <p>${escapeHTML(category.description)}</p>
                 </div>
                 <button type="button" class="back-button" data-action="home">
                     <i class="fas fa-arrow-left"></i> All Categories
@@ -319,38 +245,57 @@ Glossary of key terms related to Antimicrobial Resistance (AMR) - definitions an
             return;
         }
 
-        const category = findCategory(term.category);
-        const related = termsIn(term.category).filter(item => item.id !== term.id).slice(0, 5);
+        const category = findCategory(term.category) || { id: "", name: "Glossary", icon: "fas fa-book" };
+        // Admin-chosen related terms first; otherwise suggest others from the same category
+        const chosen = (term.related || []).map(findTerm).filter(Boolean);
+        const related = chosen.length
+            ? chosen
+            : termsIn(term.category).filter(item => item.id !== term.id).slice(0, 5);
+        const relatedTitle = chosen.length ? "Related Terms" : "More in " + escapeHTML(category.name);
 
         content.innerHTML = `
             <div class="section-top">
-                <span class="pill"><i class="${category.icon}"></i> ${category.name}</span>
-                <button type="button" class="back-button" data-category="${term.category}">
+                <span class="pill"><i class="${escapeHTML(category.icon)}"></i> ${escapeHTML(category.name)}</span>
+                <button type="button" class="back-button" data-category="${escapeHTML(term.category)}">
                     <i class="fas fa-arrow-left"></i> Back
                 </button>
             </div>
 
             <article class="detail-card">
-                <h1>${term.term}</h1>
+                <h1>${escapeHTML(term.term)}</h1>
                 <p class="detail-subtitle">
-                    ${term.abbreviation ? "Abbreviation: " + term.abbreviation : "AMR terminology"}
+                    ${term.abbreviation ? "Abbreviation: " + escapeHTML(term.abbreviation) : "AMR terminology"}
                 </p>
 
                 <div class="detail-section">
                     <h3>Definition</h3>
-                    <p>${term.definition}</p>
+                    <p>${escapeHTML(term.definition)}</p>
                 </div>
+
+                ${term.context ? `
+                    <div class="detail-section">
+                        <h3>Scientific Context</h3>
+                        <p>${escapeHTML(term.context)}</p>
+                    </div>
+                ` : ""}
 
                 ${related.length ? `
                     <div class="detail-section">
-                        <h3>More in ${category.name}</h3>
+                        <h3>${relatedTitle}</h3>
                         <div class="related-list">
                             ${related.map(item => `
-                                <button type="button" class="related-link" data-term="${item.id}">
-                                    ${item.term} <i class="fas fa-arrow-right"></i>
+                                <button type="button" class="related-link" data-term="${escapeHTML(item.id)}">
+                                    ${escapeHTML(item.term)} <i class="fas fa-arrow-right"></i>
                                 </button>
                             `).join("")}
                         </div>
+                    </div>
+                ` : ""}
+
+                ${term.references && term.references.length ? `
+                    <div class="detail-section">
+                        <h3>References &amp; Further Reading</h3>
+                        <ul>${term.references.map(ref => `<li>${escapeHTML(ref)}</li>`).join("")}</ul>
                     </div>
                 ` : ""}
             </article>
@@ -361,7 +306,7 @@ Glossary of key terms related to Antimicrobial Resistance (AMR) - definitions an
         const normalized = query.toLowerCase();
         const results = terms.filter(term => {
             const category = findCategory(term.category);
-            return [term.term, term.abbreviation, term.definition, category ? category.name : ""]
+            return [term.term, term.abbreviation, term.definition, term.context, category ? category.name : ""]
                 .join(" ")
                 .toLowerCase()
                 .includes(normalized);
