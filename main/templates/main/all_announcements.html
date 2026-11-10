@@ -1,14 +1,47 @@
-<!-- main/all_announcements.html -->
 {% extends "main_layout.html" %}
+
+{% block title %}Announcements - AMRx Hub{% endblock %}
+
+{% block hero_class %}page-hero--compact{% endblock %}
+{% block hero_label %}Latest Updates{% endblock %}
+{% block hero_title %}All Announcements{% endblock %}
+{% block hero_text %}News and updates from the AMRx Hub team.{% endblock %}
+
 {% block content %}
-<div class="content-card">
-    <h2>All Announcements</h2>
-    {% for announcement in announcements %}
-    <div class="announcement-item">
-        <h4>{{ announcement.title }}</h4>
-        <p>{{ announcement.content }}</p>
-        <span class="date">{{ announcement.date|date:"M d, Y" }}</span>
+<section class="page-section">
+    <div class="section-top">
+        <div class="section-heading">
+            <h2>Announcements</h2>
+            <p>{{ announcements|length }} announcement{{ announcements|length|pluralize }}</p>
+        </div>
+        <a href="{% url 'home' %}" class="back-button"><i class="fas fa-arrow-left"></i> Home</a>
     </div>
-    {% endfor %}
-</div>
+
+    <div class="list-grid">
+        {% for announcement in announcements %}
+            {% if announcement.link %}
+            <a href="{{ announcement.link }}" target="_blank" rel="noopener" class="list-card">
+            {% else %}
+            <div class="list-card">
+            {% endif %}
+                <div class="card-icon"><i class="fas fa-bullhorn"></i></div>
+                <div class="list-card-body">
+                    <h3>{{ announcement.title }}</h3>
+                    <p>{{ announcement.content }}</p>
+                    <span class="card-meta">{{ announcement.date|date:"M d, Y" }}{% if announcement.link %} · Read more{% endif %}</span>
+                </div>
+            {% if announcement.link %}
+            </a>
+            {% else %}
+            </div>
+            {% endif %}
+        {% empty %}
+            <div class="empty-state">
+                <i class="fas fa-bullhorn"></i>
+                <h3>No announcements yet</h3>
+                <p>New updates from the team will appear here.</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}

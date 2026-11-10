@@ -2,83 +2,73 @@
 
 {% block title %}Help - AMRx Hub{% endblock %}
 
+{% block hero_label %}Help Centre{% endblock %}
+{% block hero_title %}Help &amp; Support{% endblock %}
+{% block hero_text %}
+    New to AMRx Hub? Start with the section that best matches what you are looking for.
+{% endblock %}
+
 {% block content %}
-<div class="content-card">
-    <div class="content-header">
-        <i class="fas fa-question-circle"></i>
-        <h2>Help & Support</h2>
-    </div>
-    
-    <div class="quick-links">
-        <h3><i class="fas fa-rocket"></i> Quick Start</h3>
-    
-        <p class="quick-intro">
-            New to AMRx Hub? Start with the section that best matches what you are looking for.
-        </p>
-    
-        <div class="link-grid">
-            <a href="{% url 'tools:tools_home' %}" class="help-link">
-                <div>
-                    <i class="fas fa-tools"></i>
-                    <span>Explore AMR Tools</span>
-                    <p class="quick-desc">
-                        Browse curated antimicrobial resistance tools organized by category and application.
-                        Each tool includes relevant information and a link to its original platform or resource.
-                    </p>
-                    <strong>Explore Tools <i class="fas fa-arrow-right"></i></strong>
-                </div>
-            </a>
-    
-            <a href="{% url 'resources:resources_list' %}" class="help-link">
-                <div>
-                    <i class="fas fa-book"></i>
-                    <span>Browse AMR Resources</span>
-                    <p class="quick-desc">
-                        Discover publications, datasets, guidelines, educational materials, and other resources
-                        relevant to antimicrobial resistance research and practice.
-                    </p>
-                    <strong>Browse Resources <i class="fas fa-arrow-right"></i></strong>
-                </div>
-            </a>
-    
-            <a href="{% url 'glossary' %}" class="help-link">
-                <div>
-                    <i class="fas fa-book-open"></i>
-                    <span>Explore the AMR Glossary</span>
-                    <p class="quick-desc">
-                        Find definitions and explanations of commonly used antimicrobial resistance terminology.
-                    </p>
-                    <strong>View Glossary <i class="fas fa-arrow-right"></i></strong>
-                </div>
-            </a>
-    
-            <a href="{% url 'about' %}" class="help-link">
-                <div>
-                    <i class="fas fa-info-circle"></i>
-                    <span>Learn About AMRx Hub</span>
-                    <p class="quick-desc">
-                        Learn about the purpose of AMRx Hub, how resources are organized, and how the platform
-                        supports the discovery of AMR resources.
-                    </p>
-                    <strong>About AMRx Hub <i class="fas fa-arrow-right"></i></strong>
-                </div>
-            </a>
-        </div>
-    
-        <div class="help-more">
-            <h4>Need More Help?</h4>
-            <p>
-                If you cannot find what you are looking for, use the search and filtering options across the Hub
-                or contact the AMRx Hub team for further assistance.
-            </p>
-        </div>
+
+<!-- QUICK START -->
+<section class="page-section">
+    <div class="section-heading">
+        <h2>Quick Start</h2>
+        <p>Jump straight into the part of the Hub you need.</p>
     </div>
 
-    <!-- Tutorials -->
-    <div id="tutorials" class="video-tutorials-section">
-        <h3><i class="fas fa-video"></i> Video Tutorials</h3>
-        <div class="video-grid">
-            <div class="video-item">
+    <div class="card-grid card-grid--2">
+        <a href="{% url 'tools:tools_home' %}" class="info-card">
+            <div class="card-icon"><i class="fas fa-tools"></i></div>
+            <h3>Explore AMR Tools</h3>
+            <p class="card-body-text">Browse curated antimicrobial resistance tools organized by category and application.
+                Each tool includes relevant information and a link to its original platform or resource.</p>
+            <div class="card-bottom"><span>AMR Tools</span><span class="card-cta">Explore Tools <i class="fas fa-arrow-right"></i></span></div>
+        </a>
+
+        <a href="{% url 'resources:resources_list' %}" class="info-card">
+            <div class="card-icon"><i class="fas fa-book"></i></div>
+            <h3>Browse AMR Resources</h3>
+            <p class="card-body-text">Discover publications, datasets, guidelines, educational materials, and other resources
+                relevant to antimicrobial resistance research and practice.</p>
+            <div class="card-bottom"><span>Resources</span><span class="card-cta">Browse Resources <i class="fas fa-arrow-right"></i></span></div>
+        </a>
+
+        <a href="{% url 'glossary' %}" class="info-card">
+            <div class="card-icon"><i class="fas fa-book-open"></i></div>
+            <h3>Explore the AMR Glossary</h3>
+            <p class="card-body-text">Find definitions and explanations of commonly used antimicrobial resistance terminology.</p>
+            <div class="card-bottom"><span>Glossary</span><span class="card-cta">View Glossary <i class="fas fa-arrow-right"></i></span></div>
+        </a>
+
+        <a href="{% url 'about' %}" class="info-card">
+            <div class="card-icon"><i class="fas fa-info-circle"></i></div>
+            <h3>Learn About AMRx Hub</h3>
+            <p class="card-body-text">Learn about the purpose of AMRx Hub, how resources are organized, and how the platform
+                supports the discovery of AMR resources.</p>
+            <div class="card-bottom"><span>About</span><span class="card-cta">About AMRx Hub <i class="fas fa-arrow-right"></i></span></div>
+        </a>
+    </div>
+
+    <div class="panel help-more">
+        <h3>Need More Help?</h3>
+        <p>
+            If you cannot find what you are looking for, use the search and filtering options across the Hub
+            or contact the AMRx Hub team for further assistance.
+        </p>
+    </div>
+</section>
+
+<!-- TUTORIALS -->
+<section class="page-section" id="tutorials">
+    <div class="section-heading">
+        <h2>Video Tutorials</h2>
+        <p>Short walkthroughs of the main features.</p>
+    </div>
+
+    <div class="card-grid">
+        <div class="info-card video-card">
+            <div class="video-frame">
                 <iframe
                     src="https://www.youtube.com/embed/DFF-EhoydX8"
                     title="Getting Started with AMRx Hub"
@@ -87,639 +77,101 @@
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen>
                 </iframe>
-                <h4>Getting Started with AMRx Hub</h4>
             </div>
+            <h3>Getting Started with AMRx Hub</h3>
+            <span class="card-meta"><i class="fab fa-youtube"></i> YouTube</span>
+        </div>
 
-            {% comment %} <div class="video-item">
+        {% comment %} <div class="info-card video-card">
+            <div class="video-frame">
                 <iframe src="#" title="How to use our features" frameborder="0" allowfullscreen></iframe>
-                <h4>How to use our features</h4>
-            </div> {% endcomment %}
-        </div>
+            </div>
+            <h3>How to use our features</h3>
+        </div> {% endcomment %}
+    </div>
+</section>
+
+<!-- CONTACT SUPPORT -->
+<section class="page-section">
+    <div class="section-heading">
+        <h2>Contact Support</h2>
+        <p>Reach the AMRx Hub team directly.</p>
     </div>
 
-    <!-- Support -->
-    <div class="contact-support">
-        <h3><i class="fas fa-headset"></i> Contact Support</h3>
-        <div class="support-options">
-                            
-            {% comment %} <div class="support-option">
-                <i class="fas fa-phone"></i>
-                <div>
-                    <h4>Phone Support</h4>
-                    <p>(+234) 913 0000 390 <br> (+234) 913 0000 370</p>
-                    <small>Mon–Fri, 9AM–5PM</small>
-                </div> 
-            </div>{% endcomment %}
-            
-            <div class="support-option">
-                <i class="fas fa-map-marker-alt"></i>
-                <div>
-                    <h4>Address</h4>
-                    <p>Helix Biogen Institue, Orisunbare, Along Maryland Nursery And Primary School, Sabo Abogunde Road, Oke Anu, Ogbomoso, Oyo State, Nigeria.</p>
-                </div>
+    <div class="list-grid">
+        {% comment %} <div class="list-card">
+            <div class="card-icon"><i class="fas fa-phone"></i></div>
+            <div class="list-card-body">
+                <h3>Phone Support</h3>
+                <p>(+234) 913 0000 390 <br> (+234) 913 0000 370</p>
+                <span class="card-meta">Mon–Fri, 9AM–5PM</span>
             </div>
+        </div> {% endcomment %}
 
-            <div class="support-option">
-                <i class="fas fa-envelope"></i>
-                <div>
-                    <h4>Email</h4>
-                    <p><a href="mailto:amrtool344@gmail.com?subject=AMRxHub%20Support%20Request" style="color: inherit; text-decoration: none;">amrtool344@gmail.com</a></p>
-                </div>
+        <div class="list-card">
+            <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="list-card-body">
+                <h3>Address</h3>
+                <p>Helix Biogen Institue, Orisunbare, Along Maryland Nursery And Primary School, Sabo Abogunde Road, Oke Anu, Ogbomoso, Oyo State, Nigeria.</p>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="microorganism-pattern" style="top: 25%; left: 85%;"></div>
-<div class="microorganism-pattern" style="top: 65%; left: 10%;"></div>
+        <a href="mailto:amrtool344@gmail.com?subject=AMRxHub%20Support%20Request" class="list-card">
+            <div class="card-icon"><i class="fas fa-envelope"></i></div>
+            <div class="list-card-body">
+                <h3>Email</h3>
+                <p>amrtool344@gmail.com</p>
+                <span class="card-meta">Send a support request <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </a>
+    </div>
+</section>
 
 <style>
-    .quick-intro {
-        color: #555;
-        margin: -8px 0 20px;
-    }
-    
-    .help-link strong {
-        display: inline-block;
-        margin-top: 12px;
-        color: #667eea;
-        font-size: 13px;
-    }
-    
-    .help-link strong i {
-        font-size: 12px;
-        color: inherit;
-    }
-    
     .help-more {
-        margin-top: 24px;
-        padding: 18px 20px;
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
+        margin-top: 20px;
+        border-left: 4px solid var(--primary);
     }
-    
-    .help-more h4 {
+
+    .help-more h3 {
         margin: 0 0 6px;
-        color: #333;
+        color: var(--dark);
+        font-size: 17px;
+        font-weight: 700;
     }
-    
+
     .help-more p {
         margin: 0;
-        color: #555;
-        line-height: 1.6;
-    }
-
-    .help-content {
-    line-height: 1.6;
-    }
-
-    .quick-links, 
-    .faq-section, 
-    .resources-section, 
-    .tutorials-section, 
-    .contact-support {
-        margin-bottom: 40px;
-        padding: 25px;
-        background: rgba(13, 71, 161, 0.05); /* Site color accent */
-        border-radius: 15px;
-        border-left: 4px solid #667eea;
-    }
-
-    .quick-links h3, 
-    .faq-section h3, 
-    .resources-section h3,
-    .tutorials-section h3, 
-    .contact-support h3 {
-        color: #667eea;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 24px;
-    }
-
-    .link-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-        gap: 15px;
-    }
-
-    .help-link {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        text-decoration: none;
-        color: #333;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        transition: all 0.3s;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .help-link:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        color: #667eea;
-    }
-
-    .help-link i {
-        font-size: 24px;
-        color: #667eea;
-    }
-
-    /* Tutorials */
-    .tutorial-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
-        gap: 20px;
-    }
-
-    .tutorial-item {
-        background: white;
-        border-radius: 10px;
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        transition: transform 0.3s;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
-    }
-
-    .tutorial-item:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    .tutorial-thumbnail {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .tutorial-thumbnail i {
-        font-size: 30px;
-        color: white;
-    }
-
-    .tutorial-info h4 {
-        color: #333;
-        margin-bottom: 8px;
-        font-size: 16px;
-    }
-
-    .tutorial-info p {
-        color: #666;
-        margin-bottom: 8px;
         font-size: 14px;
     }
 
-    .duration {
-        color: #0d47a1;
-        font-weight: 600;
-        font-size: 12px;
+    .video-card {
+        padding: 14px 14px 20px;
     }
 
-    /* Embedded YouTube Video */
-    .video-container {
+    .video-frame {
         position: relative;
-        padding-bottom: 56.25%; /* 16:9 */
-        height: 0;
+        aspect-ratio: 16 / 9;
+        margin-bottom: 15px;
         overflow: hidden;
-        border-radius: 10px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        background: var(--primary-light);
     }
 
-    .video-container iframe {
+    .video-frame iframe {
         position: absolute;
-        top: 0;
-        left: 0;
+        inset: 0;
         width: 100%;
         height: 100%;
-        border: none;
-    }
-    {% comment %} Temporary {% endcomment %}
-    .video-item {
-        width: min(320px, 100%);
-        aspect-ratio: 1 / 1;
-        background: white;
-        border-radius: 10px;
-        padding: 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        transition: transform 0.3s;
-    }
-    
-    .video-item iframe {
-        width: 100%;
-        height: 100%;
-        border-radius: 10px;
-        margin-bottom: 10px;
-        border: none;
-        aspect-ratio: 1 / 1;
-    }
-    
-    .video-item h4 {
-        font-size: 16px;
-        color: #333;
-        text-align: center;
-        margin: 0;
-    }
-    {% comment %} Very temporary lines at least until a second video is mad {% endcomment %}
-
-    /* Support options */
-    .support-options {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
-        gap: 20px;
+        border: 0;
     }
 
-    .support-option {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        display: flex;
-        align-items: flex-start;
-        gap: 15px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    .video-card h3 {
+        padding: 0 6px;
     }
 
-    .support-option i {
-        font-size: 24px;
-        color: #555;
-        margin-top: 5px;
-    }
-
-    .support-option h4 {
-        color: #333;
-        margin-bottom: 5px;
-        font-size: 16px;
-    }
-
-    .support-option p {
-        color: #555;
-        margin-bottom: 5px;
-        font-weight: 600;
-    }
-
-    .support-option small {
-        color: #666;
-        font-size: 12px;
-    }
-    .quick-desc {
-        display: block;
-        font-size: 13px;
-        color: #666;
-        margin-top: 5px;
-        line-height: 1.4;
-    }
-    .quick-section {
-        margin: 25px 0;
-        padding: 15px 20px;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .quick-section h4 {
-        color: #667eea;
-        margin-bottom: 10px;
-    }
-    .quick-section p {
-        color: #444;
-        font-size: 15px;
-        line-height: 1.6;
-    }
-    .tips-section {
-        padding: 25px;
-        margin-bottom: 40px;
-        background: rgba(102, 126, 234, 0.05);
-        border-radius: 15px;
-        border-left: 4px solid #667eea;
-    }
-
-    .tips-section h3 {
-        color: #667eea;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-    .tips-list {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .tip-item {
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .tip-header {
-        padding: 20px;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: background-color 0.3s;
-    }
-
-    .tip-header:hover {
-        background-color: rgba(102, 126, 234, 0.1);
-    }
-
-    .tip-header h4 {
-        margin: 0;
-        font-size: 16px;
-        color: #333;
-    }
-
-    .tip-header i {
-        color: #667eea;
-        transition: transform 0.3s;
-    }
-
-    .tip-item.active .tip-header i {
-        transform: rotate(180deg);
-    }
-
-    .tip-content {
-        padding: 0 20px;
-        max-height: 0;
-        overflow: hidden;
-        transition: all 0.3s;
-    }
-
-    .tip-item.active .tip-content {
-        padding: 20px;
-        max-height: 500px; /* Large enough to fit most tip content */
-    }
-
-    .tip-content p {
-        color: #666;
-        margin: 0;
-        line-height: 1.6;
-    }
-    .video-tutorials-section {
-        padding: 25px;
-        margin-bottom: 40px;
-        background: rgba(102, 126, 234, 0.05);
-        border-radius: 15px;
-        border-left: 4px solid #667eea;
-    }
-
-    .video-tutorials-section h3 {
-        color: #667eea;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-    .video-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-        gap: 20px;
-    }
-
-    .video-item {
-        background: white;
-        border-radius: 10px;
-        padding: 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        transition: transform 0.3s;
-    }
-
-    .video-item:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    }
-
-    .video-item iframe {
-        width: 100%;
-        height: 200px; /* Medium size, adjust as needed */
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
-
-    .video-item h4 {
-        font-size: 16px;
-        color: #333;
-        text-align: center;
-        margin: 0;
-    }
-    .help-page {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    }
-    /* Make the help page fill the full content area */
-    .content-card {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* Ensure its inner sections also stretch */
-    .help-content {
-        width: 100%;
-    }
-    body.help-page .content-card {
-        max-width: 100% !important;
-        width: 100% !important;
-        padding: 0 2rem; /* optional side padding */
-    }
-    body.help-page .help-content {
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-
-    /* Phones: flat sections and two-column tiles, matching Tools and Resources */
-    @media (max-width: 600px) {
-        .quick-links,
-        .faq-section,
-        .resources-section,
-        .tutorials-section,
-        .contact-support,
-        .tips-section,
-        .video-tutorials-section {
-            margin-bottom: 18px;
-            padding: 0 0 18px;
-            background: none;
-            border-left: 0;
-            border-radius: 0;
-            border-bottom: 1px solid #eef0fb;
-        }
-
-        .contact-support {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: 0;
-        }
-
-        .quick-links h3,
-        .faq-section h3,
-        .resources-section h3,
-        .tutorials-section h3,
-        .contact-support h3 {
-            margin-bottom: 10px;
-            font-size: 17px;
-            color: #1f2937;
-        }
-
-        .quick-links h3 i,
-        .contact-support h3 i {
-            color: #667eea;
-        }
-
-        .quick-intro {
-            margin: 0 0 12px;
-            font-size: 14px;
-        }
-
-        .link-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-        }
-
-        .help-link {
-            justify-content: center;
-            min-height: 112px;
-            padding: 14px 8px;
-            text-align: center;
-            border: 1px solid #e1e8ed;
-            border-radius: 14px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        }
-
-        .help-link:hover {
-            transform: none;
-        }
-
-        .help-link > div > i {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            margin: 0 auto 8px;
-            border-radius: 10px;
-            background: rgba(102, 126, 234, 0.1);
-            font-size: 18px;
-        }
-
-        .help-link span {
-            display: block;
-            color: #222;
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 1.25;
-        }
-
-        /* The whole tile is the link, so the blurb and call-to-action are redundant here */
-        .help-link .quick-desc,
-        .help-link strong {
-            display: none;
-        }
-
-        .help-more {
-            margin-top: 12px;
-            padding: 14px;
-            border: 1px solid #e1e8ed;
-            border-radius: 14px;
-        }
-
-        .help-more h4 {
-            font-size: 15px;
-        }
-
-        .help-more p {
-            font-size: 13px;
-        }
-
-        .support-options {
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-
-        .support-option {
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border: 1px solid #e1e8ed;
-            border-radius: 14px;
-            box-shadow: none;
-        }
-
-        .support-option i {
-            display: flex;
-            flex: 0 0 40px;
-            align-items: center;
-            justify-content: center;
-            height: 40px;
-            margin: 0;
-            border-radius: 10px;
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-            font-size: 18px;
-        }
-
-        .support-option h4 {
-            margin-bottom: 2px;
-            font-size: 14px;
-        }
-
-        .support-option p {
-            margin: 0;
-            font-size: 12.5px;
-            font-weight: 500;
-        }
+    .video-card .card-meta {
+        padding: 0 6px;
     }
 </style>
-
-<script>
-    function toggleFAQ(element) {
-        const faqItem = element.parentElement;
-        const isActive = faqItem.classList.contains('active');
-        
-        // Close all FAQ items
-        document.querySelectorAll('.faq-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        
-        // Open clicked item if it wasn't active
-        if (!isActive) {
-            faqItem.classList.add('active');
-        }
-    }
-
-    function toggleTip(element) {
-        const tipItem = element.parentElement;
-        const isActive = tipItem.classList.contains('active');
-
-        // Close all tips
-        document.querySelectorAll('.tip-item').forEach(item => {
-            item.classList.remove('active');
-        });
-
-        // Open clicked tip if it wasn't active
-        if (!isActive) {
-            tipItem.classList.add('active');
-        }
-    }
-</script>
 {% endblock %}

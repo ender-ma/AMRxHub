@@ -5,112 +5,178 @@ Discover and access curated antimicrobial-resistance tools, datasets, educationa
 
 {% block title %}AMRx Hub - Exchanging ideas, advancing AMR solutions{% endblock %}
 
+{% block hero_label %}AMRx Knowledge Centre{% endblock %}
+{% block hero_title %}Welcome to AMRx Hub{% endblock %}
+{% block hero_text %}
+    A searchable directory of antimicrobial resistance (AMR) resources.
+    Find tools, datasets, learning materials and research references in one place.
+{% endblock %}
+{% block hero_extra %}
+<div class="hero-actions">
+    <a href="{% url 'tools:tools_home' %}" class="hero-button"><i class="fas fa-tools"></i> Explore AMR Tools</a>
+    <a href="{% url 'resources:resources_list' %}" class="hero-button-ghost"><i class="fas fa-book"></i> Browse Resources</a>
+</div>
+{% endblock %}
+
 {% block content %}
-<div class="content-card">
-    <div class="content-header">
-        <h2>Welcome to AMRx Hub</h2>
-    </div>
 
-    {% comment %} <!-- HTML: No need for a track div, just .advert-slide for each image -->
-    <div class="adverts-carousel" id="advertsCarousel">
-        <div class="adverts-track" id="advertsTrack">
-            {% for advert in adverts %}
-            <div class="advert-slide">
-                <a href="{{ advert.url }}" target="_blank">
-                    <img src="{{ advert.image.url }}" alt="{{ advert.title }}" class="advert-img">
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </div> {% endcomment %}
-
-    <!-- Concise overview replaced the long narrative -->
-    <div class="home-overview" style="margin-top:1.5em;">
-        <p style="font-size:1.05rem; margin-bottom:1rem;">
-            AMRx Hub is a searchable directory of antimicrobial-resistance (AMR) resources. Find tools, datasets, learning materials, and research references in one place.
-        </p>
-
-        <div style="display:flex; flex-wrap:wrap; gap:24px; margin-bottom:1rem;">
-            <div style="flex:1; min-width:220px;">
-                <h4 style="margin-bottom:0.5rem;">What We Offer</h4>
-                <ul style="margin:0; padding-left:1.15rem;">
-                    <li>Computational tools for AMR analysis</li>
-                    <li>Surveillance & data resources</li>
-                    <li>Educational materials (tutorials, papers)</li>
-                    <li>Research resources (datasets, documentation)</li>
-                </ul>
-            </div>
-
-            <div style="flex:1; min-width:220px;">
-                <h4 style="margin-bottom:0.5rem;">How It Works</h4>
-                <ol style="margin:0 0 0 1.15rem; padding:0;">
-                    <li>Search or browse tools or resources</li>
-                    <li>Review resource details</li>
-                    <li>Access the original tool or data source</li>
-                </ol>
-            </div>
-        </div>
-
-        <p style="margin-top:0.5rem; font-weight:500;">
-            Benefit: find relevant AMR resources faster and go directly to the source.
-        </p>
-    </div>
-
-    <!-- Announcements (kept intact) -->
-    <div class="announcements" style="margin-top:1.5em;">
-        <h3><i class="fas fa-bullhorn"></i> Latest Updates</h3>
-        {% for announcement in announcements %}
-        <div class="announcement-item">
-            <h4>
-                {% if announcement.link %}
-                    <a href="{{ announcement.link }}" target="_blank">{{ announcement.title }}</a>
-                {% else %}
-                    {{ announcement.title }}
-                {% endif %}
-            </h4>
-            <p>{{ announcement.content }}</p>
-            <span class="date">{{ announcement.date|date:"M d, Y" }}</span>
+{% comment %} <!-- HTML: No need for a track div, just .advert-slide for each image -->
+<div class="adverts-carousel" id="advertsCarousel">
+    <div class="adverts-track" id="advertsTrack">
+        {% for advert in adverts %}
+        <div class="advert-slide">
+            <a href="{{ advert.url }}" target="_blank">
+                <img src="{{ advert.image.url }}" alt="{{ advert.title }}" class="advert-img">
+            </a>
         </div>
         {% endfor %}
-        {% if announcements|length >= 5 %}
-        <div class="view-all-announcements">
-            <a href="{% url 'main:all_announcements' %}">View All Announcements</a>
+    </div>
+</div> {% endcomment %}
+
+<!-- WHAT WE OFFER -->
+<section class="page-section">
+    <div class="section-heading">
+        <h2>What We Offer</h2>
+        <p>Everything AMR in one place, organised by what you need to do.</p>
+    </div>
+
+    <div class="card-grid">
+        <a href="{% url 'tools:tools_home' %}" class="info-card">
+            <div class="card-icon"><i class="fas fa-laptop-code"></i></div>
+            <h3>Computational Tools</h3>
+            <p class="card-body-text">Tools for AMR analysis, from resistance gene detection to genome annotation.</p>
+            <div class="card-bottom"><span>AMR Tools</span><span class="card-cta">Explore <i class="fas fa-arrow-right"></i></span></div>
+        </a>
+
+        <a href="{% url 'resources:resources_list' %}" class="info-card">
+            <div class="card-icon"><i class="fas fa-satellite-dish"></i></div>
+            <h3>Surveillance &amp; Data</h3>
+            <p class="card-body-text">Surveillance programmes, databases and datasets for tracking resistance.</p>
+            <div class="card-bottom"><span>Resources</span><span class="card-cta">Explore <i class="fas fa-arrow-right"></i></span></div>
+        </a>
+
+        <a href="{% url 'help' %}#tutorials" class="info-card">
+            <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+            <h3>Educational Materials</h3>
+            <p class="card-body-text">Tutorials, papers and learning material for students and educators.</p>
+            <div class="card-bottom"><span>Tutorials</span><span class="card-cta">Explore <i class="fas fa-arrow-right"></i></span></div>
+        </a>
+
+        <a href="{% url 'resources:resources_list' %}" class="info-card">
+            <div class="card-icon"><i class="fas fa-flask"></i></div>
+            <h3>Research Resources</h3>
+            <p class="card-body-text">Datasets, documentation and references that support AMR research.</p>
+            <div class="card-bottom"><span>Resources</span><span class="card-cta">Explore <i class="fas fa-arrow-right"></i></span></div>
+        </a>
+
+        <a href="{% url 'glossary' %}" class="info-card">
+            <div class="card-icon"><i class="fas fa-book-open"></i></div>
+            <h3>Scientific Glossary</h3>
+            <p class="card-body-text">Definitions of the terms used across AMR, microbiology and public health.</p>
+            <div class="card-bottom"><span>Glossary</span><span class="card-cta">Explore <i class="fas fa-arrow-right"></i></span></div>
+        </a>
+
+        <a href="{% url 'about' %}" class="info-card">
+            <div class="card-icon"><i class="fas fa-users"></i></div>
+            <h3>About the Hub</h3>
+            <p class="card-body-text">Who we are, who the Hub is for, and how resources are curated.</p>
+            <div class="card-bottom"><span>About</span><span class="card-cta">Learn more <i class="fas fa-arrow-right"></i></span></div>
+        </a>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="page-section">
+    <div class="section-heading">
+        <h2>How It Works</h2>
+        <p>Find relevant AMR resources faster and go directly to the source.</p>
+    </div>
+
+    <div class="card-grid">
+        <div class="info-card">
+            <div class="card-icon">1</div>
+            <h3>Search or browse</h3>
+            <p>Search the directory or browse tools and resources by category.</p>
         </div>
+        <div class="info-card">
+            <div class="card-icon">2</div>
+            <h3>Review the details</h3>
+            <p>Read what each tool or resource does, who built it and what it needs.</p>
+        </div>
+        <div class="info-card">
+            <div class="card-icon">3</div>
+            <h3>Go to the source</h3>
+            <p>Open the original tool or data source directly from AMRx Hub.</p>
+        </div>
+    </div>
+</section>
+
+<!-- LATEST UPDATES -->
+<section class="page-section">
+    <div class="section-top">
+        <div class="section-heading">
+            <h2>Latest Updates</h2>
+            <p>News and announcements from the AMRx Hub team.</p>
+        </div>
+        {% if announcements|length >= 5 %}
+            <a href="{% url 'all_announcements' %}" class="back-button">View all <i class="fas fa-arrow-right"></i></a>
         {% endif %}
     </div>
-</div>
+
+    <div class="list-grid">
+        {% for announcement in announcements %}
+            {% if announcement.link %}
+            <a href="{{ announcement.link }}" target="_blank" rel="noopener" class="list-card">
+            {% else %}
+            <div class="list-card">
+            {% endif %}
+                <div class="card-icon"><i class="fas fa-bullhorn"></i></div>
+                <div class="list-card-body">
+                    <h3>{{ announcement.title }}</h3>
+                    <p>{{ announcement.content }}</p>
+                    <span class="card-meta">{{ announcement.date|date:"M d, Y" }}{% if announcement.link %} · Read more{% endif %}</span>
+                </div>
+            {% if announcement.link %}
+            </a>
+            {% else %}
+            </div>
+            {% endif %}
+        {% empty %}
+            <div class="empty-state">
+                <i class="fas fa-bullhorn"></i>
+                <h3>No announcements yet</h3>
+                <p>New updates from the team will appear here.</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
 
 <script>
+    // Advert carousel: only runs when the carousel markup above is enabled.
     document.addEventListener("DOMContentLoaded", function() {
         const track = document.getElementById('advertsTrack');
+        if (!track) return;
         let slides = Array.from(track.children);
         if (slides.length <= 1) return;
 
-        // Clone first and last slides for seamless looping
         const firstClone = slides[0].cloneNode(true);
         const lastClone = slides[slides.length - 1].cloneNode(true);
         track.appendChild(firstClone);
         track.insertBefore(lastClone, slides[0]);
         slides = Array.from(track.children);
 
-        let current = 1; // Start at the real first slide (after the clone)
+        let current = 1;
         const duration = {{ adverts.0.display_duration|default:5 }};
         let timer;
 
         function goToSlide(idx, animate = true) {
-            if (animate) {
-                track.style.transition = 'transform 0.7s cubic-bezier(.4,0,.2,1)';
-            } else {
-                track.style.transition = 'none';
-            }
+            track.style.transition = animate ? 'transform 0.7s cubic-bezier(.4,0,.2,1)' : 'none';
             track.style.transform = `translateX(-${idx * 100}%)`;
         }
 
         function nextSlide() {
             current++;
             goToSlide(current, true);
-
-            // When reaching the clone at the end, jump to the real first slide
             if (current === slides.length - 1) {
                 setTimeout(() => {
                     current = 1;
@@ -119,19 +185,12 @@ Discover and access curated antimicrobial-resistance tools, datasets, educationa
             }
         }
 
-        function startCarousel() {
-            timer = setInterval(nextSlide, duration * 1000);
-        }
+        function startCarousel() { timer = setInterval(nextSlide, duration * 1000); }
+        function stopCarousel() { clearInterval(timer); }
 
-        function stopCarousel() {
-            clearInterval(timer);
-        }
-
-        // Optional: Pause on hover (desktop)
         track.addEventListener('mouseenter', stopCarousel);
         track.addEventListener('mouseleave', startCarousel);
 
-        // Set initial position (show the real first slide)
         goToSlide(current, false);
         startCarousel();
     });
@@ -139,87 +198,41 @@ Discover and access curated antimicrobial-resistance tools, datasets, educationa
 
 <style>
     .adverts-carousel {
-        margin-bottom: 30px;
-        background: #f8fafc;
-        border-radius: 14px;
-        box-shadow: 0 2px 12px rgba(102,126,234,0.08);
-        width: 100%;
-        max-width: 900px;
         position: relative;
+        width: 100%;
         height: 320px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        margin-bottom: 40px;
         overflow: hidden;
-    }
-    @media (max-width: 900px) {
-        .adverts-carousel {
-            height: 40vw;
-            min-height: 180px;
-            max-height: 320px;
-        }
-    }
-    @media (max-width: 600px) {
-        .adverts-carousel {
-            height: 50vw;
-            min-height: 120px;
-            max-height: 220px;
-        }
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
     }
     .adverts-track {
         display: flex;
         height: 100%;
         width: 100%;
-        transition: transform 0.7s cubic-bezier(.4,0,.2,1);
         will-change: transform;
     }
     .advert-slide {
         flex: 0 0 100%;
-        max-width: 100%;
         height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        box-sizing: border-box;
     }
     .advert-img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 18px;
-        background: #fff;
-        box-shadow: 0 4px 24px rgba(102,126,234,0.18);
-        display: block;
-        margin: auto;
         max-width: 100%;
         max-height: 100%;
+        object-fit: contain;
     }
-    .announcement-item {
-        background: rgba(102, 126, 234, 0.05);
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 15px;
-        border-left: 4px solid #667eea;
+    .info-card .card-icon {
+        font-weight: 800;
     }
-    .announcement-item h4 {
-        color: #333;
-        margin-bottom: 8px;
-    }
-    .announcement-item .date {
-        color: #666;
-        font-size: 12px;
-        font-style: italic;
-    }
-    .home-overview .lead { margin-bottom: 0.75rem; }
-    @media (max-width: 600px) {
-        .home-overview { margin-top: 0 !important; }
-        .home-overview p,
-        .home-overview li { font-size: 0.95rem !important; }
-        .home-overview h4 { font-size: 1.05rem; }
-        .announcements h3 { font-size: 1.1rem; }
-        .announcement-item { padding: 12px; margin-bottom: 10px; }
-        .announcement-item h4 { font-size: 1rem; }
-        .announcement-item p { font-size: 0.9rem; margin-bottom: 6px; }
+    @media (max-width: 650px) {
+        .adverts-carousel {
+            height: 50vw;
+            min-height: 120px;
+        }
     }
 </style>
 {% endblock %}

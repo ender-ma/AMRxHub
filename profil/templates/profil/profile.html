@@ -1,6 +1,11 @@
 {% extends "main_layout.html" %}
 
-{% block title %}Profile - AMR Tool House{% endblock %}
+{% block title %}Profile - AMRx Hub{% endblock %}
+
+{% block hero_class %}page-hero--compact{% endblock %}
+{% block hero_label %}<i class="fas fa-user-circle"></i> Your Profile{% endblock %}
+{% block hero_title %}{{ user.get_full_name|default:user.email }}{% endblock %}
+{% block hero_text %}{{ user.email }} · Member since {{ user.date_joined|date:"F Y" }}{% endblock %}
 
 {% block content %}
 {% comment %} <div class="profile-container">
@@ -364,32 +369,34 @@
     
     .content-card {
         background: white;
-        border-radius: 15px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0;
         margin-bottom: 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         overflow: hidden;
     }
-    
+
     .card-header {
-        padding: 20px 30px;
-        background: #f7f9fc;
+        padding: 18px 30px;
+        background: var(--primary-soft);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #eaedf3;
+        border-bottom: 1px solid var(--border);
     }
-    
+
     .card-header h3 {
         margin: 0;
-        font-size: 1.3rem;
-        color: #374151;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--dark);
         display: flex;
         align-items: center;
     }
-    
+
     .card-header h3 i {
         margin-right: 10px;
-        color: #6366f1;
+        color: var(--primary);
     }
     
     .card-body {
@@ -473,7 +480,7 @@
     }
     
     .save-btn {
-        background: #4f46e5;
+        background: #667eea;
         color: white;
     }
     
@@ -507,7 +514,7 @@
     
     .interest-tag {
         background: #eef2ff;
-        color: #4f46e5;
+        color: #667eea;
         padding: 6px 12px;
         border-radius: 20px;
         font-size: 0.9rem;
@@ -610,7 +617,7 @@
     }
     
     input:checked + .slider {
-        background-color: #4f46e5;
+        background-color: #667eea;
     }
     
     input:checked + .slider:before {

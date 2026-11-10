@@ -11,10 +11,11 @@
     <meta name="keywords" content="AMRx Hub, Antimicrobial Resistance, AMR Tools, Research Support, Data Analysis, Bioinformatics, Public Health, Microbiology, Collaborative Platform">
     <meta name="author" content="AMRx Hub">
 
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <link rel="stylesheet" href="{% static 'notifications/css/notifications.css' %}">
+    <!-- Vendor CSS first so the site stylesheet wins on equal specificity -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'notifications/css/notifications.css' %}">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
 
     <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}">
     <link rel="icon" type="image/png" sizes="64x64" href="{% static 'img/favicon-64x64.jpg' %}">
@@ -25,36 +26,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
 
     <style>
-        .header-logo {
-            height: 80px;
-            width: 80px;
-            object-fit: contain;
-            margin-right: -10px;
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .signup-btn {
-            background-color: #10b981;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .signup-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            color: #fff;
-        }
-
         .messages-container {
             position: fixed;
             top: 20px;
@@ -66,7 +37,7 @@
         .message {
             padding: 15px 20px;
             margin-bottom: 10px;
-            border-radius: 8px;
+            border-radius: 9px;
             color: #fff;
             font-weight: 500;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -75,20 +46,16 @@
             align-items: center;
         }
 
-        .message.success {
-            background-color: #22c55e;
-        }
-
-        .message.error {
-            background-color: #dc2626;
-        }
+        .message.success { background-color: #22c55e; }
+        .message.error { background-color: #dc2626; }
+        .message.warning { background-color: #900bf5; }
+        .message.info { background-color: #667eea; }
 
         .close-message {
             background: none;
             border: none;
             color: #fff;
             font-size: 1.2rem;
-            cursor: pointer;
             margin-left: 10px;
         }
 
@@ -97,61 +64,47 @@
             display: none;
             position: fixed;
             z-index: 10000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            inset: 0;
+            background-color: rgba(31, 41, 55, 0.55);
             justify-content: center;
             align-items: center;
+            padding: 16px;
         }
 
         .login-prompt-content,
         .verification-prompt-content {
-            background-color: #fff;
-            padding: 25px;
-            border-radius: 8px;
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
             position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .message.warning {
-            background-color: #900bf5;
-            color: #fff;
-        }
-
-        .messages-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
+            width: 100%;
             max-width: 400px;
+            padding: 30px 25px 25px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background-color: #fff;
+            text-align: center;
+            box-shadow: 0 14px 36px rgba(40, 44, 90, 0.18);
         }
-        
-        .message {
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            color: #fff;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            opacity: 1;
+
+        .login-prompt-content h2 {
+            margin: 0 0 8px;
+            color: var(--dark);
+            font-size: 21px;
+            font-weight: 700;
         }
-        
+
+        .login-prompt-content p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
         .close-modal,
         .close-verification-modal {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 12px;
+            right: 14px;
             font-size: 24px;
-            cursor: pointer;
-            color: #6b7280;
+            line-height: 1;
+            color: var(--muted);
             background: none;
             border: none;
         }
@@ -159,59 +112,39 @@
         .login-prompt-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .login-prompt-buttons .login-btn,
-        .login-prompt-buttons .signup-btn {
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        @media (max-width: 520px) {
-            .header-logo {
-                height: 44px;
-                width: 44px;
-                margin-right: -4px;
-            }
-
-            .auth-buttons {
-                gap: 6px;
-            }
-
-            .auth-buttons .login-btn,
-            .auth-buttons .signup-btn {
-                padding: 7px 12px;
-                font-size: 0.85rem;
-            }
-
-            .auth-buttons i {
-                display: none;
-            }
-
-            .messages-container {
-                left: 12px;
-                right: 12px;
-                max-width: none;
-            }
+            gap: 12px;
+            margin-top: 22px;
         }
     </style>
 
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header class="header">
-        <h1 class="logo">
-            <img src="{% static 'img/AMRx HUB Logo.png' %}" alt="AMRx Hub Logo" class="header-logo">
-            <span>AMRx Hub</span>
-        </h1>
+    {% with ns=request.resolver_match.namespace url_name=request.resolver_match.url_name %}
+    <!-- NAVIGATION -->
+    <nav class="site-nav" aria-label="Primary">
+        <a href="{% url 'home' %}" class="site-logo">
+            <img src="{% static 'img/AMRx HUB Logo.png' %}" alt="">
+            <span class="logo-text">AMR<span class="logo-x">x</span> Hub</span>
+        </a>
 
-        <div class="header-right">
+        <ul class="site-nav-links">
+            <li><a href="{% url 'home' %}" class="{% if url_name == 'home' %}active{% endif %}">Home</a></li>
+            <li><a href="{% url 'tools:tools_home' %}" class="{% if ns == 'tools' and url_name != 'history' %}active{% endif %}">Tools</a></li>
+            <li><a href="{% url 'resources:resources_list' %}" class="{% if ns == 'resources' %}active{% endif %}">Resources</a></li>
+            <li>
+                <a href="{% if user.is_authenticated %}{% url 'tools:history' %}{% else %}#{% endif %}"
+                   class="{% if url_name == 'history' %}active{% endif %}"
+                   {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>History</a>
+            </li>
+            {% comment %} Glossary hidden from the header (desktop + mobile) for now; still linked from the footer.
+            <li><a href="{% url 'glossary' %}" class="{% if url_name == 'glossary' %}active{% endif %}">Glossary</a></li>
+            {% endcomment %}
+            <li><a href="{% url 'about' %}" class="{% if url_name == 'about' %}active{% endif %}">About</a></li>
+            <li><a href="{% url 'help' %}" class="{% if url_name == 'help' %}active{% endif %}">Help</a></li>
+        </ul>
+
+        <div class="site-nav-actions">
             {% if user.is_authenticated %}
                 <div class="notification-bell" id="notification-bell" role="button" tabindex="0" aria-label="Notifications">
                     <i class="fas fa-bell"></i>
@@ -232,6 +165,9 @@
                         <a href="{% url 'profil:profile' %}">
                             <i class="fas fa-user"></i> Profile
                         </a>
+                        <a href="{% url 'notifications:notification-list' %}">
+                            <i class="fas fa-bell"></i> Notifications
+                        </a>
                         <form action="{% url 'logout' %}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="logout-btn">
@@ -241,46 +177,55 @@
                     </div>
                 </div>
             {% else %}
-                <div class="auth-buttons">
-                    <a href="{% url 'authentication:login' %}" class="login-btn">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </a>
-                    <a href="{% url 'authentication:signup' %}" class="signup-btn">
-                        <i class="fas fa-user-plus"></i> Sign Up
-                    </a>
-                </div>
+                <a href="{% url 'authentication:login' %}" class="nav-button-outline">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                <a href="{% url 'authentication:signup' %}" class="nav-button">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </a>
             {% endif %}
         </div>
-    </header>
-
-    <nav class="sidebar">
-        <div class="sidebar-menu">
-            <a href="{% url 'home' %}" class="menu-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}"><i class="fas fa-home"></i><span>Home</span></a>
-            <a href="{% url 'tools:tools' %}" class="menu-item {% if request.resolver_match.url_name == 'tools' %}active{% endif %}"><i class="fas fa-tools"></i><span>Tools</span></a>
-            <a href="{% url 'resources:resources_list' %}" class="menu-item {% if request.resolver_match.url_name == 'resources' %}active{% endif %}"><i class="fas fa-book"></i><span>Resources</span></a>
-            <a href="{% if user.is_authenticated %}{% url 'tools:history' %}{% else %}#{% endif %}"
-               class="menu-item {% if request.resolver_match.url_name == 'history' or request.resolver_match.url_name == 'tools:history' %}active{% endif %}"
-               {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
-                <i class="fas fa-history"></i><span>History</span>
-            </a>
-
-            <a href="{% url 'about' %}" class="menu-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}"><i class="fas fa-info-circle"></i><span>About</span></a>
-            <a href="{% url 'help' %}" class="menu-item {% if request.resolver_match.url_name == 'help' %}active{% endif %}"><i class="fas fa-question-circle"></i><span>Help</span></a>
-        </div>
     </nav>
+    {% endwith %}
 
-    <main class="main-content">
+    <!-- HERO -->
+    {% block hero %}
+    <header class="page-hero {% block hero_class %}{% endblock %}">
+        <div class="hero-microbes" aria-hidden="true">
+            <span class="hero-microbe"></span>
+            <span class="hero-microbe"></span>
+            <span class="hero-microbe"></span>
+            <span class="hero-microbe"></span>
+            <span class="hero-microbe"></span>
+        </div>
+
+        <div class="page-hero-inner">
+            <span class="hero-label">{% block hero_label %}AMRx Knowledge Centre{% endblock %}</span>
+            <h1>{% block hero_title %}AMRx Hub{% endblock %}</h1>
+            <p class="hero-text">{% block hero_text %}Exchanging ideas, advancing AMR solutions.{% endblock %}</p>
+            {% block hero_extra %}{% endblock %}
+        </div>
+    </header>
+    {% endblock %}
+
+    <!-- MAIN CONTENT -->
+    <main class="main-container">
         {% block content %}{% endblock %}
     </main>
 
+    <!-- Background microorganism movement -->
+    <div class="microorganism-pattern" style="top: 38%; left: 3%;" aria-hidden="true"></div>
+    <div class="microorganism-pattern" style="top: 62%; right: 4%; animation-delay: -3s;" aria-hidden="true"></div>
+    <div class="microorganism-pattern" style="bottom: 6%; left: 46%; animation-delay: -6s;" aria-hidden="true"></div>
+
     <div id="login-prompt" class="login-prompt-modal">
-        <div class="login-prompt-content">
+        <div class="login-prompt-content" role="dialog" aria-modal="true" aria-labelledby="login-prompt-title">
             <button class="close-modal" id="login-prompt-close" type="button" aria-label="Close">&times;</button>
-            <h2>Login Required</h2>
+            <h2 id="login-prompt-title">Login Required</h2>
             <p>Please login or sign up to access this feature.</p>
             <div class="login-prompt-buttons">
-                <a href="{% url 'authentication:login' %}" class="login-btn">Login</a>
-                <a href="{% url 'authentication:signup' %}" class="signup-btn">Sign Up</a>
+                <a href="{% url 'authentication:login' %}" class="nav-button-outline">Login</a>
+                <a href="{% url 'authentication:signup' %}" class="nav-button">Sign Up</a>
             </div>
         </div>
     </div>
@@ -296,107 +241,72 @@
         </div>
     {% endif %}
 
-    <footer class="footer">
-        <div class="container footer-content-wrapper">
-            <div class="row">
-                <div class="footer-col">
-                    <h4>Company</h4>
-                    <ul>
-                        <li><a href="{% url 'about' %}">About us</a></li>
-                        <li><a href="{% url 'about' %}#our-team">Our Team</a></li>
-                        {% comment %} <li><a href="{% url 'collaborators' %}">Collaborators</a></li> {% endcomment %}
-                        {% comment %} <li><a href="{% url 'affiliations' %}">Affiliation program</a></li> {% endcomment %}
-
-                        <li><a href="{% url 'about' %}#contact-us">Contact us</a></li>
-                        <li><a href="{% url 'privacy_policy' %}">Privacy policy</a></li>
-                        <li><a href="{% url 'authentication:terms' %}">Terms and conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Get Help</h4>
-                    <ul>
-                        {% comment %} <li><a href="{% url 'help' %}#faq">FAQ</a></li> {% endcomment %}
-                        <li><a href="{% url 'help' %}#tutorials">Tutorials</a></li>
-                        {% comment %} <li><a href="{% url 'documentation' %}">Documentation</a></li> {% endcomment %}
-                        <li><a href="{% url 'glossary' %}">Glossary</a></li>
-                        <li><a href="{% url 'documentation' %}">Documentation</a></li>
-                    </ul>
-                </div>
-                {% comment %} <div class="footer-col">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><a href="#">Data and Databases</a></li>
-                        <li><a href="#">Tools and Software</a></li>
-                        <li><a href="#">Publications</a></li>
-                    </ul>
-                </div> {% endcomment %}
-                <div class="footer-col">
-                    <h4>Follow us</h4>
-                    <div class="social-links">
-                        {% comment %} <a href="#"><i class="fab fa-linkedin-in"></i></a> {% endcomment %}
-                        <a href="https://join.slack.com/t/amrxhub/shared_invite/zt-47vrfovdv-dTxgPDuDPblc8bSF2KdRqQ"><i class="fa-brands fa-slack"></i></a>
-                        <a href="https://x.com/amrxhub"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="https://youtube.com/@amrhub-321?si=LjK2UmqFgAz4qGBr"><i class="fa-brands fa-youtube"></i></a>
-                    </div>
-                </div>
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>AMR<span class="logo-x">x</span> Hub</h2>
+                <p>
+                    A curated web platform for discovering antimicrobial
+                    resistance tools, resources, research support and
+                    scientific knowledge for the global community.
+                </p>
             </div>
 
-            <section class="footer-cite" id="cite-us" aria-labelledby="cite-us-heading">
-                <h4 id="cite-us-heading">How to cite us</h4>
-                <p class="footer-cite-intro">If AMRx Hub supports your work, please cite:</p>
-                <ul class="footer-cite-list">
-                    <li>
-                        <span class="footer-cite-label"><i class="fas fa-file-alt"></i> Publication (MRA)</span>
-                        <p>
-                            Oladipo EK, Adeolu-Shittu AI, Fatuyi-Adene AD, Emmanuel JO. 2026. AMRx Hub: a curated web platform for discovery of antimicrobial resistance resources. Microbiol Resour Announc e00997-26.
-                            <a href="https://doi.org/10.1128/mra.00997-26" target="_blank" rel="noopener noreferrer">https://doi.org/10.1128/mra.00997-26</a>
-                        </p>
-                    </li>
-                    <li>
-                        <span class="footer-cite-label"><i class="fas fa-archive"></i> Software (Zenodo)</span>
-                        <p>
-                            Oladipo, E. K., Adeolu-Shittu, A. I., Fatuyi-Adene, A. D., &amp; Emmanuel, J. O. (2026). <em>AMRx Hub: A Curated Web Platform for Discovery of Antimicrobial Resistance Resources</em> (Version 0.9.5) [Computer software]. Zenodo.
-                            <a href="https://doi.org/10.5281/zenodo.22180074" target="_blank" rel="noopener noreferrer">https://doi.org/10.5281/zenodo.22180074</a>
-                        </p>
-                    </li>
-                </ul>
-            </section>
+            <div class="footer-column">
+                <h3>Explore</h3>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'tools:tools_home' %}">AMR Tools</a>
+                <a href="{% url 'resources:resources_list' %}">Resources</a>
+                <a href="{% url 'glossary' %}">Scientific Glossary</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>Support</h3>
+                <a href="{% url 'help' %}#tutorials">Tutorials</a>
+                <a href="{% url 'documentation' %}">Documentation</a>
+                <a href="{% url 'about' %}#contact-us">Contact us</a>
+                <a href="{% url 'privacy_policy' %}">Privacy policy</a>
+                <a href="{% url 'authentication:terms' %}">Terms and conditions</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>Company</h3>
+                <a href="{% url 'about' %}">About us</a>
+                <a href="{% url 'about' %}#our-team">Our Team</a>
+                <div class="footer-social">
+                    <a href="https://join.slack.com/t/amrxhub/shared_invite/zt-47vrfovdv-dTxgPDuDPblc8bSF2KdRqQ" aria-label="AMRx Hub on Slack"><i class="fa-brands fa-slack"></i></a>
+                    <a href="https://x.com/amrxhub" aria-label="AMRx Hub on X"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="https://youtube.com/@amrhub-321?si=LjK2UmqFgAz4qGBr" aria-label="AMRx Hub on YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <section class="footer-cite" id="cite-us" aria-labelledby="cite-us-heading">
+            <h3 id="cite-us-heading">How to cite us</h3>
+            <p class="footer-cite-intro">If AMRx Hub supports your work, please cite:</p>
+            <ul class="footer-cite-list">
+                <li>
+                    <span class="footer-cite-label"><i class="fas fa-file-alt"></i> Publication (MRA)</span>
+                    <p>
+                        Oladipo EK, Adeolu-Shittu AI, Fatuyi-Adene AD, Emmanuel JO. 2026. AMRx Hub: a curated web platform for discovery of antimicrobial resistance resources. Microbiol Resour Announc e00997-26.
+                        <a href="https://doi.org/10.1128/mra.00997-26" target="_blank" rel="noopener noreferrer">https://doi.org/10.1128/mra.00997-26</a>
+                    </p>
+                </li>
+                <li>
+                    <span class="footer-cite-label"><i class="fas fa-archive"></i> Software (Zenodo)</span>
+                    <p>
+                        Oladipo, E. K., Adeolu-Shittu, A. I., Fatuyi-Adene, A. D., &amp; Emmanuel, J. O. (2026). <em>AMRx Hub: A Curated Web Platform for Discovery of Antimicrobial Resistance Resources</em> (Version 0.9.5) [Computer software]. Zenodo.
+                        <a href="https://doi.org/10.5281/zenodo.22180074" target="_blank" rel="noopener noreferrer">https://doi.org/10.5281/zenodo.22180074</a>
+                    </p>
+                </li>
+            </ul>
+        </section>
+
+        <div class="footer-bottom">
+            &copy; {% now "Y" %} AMRx Hub. All rights reserved.
         </div>
     </footer>
-
-    {% with ns=request.resolver_match.namespace url_name=request.resolver_match.url_name %}
-    <nav class="bottom-nav" aria-label="Primary">
-        <a href="{% url 'home' %}" class="bottom-nav-item {% if url_name == 'home' %}active{% endif %}">
-            <i class="fas fa-home"></i><span>Home</span>
-        </a>
-        <a href="{% url 'tools:tools_home' %}" class="bottom-nav-item {% if ns == 'tools' and url_name != 'history' %}active{% endif %}">
-            <i class="fas fa-tools"></i><span>Tools</span>
-        </a>
-        <a href="{% url 'resources:resources_list' %}" class="bottom-nav-item {% if ns == 'resources' %}active{% endif %}">
-            <i class="fas fa-book"></i><span>Resources</span>
-        </a>
-        <a href="{% if user.is_authenticated %}{% url 'tools:history' %}{% else %}#{% endif %}"
-           class="bottom-nav-item {% if url_name == 'history' %}active{% endif %}"
-           {% if not user.is_authenticated %}onclick="promptLogin(event)"{% endif %}>
-            <i class="fas fa-history"></i><span>History</span>
-        </a>
-        <a href="{% url 'about' %}" class="bottom-nav-item {% if url_name == 'about' %}active{% endif %}">
-            <i class="fas fa-info-circle"></i><span>About</span>
-        </a>
-        <a href="{% url 'help' %}" class="bottom-nav-item {% if url_name == 'help' %}active{% endif %}">
-            <i class="fas fa-question-circle"></i><span>Help</span>
-        </a>
-        {% comment %} {% if user.is_authenticated %}
-            <a href="{% url 'profil:profile' %}" class="bottom-nav-item {% if ns == 'profil' %}active{% endif %}">
-                <i class="fas fa-user"></i><span>Profile</span>
-            </a>
-        {% else %}
-            <a href="{% url 'authentication:login' %}" class="bottom-nav-item">
-                <i class="fas fa-sign-in-alt"></i><span>Login</span>
-            </a>
-        {% endif %} {% endcomment %}
-    </nav>
-    {% endwith %}
 
     <script src="{% static 'notifications/js/notifications.js' %}"></script>
     {% block extra_js %}{% endblock %}
@@ -463,20 +373,35 @@
                 });
             });
 
+            // Whole-card links: any element with data-href navigates unless an
+            // inner link or button was the actual target.
+            document.addEventListener("click", function (event) {
+                const card = event.target.closest("[data-href]");
+                if (!card || event.target.closest("a, button")) return;
+                window.location.href = card.dataset.href;
+            });
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key !== "Enter") return;
+                const card = event.target.closest && event.target.closest("[data-href]");
+                if (card && card === event.target) window.location.href = card.dataset.href;
+            });
+
+            // Same-page anchors scroll smoothly below the sticky navbar.
             document.querySelectorAll('a[href*="#"]').forEach(function (anchor) {
                 anchor.addEventListener("click", function (event) {
                     const href = this.getAttribute("href");
                     if (!href || href === "#" || href.indexOf("#") === -1) return;
 
-                    const targetId = href.split("#")[1];
+                    const [path, targetId] = href.split("#");
                     if (!targetId) return;
+                    if (path && path !== window.location.pathname) return;
 
                     const targetElement = document.getElementById(targetId);
                     if (!targetElement) return;
 
                     event.preventDefault();
-                    const targetPosition = targetElement.offsetTop - 80;
-                    window.scrollTo({ top: targetPosition, behavior: "smooth" });
+                    targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
                 });
             });
         });

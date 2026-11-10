@@ -3,20 +3,24 @@
 
 {% block title %}Notifications | AMRx Hub{% endblock %}
 
+{% block hero_class %}page-hero--compact{% endblock %}
+{% block hero_label %}Your Account{% endblock %}
+{% block hero_title %}Notifications{% endblock %}
+{% block hero_text %}Updates, announcements and alerts from AMRx Hub.{% endblock %}
+
 {% block content %}
-<div class="content-card">
-    <div class="content-header">
-        <i class="fas fa-bell"></i>
-        <h2>Notifications</h2>
-    </div>
-    
-    <div class="notification-controls">
+<section class="page-section">
+    <div class="section-top">
+        <div class="section-heading">
+            <h2>All Notifications</h2>
+            <p>Select a notification to mark it as read.</p>
+        </div>
         {% if notifications %}
-            <button id="mark-all-read-btn" class="btn">Mark all as read</button>
+            <button id="mark-all-read-btn" type="button" class="back-button"><i class="fas fa-check-double"></i> Mark all as read</button>
         {% endif %}
     </div>
-    
-    <div class="notification-list-full">
+
+    <div class="panel notification-list-full">
         {% if notifications %}
             {% for notification in notifications %}
                 <div class="notification-item {% if not notification.is_read %}unread{% endif %}" 
@@ -74,13 +78,38 @@
             </div>
             {% endif %}
         {% else %}
-            <div class="no-notifications-message">
+            <div class="empty-state">
                 <i class="fas fa-bell-slash"></i>
+                <h3>You're all caught up</h3>
                 <p>You have no notifications.</p>
             </div>
         {% endif %}
     </div>
-</div>
+</section>
+
+<style>
+    .notification-list-full {
+        padding: 6px 0;
+        overflow: hidden;
+    }
+
+    .notification-list-full .empty-state {
+        border: 0;
+    }
+
+    .notification-list-full .pagination {
+        padding: 14px 20px;
+        border-top: 1px solid var(--border);
+        font-size: 13px;
+    }
+
+    .notification-list-full .pagination a {
+        margin-right: 10px;
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: none;
+    }
+</style>
 
 {% csrf_token %}
 <script>

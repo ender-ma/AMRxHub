@@ -1,313 +1,472 @@
-{% load static %}
+{% extends "main_layout.html" %}
 
-{% block title %}{% endblock %}
+{% block meta_description %}
+Glossary of key terms related to Antimicrobial Resistance (AMR) - definitions and explanations for better understanding.
+{% endblock %}
+
+{% block title %}Scientific Glossary - AMRx Hub{% endblock %}
+
+{% block hero_label %}AMRx Knowledge Centre{% endblock %}
+{% block hero_title %}AMR Glossary{% endblock %}
+{% block hero_text %}
+    A quick reference guide to key terms and concepts in antimicrobial resistance,
+    from everyday essentials to the genetics behind it.
+{% endblock %}
+{% block hero_extra %}
+<form class="hero-search" onsubmit="return false;" role="search">
+    <i class="fas fa-search search-icon" aria-hidden="true"></i>
+    <input type="search" id="glossarySearch" placeholder="Search for a term..." autocomplete="off" aria-label="Search the glossary">
+    <button type="button" class="clear-search" id="clearSearch" aria-label="Clear search">&times;</button>
+</form>
+{% endblock %}
 
 {% block content %}
+<div id="glossaryContent" aria-live="polite"></div>
 
-{% comment %} Trust me i dont get the point of this page. But what the heck {% endcomment %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta description="Glossary of key terms related to Antimicrobial Resistance (AMR) - definitions and explanations for better understanding.">
-  <title>AMRx Hub | Glossary</title>
-  <link rel="stylesheet" href="glossary.css">
-  <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
-  <link rel="icon" type="image/png" sizes="64x64" href="{% static 'img/favicon-64x64.jpg' %}">
-    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
-    <!-- Add this line right after your other favicon links -->
-    <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.jpg' %}">
-</head>
-<body>
+<noscript>
+    <div class="empty-state">
+        <h3>JavaScript is required</h3>
+        <p>Turn on JavaScript to browse the glossary.</p>
+    </div>
+</noscript>
 
-  <header class="glossary-header">
-    <h1>Antimicrobial Resistance (AMR) Glossary</h1>
-    <p>A quick reference guide to key terms and concepts in AMR.</p>
-  </header>
+<style>
+    .glossary-term-card {
+        display: block;
+        cursor: pointer;
+    }
 
-  <main class="glossary-container">
-    
-    <!-- Core Terms -->
-    <section class="glossary-section">
-      <h2>Core Terms (Must-Have for Everyone)</h2>
-      <dl>
-        <dt>Antimicrobial Resistance (AMR)</dt>
-        <dd>When microorganisms (bacteria, viruses, fungi, parasites) evolve and stop responding to medicines that used to kill them.</dd>
-
-        <dt>Antimicrobials</dt>
-        <dd>Medicines that treat infections, including antibiotics (bacteria), antivirals (viruses), antifungals (fungi), and antiparasitics (parasites).</dd>
-
-        <dt>Antibiotic Resistance</dt>
-        <dd>A specific type of AMR where bacteria no longer respond to antibiotics.</dd>
-
-        <dt>Superbugs</dt>
-        <dd>Strains of bacteria that are resistant to multiple antibiotics, making infections hard to treat.</dd>
-
-        <dt>Misuse of Antimicrobials</dt>
-        <dd>Incorrect use of medicines—such as wrong drug choice, wrong dose, overuse, or stopping treatment too early.</dd>
-
-        <dt>Antimicrobial Stewardship</dt>
-        <dd>Coordinated strategies to use antimicrobials wisely and responsibly to preserve their effectiveness.</dd>
-
-        <dt>Infection Prevention and Control (IPC)</dt>
-        <dd>Measures like hand hygiene, vaccination, safe hospital practices, and clean environments to prevent the spread of infections, including resistant ones.</dd>
-
-        <dt>One Health Approach</dt>
-        <dd>A strategy recognizing the interconnection between human health, animal health, and the environment in tackling AMR.</dd>
-      </dl>
-    </section>
-
-    <!-- Technical but Important -->
-    <section class="glossary-section">
-      <h2>Technical but Important (Awareness Level)</h2>
-      <dl>
-        <dt>Multidrug-Resistant (MDR)</dt>
-        <dd>Microorganisms resistant to at least one medicine in three or more antimicrobial categories.</dd>
-
-        <dt>Extensively Drug-Resistant (XDR)</dt>
-        <dd>Resistant to almost all available antimicrobials, with only a few treatment options left.</dd>
-
-        <dt>Pan-Drug Resistant (PDR)</dt>
-        <dd>Resistant to all known antimicrobials, leaving no effective treatments.</dd>
-
-        <dt>Last-Resort Antibiotics</dt>
-        <dd>Potent antibiotics (like colistin or carbapenems) reserved for infections that don’t respond to other treatments.</dd>
-
-        <dt>Nosocomial Infections (Hospital-Acquired Infections)</dt>
-        <dd>Infections acquired in healthcare settings, often involving resistant pathogens.</dd>
-
-        <dt>Surveillance</dt>
-        <dd>The systematic monitoring of AMR trends in humans, animals, and the environment to guide interventions.</dd>
-      </dl>
-    </section>
-
-    <!-- Genetics and Mechanisms -->
-    <section class="glossary-section">
-      <h2>Genetics and Mechanisms (For Deeper Understanding)</h2>
-      <dl>
-        <dt>Resistance Genes</dt>
-        <dd>Segments of DNA that provide microorganisms with the ability to survive treatment with antimicrobials.</dd>
-
-        <dt>Horizontal Gene Transfer (HGT)</dt>
-        <dd>The process by which bacteria exchange genetic material (including resistance genes) with one another.</dd>
-
-        <dt>Plasmid</dt>
-        <dd>Small, circular DNA molecules in bacteria that often carry and transfer resistance genes between cells.</dd>
-
-        <dt>Efflux Pump</dt>
-        <dd>Protein systems that bacteria use to pump antimicrobial drugs out of their cells before the drugs can act.</dd>
-
-        <dt>Integrons</dt>
-        <dd>Genetic elements that capture, store, and express resistance genes, contributing to the spread of AMR.</dd>
-
-        <dt>Transposons (“Jumping Genes”)</dt>
-        <dd>DNA sequences that can move within and between genomes, spreading resistance traits.</dd>
-
-        <dt>Mutation</dt>
-        <dd>A permanent change in DNA sequence that can create or enhance resistance.</dd>
-
-        <dt>Mobile Genetic Elements (MGEs)</dt>
-        <dd>Pieces of DNA (like plasmids, transposons, and integrons) that move between organisms, helping spread resistance.</dd>
-      </dl>
-    </section>
-
-    <!-- Additional Useful Terms -->
-    <section class="glossary-section">
-      <h2>Additional Useful Terms</h2>
-      <dl>
-        <dt>Selective Pressure</dt>
-        <dd>The survival advantage microorganisms gain when exposed to antimicrobials, allowing resistant ones to thrive while others die off.</dd>
-
-        <dt>Biofilm</dt>
-        <dd>A protective layer formed by communities of microbes that makes them more resistant to antimicrobials and immune responses.</dd>
-
-        <dt>Intrinsic Resistance</dt>
-        <dd>Natural resistance that certain microorganisms already have, without needing new mutations or gene acquisition.</dd>
-
-        <dt>Acquired Resistance</dt>
-        <dd>Resistance developed through mutations or by picking up resistance genes from other microbes.</dd>
-
-        <dt>Global Action Plan (GAP)</dt>
-        <dd>The World Health Organization’s framework to guide countries in combating AMR.</dd>
-      </dl>
-    </section>
-    <center>
-     <footer class="pp-footer">
-      <p>© <span id="year"></span> AMRx Hub</p>
-    </footer>
-    </center>
-  </main>
-    <script>
-    // Year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
-<div class="action-buttons">
-  <button onclick="window.history.back()" class="btn btn-primary">Go Back</button>
-</div>
-</html>
-<!-- End of glossary.html -->
-
-<style> 
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-  line-height: 1.7;
-  background: #f9fafb;
-  color: #333;
-}
-
-.glossary-header {
-  text-align: center;
-  padding: 3rem 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.glossary-header h1 {
-  margin-bottom: 0.5rem;
-  font-size: 2rem;
-  font-weight: 700;
-}
-
-.glossary-header p {
-  font-size: 1.1rem;
-  opacity: 0.9;
-}
-
-.glossary-container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-.glossary-section {
-  margin-bottom: 3rem;
-}
-
-.glossary-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  border-left: 5px solid #667eea;
-  padding-left: 10px;
-  color: #764ba2;
-}
-
-dl {
-  margin: 0;
-}
-
-dt {
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-top: 1rem;
-  color: #667eea;
-}
-
-dd {
-  margin: 0.3rem 0 1rem 1.5rem;
-  color: #555;
-}
-
-@media (max-width: 600px) {
-  .glossary-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .glossary-section h2 {
-    font-size: 1.2rem;
-  }
-
-  dt {
-    font-size: 1rem;
-  }
-}
-
-.glossary-section dl {
-  border-left: 3px solid #ccc;
-  padding-left: 15px;
-}
-
-.glossary-section dl dt {
-  border-bottom: 1px solid #eee;
-  padding-bottom: 5px;
-}
-
-.glossary-section dl dd {
-  border-bottom: 1px solid #f0f0f0;
-  padding-bottom: 10px;
-}
-
-.glossary-section dl dt:last-of-type {
-  border-bottom: none;
-}
-
-.glossary-section dl dd:last-of-type {
-  border-bottom: none;
-}
-
-.glossary-section dl dt:hover {
-  color: #764ba2;
-  cursor: pointer;
-}
-
-.glossary-section dl dd:hover {
-  color: #444;
-  cursor: pointer;
-}
-
-.glossary-section dl dt::before {
-  content: "• ";
-  color: #667eea;
-}
-
-.glossary-section dl dd::before {
-  content: "– ";
-  color: #555;
-}
-
-.glossary-section dl dt,
-.glossary-section dl dd {
-  transition: color 0.3s ease;
-}
-
-.glossary-section dl dt:focus,
-.glossary-section dl dd:focus {
-  outline: 2px solid #667eea;
-  outline-offset: 2px;
-}
-
-.glossary-section dl dt {
-  font-size: 1.1rem;
-}
-.action-buttons {
-  text-align: center;
-  margin: 2rem 0;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.8rem 1.6rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
+    .glossary-term-card h3 {
+        margin-bottom: 5px;
+    }
 </style>
-  
+
+<script>
+(() => {
+    /* =========================================
+       GLOSSARY DATA
+    ========================================= */
+
+    const categories = [
+        {
+            id: "core",
+            name: "Core Terms",
+            icon: "fas fa-star",
+            description: "The must-have terms everyone should know when talking about AMR."
+        },
+        {
+            id: "technical",
+            name: "Technical but Important",
+            icon: "fas fa-hospital",
+            description: "Awareness-level terms used in clinical and surveillance settings."
+        },
+        {
+            id: "genetics",
+            name: "Genetics and Mechanisms",
+            icon: "fas fa-dna",
+            description: "How resistance arises and spreads, for a deeper understanding."
+        },
+        {
+            id: "additional",
+            name: "Additional Useful Terms",
+            icon: "fas fa-book-open",
+            description: "Further concepts that help explain how resistance develops and is tackled."
+        }
+    ];
+
+    const terms = [
+        // Core terms
+        { id: "amr", term: "Antimicrobial Resistance", abbreviation: "AMR", category: "core",
+          definition: "When microorganisms (bacteria, viruses, fungi, parasites) evolve and stop responding to medicines that used to kill them." },
+        { id: "antimicrobials", term: "Antimicrobials", abbreviation: "", category: "core",
+          definition: "Medicines that treat infections, including antibiotics (bacteria), antivirals (viruses), antifungals (fungi), and antiparasitics (parasites)." },
+        { id: "antibiotic-resistance", term: "Antibiotic Resistance", abbreviation: "", category: "core",
+          definition: "A specific type of AMR where bacteria no longer respond to antibiotics." },
+        { id: "superbugs", term: "Superbugs", abbreviation: "", category: "core",
+          definition: "Strains of bacteria that are resistant to multiple antibiotics, making infections hard to treat." },
+        { id: "misuse", term: "Misuse of Antimicrobials", abbreviation: "", category: "core",
+          definition: "Incorrect use of medicines, such as wrong drug choice, wrong dose, overuse, or stopping treatment too early." },
+        { id: "stewardship", term: "Antimicrobial Stewardship", abbreviation: "", category: "core",
+          definition: "Coordinated strategies to use antimicrobials wisely and responsibly to preserve their effectiveness." },
+        { id: "ipc", term: "Infection Prevention and Control", abbreviation: "IPC", category: "core",
+          definition: "Measures like hand hygiene, vaccination, safe hospital practices, and clean environments to prevent the spread of infections, including resistant ones." },
+        { id: "one-health", term: "One Health Approach", abbreviation: "", category: "core",
+          definition: "A strategy recognizing the interconnection between human health, animal health, and the environment in tackling AMR." },
+
+        // Technical but important
+        { id: "mdr", term: "Multidrug-Resistant", abbreviation: "MDR", category: "technical",
+          definition: "Microorganisms resistant to at least one medicine in three or more antimicrobial categories." },
+        { id: "xdr", term: "Extensively Drug-Resistant", abbreviation: "XDR", category: "technical",
+          definition: "Resistant to almost all available antimicrobials, with only a few treatment options left." },
+        { id: "pdr", term: "Pan-Drug Resistant", abbreviation: "PDR", category: "technical",
+          definition: "Resistant to all known antimicrobials, leaving no effective treatments." },
+        { id: "last-resort", term: "Last-Resort Antibiotics", abbreviation: "", category: "technical",
+          definition: "Potent antibiotics (like colistin or carbapenems) reserved for infections that don't respond to other treatments." },
+        { id: "nosocomial", term: "Nosocomial Infections (Hospital-Acquired Infections)", abbreviation: "HAI", category: "technical",
+          definition: "Infections acquired in healthcare settings, often involving resistant pathogens." },
+        { id: "surveillance", term: "Surveillance", abbreviation: "", category: "technical",
+          definition: "The systematic monitoring of AMR trends in humans, animals, and the environment to guide interventions." },
+
+        // Genetics and mechanisms
+        { id: "resistance-genes", term: "Resistance Genes", abbreviation: "", category: "genetics",
+          definition: "Segments of DNA that provide microorganisms with the ability to survive treatment with antimicrobials." },
+        { id: "hgt", term: "Horizontal Gene Transfer", abbreviation: "HGT", category: "genetics",
+          definition: "The process by which bacteria exchange genetic material (including resistance genes) with one another." },
+        { id: "plasmid", term: "Plasmid", abbreviation: "", category: "genetics",
+          definition: "Small, circular DNA molecules in bacteria that often carry and transfer resistance genes between cells." },
+        { id: "efflux-pump", term: "Efflux Pump", abbreviation: "", category: "genetics",
+          definition: "Protein systems that bacteria use to pump antimicrobial drugs out of their cells before the drugs can act." },
+        { id: "integrons", term: "Integrons", abbreviation: "", category: "genetics",
+          definition: "Genetic elements that capture, store, and express resistance genes, contributing to the spread of AMR." },
+        { id: "transposons", term: "Transposons (“Jumping Genes”)", abbreviation: "", category: "genetics",
+          definition: "DNA sequences that can move within and between genomes, spreading resistance traits." },
+        { id: "mutation", term: "Mutation", abbreviation: "", category: "genetics",
+          definition: "A permanent change in DNA sequence that can create or enhance resistance." },
+        { id: "mge", term: "Mobile Genetic Elements", abbreviation: "MGEs", category: "genetics",
+          definition: "Pieces of DNA (like plasmids, transposons, and integrons) that move between organisms, helping spread resistance." },
+
+        // Additional useful terms
+        { id: "selective-pressure", term: "Selective Pressure", abbreviation: "", category: "additional",
+          definition: "The survival advantage microorganisms gain when exposed to antimicrobials, allowing resistant ones to thrive while others die off." },
+        { id: "biofilm", term: "Biofilm", abbreviation: "", category: "additional",
+          definition: "A protective layer formed by communities of microbes that makes them more resistant to antimicrobials and immune responses." },
+        { id: "intrinsic-resistance", term: "Intrinsic Resistance", abbreviation: "", category: "additional",
+          definition: "Natural resistance that certain microorganisms already have, without needing new mutations or gene acquisition." },
+        { id: "acquired-resistance", term: "Acquired Resistance", abbreviation: "", category: "additional",
+          definition: "Resistance developed through mutations or by picking up resistance genes from other microbes." },
+        { id: "gap", term: "Global Action Plan", abbreviation: "GAP", category: "additional",
+          definition: "The World Health Organization's framework to guide countries in combating AMR." }
+    ];
+
+    /* =========================================
+       HELPERS
+    ========================================= */
+
+    const content = document.getElementById("glossaryContent");
+    const searchInput = document.getElementById("glossarySearch");
+    const clearButton = document.getElementById("clearSearch");
+    let searchTimer;
+
+    function escapeHTML(value) {
+        return String(value).replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        })[character]);
+    }
+
+    const findCategory = id => categories.find(item => item.id === id);
+    const findTerm = id => terms.find(item => item.id === id);
+    const termsIn = id => terms.filter(term => term.category === id);
+
+    function setSearchValue(value) {
+        searchInput.value = value;
+        clearButton.classList.toggle("visible", Boolean(value));
+    }
+
+    function emptyState(icon, title, description) {
+        return `
+            <div class="empty-state">
+                <i class="${icon}"></i>
+                <h3>${title}</h3>
+                <p>${description}</p>
+            </div>
+        `;
+    }
+
+    function termCard(term) {
+        const category = findCategory(term.category);
+        const preview = term.definition.length > 125
+            ? term.definition.substring(0, 125).trim() + "..."
+            : term.definition;
+
+        return `
+            <button type="button" class="list-card glossary-term-card" data-term="${term.id}">
+                <div class="list-card-body">
+                    <h3>${term.term}</h3>
+                    <p>${preview}</p>
+                    <span class="card-meta">
+                        ${term.abbreviation ? term.abbreviation + " · " : ""}${category ? category.name : ""}
+                    </span>
+                </div>
+            </button>
+        `;
+    }
+
+    /* =========================================
+       NAVIGATION (hash based, works with back/forward)
+    ========================================= */
+
+    function pageHash(page) {
+        switch (page.type) {
+            case "category": return "#category/" + page.id;
+            case "detail": return "#term/" + page.id;
+            case "search": return "#search/" + encodeURIComponent(page.query);
+            default: return "#glossary";
+        }
+    }
+
+    function pageFromHash(hash) {
+        const [type, ...rest] = hash.replace(/^#/, "").split("/");
+        const value = rest.join("/");
+        if (type === "category" && findCategory(value)) return { type: "category", id: value };
+        if (type === "term" && findTerm(value)) return { type: "detail", id: value };
+        if (type === "search" && value) return { type: "search", query: decodeURIComponent(value) };
+        return { type: "home" };
+    }
+
+    function renderPage(page, saveHistory = true) {
+        switch (page.type) {
+            case "category": renderCategory(page.id); break;
+            case "detail": renderDetail(page.id); break;
+            case "search": renderSearchResults(page.query); break;
+            default: renderHome();
+        }
+
+        if (saveHistory) {
+            history.pushState(page, "", pageHash(page));
+        }
+    }
+
+    function goHome() {
+        setSearchValue("");
+        renderPage({ type: "home" });
+    }
+
+    window.addEventListener("popstate", event => {
+        const page = event.state || pageFromHash(location.hash);
+        setSearchValue(page.type === "search" ? page.query : "");
+        renderPage(page, false);
+    });
+
+    /* =========================================
+       VIEWS
+    ========================================= */
+
+    function renderHome() {
+        const categoryCards = categories.map(category => {
+            const count = termsIn(category.id).length;
+            return `
+                <button type="button" class="info-card" data-category="${category.id}">
+                    <div class="card-icon"><i class="${category.icon}"></i></div>
+                    <h3>${category.name}</h3>
+                    <p class="card-body-text">${category.description}</p>
+                    <div class="card-bottom">
+                        <span>${count} ${count === 1 ? "term" : "terms"}</span>
+                        <span class="card-cta">Explore <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </button>
+            `;
+        }).join("");
+
+        content.innerHTML = `
+            <section class="page-section">
+                <div class="section-heading">
+                    <h2>Explore Categories</h2>
+                    <p>Browse ${terms.length} AMR terms by level and subject area.</p>
+                </div>
+                <div class="card-grid card-grid--2">${categoryCards}</div>
+            </section>
+
+            <section class="page-section">
+                <div class="section-heading">
+                    <h2>Start With the Essentials</h2>
+                    <p>Core terms everyone should know.</p>
+                </div>
+                <div class="list-grid">${termsIn("core").slice(0, 4).map(termCard).join("")}</div>
+            </section>
+        `;
+    }
+
+    function renderCategory(id) {
+        const category = findCategory(id);
+        if (!category) {
+            renderHome();
+            return;
+        }
+
+        const categoryTerms = termsIn(id);
+
+        content.innerHTML = `
+            <div class="section-top">
+                <div class="section-heading">
+                    <h2><i class="${category.icon}"></i> ${category.name}</h2>
+                    <p>${category.description}</p>
+                </div>
+                <button type="button" class="back-button" data-action="home">
+                    <i class="fas fa-arrow-left"></i> All Categories
+                </button>
+            </div>
+
+            <p class="results-meta">
+                ${categoryTerms.length} available ${categoryTerms.length === 1 ? "term" : "terms"}
+            </p>
+
+            <div class="list-grid">
+                ${categoryTerms.length
+                    ? categoryTerms.map(termCard).join("")
+                    : emptyState("fas fa-book", "No terms available yet", "New terms will be added to this category.")}
+            </div>
+        `;
+    }
+
+    function renderDetail(id) {
+        const term = findTerm(id);
+        if (!term) {
+            content.innerHTML = emptyState("fas fa-search", "Term not found", "This glossary entry could not be found.");
+            return;
+        }
+
+        const category = findCategory(term.category);
+        const related = termsIn(term.category).filter(item => item.id !== term.id).slice(0, 5);
+
+        content.innerHTML = `
+            <div class="section-top">
+                <span class="pill"><i class="${category.icon}"></i> ${category.name}</span>
+                <button type="button" class="back-button" data-category="${term.category}">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+            </div>
+
+            <article class="detail-card">
+                <h1>${term.term}</h1>
+                <p class="detail-subtitle">
+                    ${term.abbreviation ? "Abbreviation: " + term.abbreviation : "AMR terminology"}
+                </p>
+
+                <div class="detail-section">
+                    <h3>Definition</h3>
+                    <p>${term.definition}</p>
+                </div>
+
+                ${related.length ? `
+                    <div class="detail-section">
+                        <h3>More in ${category.name}</h3>
+                        <div class="related-list">
+                            ${related.map(item => `
+                                <button type="button" class="related-link" data-term="${item.id}">
+                                    ${item.term} <i class="fas fa-arrow-right"></i>
+                                </button>
+                            `).join("")}
+                        </div>
+                    </div>
+                ` : ""}
+            </article>
+        `;
+    }
+
+    function renderSearchResults(query) {
+        const normalized = query.toLowerCase();
+        const results = terms.filter(term => {
+            const category = findCategory(term.category);
+            return [term.term, term.abbreviation, term.definition, category ? category.name : ""]
+                .join(" ")
+                .toLowerCase()
+                .includes(normalized);
+        });
+
+        content.innerHTML = `
+            <div class="section-top">
+                <div class="section-heading">
+                    <h2>Search Results</h2>
+                    <p>${results.length} result${results.length === 1 ? "" : "s"} for "<strong>${escapeHTML(query)}</strong>"</p>
+                </div>
+                <button type="button" class="back-button" data-action="home">
+                    <i class="fas fa-arrow-left"></i> All Categories
+                </button>
+            </div>
+
+            <div class="list-grid">
+                ${results.length
+                    ? results.map(termCard).join("")
+                    : emptyState("fas fa-search", "No matching terms found", "Try another term, abbreviation or keyword.")}
+            </div>
+        `;
+    }
+
+    /* =========================================
+       EVENTS
+    ========================================= */
+
+    content.addEventListener("click", event => {
+        const termButton = event.target.closest("[data-term]");
+        const categoryButton = event.target.closest("[data-category]");
+        const homeButton = event.target.closest('[data-action="home"]');
+
+        if (termButton) {
+            renderPage({ type: "detail", id: termButton.dataset.term });
+        } else if (categoryButton) {
+            setSearchValue("");
+            renderPage({ type: "category", id: categoryButton.dataset.category });
+        } else if (homeButton) {
+            goHome();
+        }
+    });
+
+    searchInput.addEventListener("input", function () {
+        const query = this.value.trim();
+        clearTimeout(searchTimer);
+        clearButton.classList.toggle("visible", Boolean(query));
+
+        if (!query) {
+            renderPage({ type: "home" });
+            return;
+        }
+
+        searchTimer = setTimeout(() => {
+            // Replace rather than push while typing, so Back doesn't step through every keystroke
+            renderSearchResults(query);
+            history.replaceState({ type: "search", query: query }, "", pageHash({ type: "search", query: query }));
+        }, 180);
+    });
+
+    clearButton.addEventListener("click", () => {
+        clearTimeout(searchTimer);
+        goHome();
+        searchInput.focus();
+    });
+
+    /* =========================================
+       INITIALISE (supports deep links like #term/plasmid)
+    ========================================= */
+
+    const initialPage = pageFromHash(location.hash);
+    setSearchValue(initialPage.type === "search" ? initialPage.query : "");
+    history.replaceState(initialPage, "", pageHash(initialPage));
+    renderPage(initialPage, false);
+})();
+</script>
+
+<style>
+    .related-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .related-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border: 1px solid var(--primary-line);
+        border-radius: 6px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 600;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .related-link i {
+        font-size: 10px;
+    }
+
+    .related-link:hover {
+        background: var(--primary);
+        color: #fff;
+    }
+</style>
 {% endblock %}

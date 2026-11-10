@@ -1,17 +1,39 @@
 {% extends "main_layout.html" %}
+
+{% block title %}Search results for "{{ query }}" - AMRx Hub{% endblock %}
+
+{% block hero_class %}page-hero--compact{% endblock %}
+{% block hero_label %}AMR Tools Directory{% endblock %}
+{% block hero_title %}Search Results{% endblock %}
+{% block hero_text %}Tools matching "{{ query }}"{% endblock %}
+
 {% block content %}
-  <h2>Search Results for "{{ query }}"</h2>
-  {% if results %}
-    <ul>
-      {% for tool in results %}
-        <li>
-          <a href="{% url 'tools:tool_detail' tool.id %}">
-            {{ tool.name }} - {{ tool.short_description }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No tools found matching your search.</p>
-  {% endif %}
+<section class="page-section">
+    <div class="section-top">
+        <div class="section-heading">
+            <h2>Search Results</h2>
+            <p>{{ results|length }} result{{ results|length|pluralize }} for "<strong>{{ query }}</strong>"</p>
+        </div>
+        <a href="{% url 'tools:tools_home' %}" class="back-button"><i class="fas fa-arrow-left"></i> All Tools</a>
+    </div>
+
+    <div class="list-grid">
+        {% for tool in results %}
+        <a href="{% url 'tools:tool_detail' tool.id %}" class="list-card">
+            <div class="card-icon"><i class="fas fa-toolbox"></i></div>
+            <div class="list-card-body">
+                <h3>{{ tool.name }}</h3>
+                <p>{{ tool.short_description }}</p>
+                <span class="card-meta">{{ tool.category.name }}</span>
+            </div>
+        </a>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fas fa-search"></i>
+            <h3>No matching tools found</h3>
+            <p>Try another tool name, organism or keyword.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}
