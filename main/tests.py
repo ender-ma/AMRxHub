@@ -82,3 +82,65 @@ class ErrorPageTests(TestCase):
     def test_unlisted_status_uses_generic_message(self):
         response = errors.error_response(418)
         self.assertContains(response, 'complete your request', status_code=418)
+
+
+class GlossaryTests(TestCase):
+    """The glossary is seeded by migration 0008 and managed in the Django admin."""
+
+    def glossary_payload(self):
+        response = self.client.get(reverse('glossary'))
+        self.assertEqual(response.status_code, 200)
+        return response.context['glossary_data']
+
+    def test_seeded_terms_are_shown(self):
+        from main.models import GlossaryTerm
+        self.assertEqual(GlossaryTerm.objects.count(), 27)
+        data = self.glossary_payload()
+        self.assertEqual(len(data['terms']), 27)
+        self.assertEqual([c['id'] for c in data['categories']], ['core', 'technical', 'genetics', 'additional'])
+        self.assertIn('plasmid', {t['id'] for t in data['terms']})
+
+    def test_only_published_terms_are_shown(self):
+        from main.models import GlossaryTerm
+        GlossaryTerm.objects.filter(slug='plasmid').update(approval_status='pending')
+        GlossaryTerm.objects.filter(slug='biofilm').update(is_active=False)
+        ids = {t['id'] for t in self.glossary_payload()['terms']}
+        self.assertNotIn('plasmid', ids)
+        self.assertNotIn('biofilm', ids)
+        self.assertIn('mutation', ids)
+
+    def test_admin_added_term_appears_with_details(self):
+        from main.models import GlossaryCategory, GlossaryTerm
+        core = GlossaryCategory.objects.get(slug='core')
+        term = GlossaryTerm.objects.create(
+            category=core, term='Minimum Inhibitory Concentration', abbreviation='MIC',
+            definition='Lowest concentration that prevents visible growth.',
+            context='Used in susceptibility testing.', references='CLSI M100\n\nEUCAST breakpoints',
+        )
+        term.related_terms.add(GlossaryTerm.objects.get(slug='amr'))
+        self.assertEqual(term.slug, 'mic')  # auto-filled from the abbreviation
+        entry = next(t for t in self.glossary_payload()['terms'] if t['id'] == 'mic')
+        self.assertEqual(entry['references'], ['CLSI M100', 'EUCAST breakpoints'])
+        self.assertEqual(entry['related'], ['amr'])
+
+    def test_term_text_is_not_rendered_as_html(self):
+        from main.models import GlossaryCategory, GlossaryTerm
+        GlossaryTerm.objects.create(category=GlossaryCategory.objects.get(slug='core'),
+                                    term='<script>alert(1)</script>', definition='x')
+        response = self.client.get(reverse('glossary'))
+        self.assertNotContains(response, '<script>alert(1)</script>')
+
+    def test_admin_save_stamps_audit_fields(self):
+        from main.models import GlossaryCategory, GlossaryTerm
+        admin_user = get_user_model().objects.create_superuser(email='admin@example.com', password='pw-12345678')
+        self.client.force_login(admin_user)
+        response = self.client.post(reverse('admin:main_glossaryterm_add'), {
+            'category': GlossaryCategory.objects.get(slug='core').pk,
+            'term': 'Colistin', 'slug': '', 'abbreviation': '', 'definition': 'A last-resort polymyxin antibiotic.',
+            'context': '', 'references': '', 'approval_status': 'approved', 'is_active': 'on',
+        })
+        self.assertEqual(response.status_code, 302)
+        term = GlossaryTerm.objects.get(term='Colistin')
+        self.assertEqual(term.added_by, admin_user)
+        self.assertEqual(term.approved_by, admin_user)
+        self.assertIsNotNone(term.approved_at)

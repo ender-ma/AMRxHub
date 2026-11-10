@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Advertisement, Announcement
 from django.utils import timezone
-from .models import TeamMember
+from .models import TeamMember, GlossaryCategory, GlossaryTerm
+from django.db.models import Prefetch, Q
 from django.shortcuts import redirect
 from django.http import FileResponse, Http404, JsonResponse
 import os
@@ -39,9 +40,38 @@ def privacy_policy(request):
 
 def glossary(request):
     """
-    Render the glossary page for authenticated users.
+    Render the glossary. Only approved, active terms in active categories are shown;
+    terms are managed by admins/staff in the Django admin (Main > Glossary terms).
     """
-    return render(request, 'main/glossary.html')
+    published = Q(approval_status='approved', is_active=True, category__is_active=True)
+    terms = (
+        GlossaryTerm.objects.filter(published)
+        .select_related('category')
+        .prefetch_related(Prefetch('related_terms', queryset=GlossaryTerm.objects.filter(published).only('slug')))
+        .order_by('term')
+    )
+    term_data = [
+        {
+            'id': t.slug,
+            'term': t.term,
+            'abbreviation': t.abbreviation,
+            'category': t.category.slug,
+            'definition': t.definition,
+            'context': t.context,
+            'references': t.get_references_list(),
+            'related': [r.slug for r in t.related_terms.all()],
+        }
+        for t in terms
+    ]
+    used = {t['category'] for t in term_data}
+    category_data = [
+        {'id': c.slug, 'name': c.name, 'icon': c.icon, 'description': c.description}
+        for c in GlossaryCategory.objects.filter(is_active=True)
+        if c.slug in used
+    ]
+    return render(request, 'main/glossary.html', {
+        'glossary_data': {'categories': category_data, 'terms': term_data},
+    })
 
 def collaborators(request):
     """
