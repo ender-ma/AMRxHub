@@ -20,10 +20,41 @@
         .legal-back { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 108px; padding: 10px 16px; border: 1px solid #bae6fd; border-radius: 999px; background: linear-gradient(135deg, #ecfeff, #f8fafc); color: var(--legal-text); font-family: Arial, Helvetica, sans-serif; font-size: .92rem; font-weight: 700; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
         .legal-back:hover { color: var(--legal-text); text-decoration: none; transform: translateY(-1px); box-shadow: 0 10px 18px rgba(14, 165, 233, .14); }
         .legal-footer { display: flex; justify-content: center; padding-top: 28px; margin-top: 28px; border-top: 1px solid var(--legal-border); }
+        body.privacy-policy-page { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-family: "Times New Roman", Times, serif; }
+        .privacy-policy-page .legal-card { max-width: 860px; margin: 0 auto; border: 0; border-radius: 30px; box-shadow: 0 0 30px rgba(0, 0, 0, .1); }
+        .privacy-policy-page .legal-brand { display: none; }
+        .privacy-policy-page .legal-content { color: #333; font-size: 1rem; line-height: 1.6; }
+        .privacy-policy-page .policy-header { margin-bottom: 20px; text-align: center; }
+        .privacy-policy-page .logo { display: inline-block; margin-bottom: 10px; color: #1a1a1a; font-family: "Times New Roman", Times, serif; font-size: 1.8em; font-weight: 700; line-height: 1; word-spacing: 4px; }
+        .privacy-policy-page .logo-x { color: #5a67d8; }
+        .privacy-policy-page .blog-meta { color: #666; line-height: 1.5; }
+        .privacy-policy-page .blog-content { color: #333; text-align: justify; animation: privacy-fade-in 1.5s ease-out; }
+        .privacy-policy-page .blog-content h2 { margin: 24px 0 8px; color: #1a1a1a; font-family: "Times New Roman", Times, serif; font-size: 1.5rem; }
+        .privacy-policy-page .blog-content h3 { margin: 18px 0 6px; color: #1a1a1a; }
+        .privacy-policy-page .blog-content p { margin: 0 0 12px; }
+        .privacy-policy-page .blog-content a { color: inherit; text-decoration: none; }
+        .privacy-policy-page .blog-content .email-link { font-weight: 600; cursor: pointer; }
+        .privacy-policy-page .blog-content .email-link:hover,
+        .privacy-policy-page .blog-content .email-link:focus { text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+        .privacy-policy-page .blog-content ul { margin: 0 0 14px; padding-left: 24px; }
+        @keyframes privacy-fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        body.terms-policy-page { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-family: "Times New Roman", Times, serif; }
+        .terms-policy-page .legal-card { max-width: 860px; margin: 0 auto; border: 0; border-radius: 30px; box-shadow: 0 0 30px rgba(0, 0, 0, .1); }
+        .terms-policy-page .legal-brand { display: none; }
+        .terms-policy-page .legal-content { color: #333; font-size: 1rem; line-height: 1.6; }
+        .terms-policy-page .policy-header { margin-bottom: 20px; text-align: center; }
+        .terms-policy-page .logo { display: inline-block; margin-bottom: 10px; color: #1a1a1a; font-family: "Times New Roman", Times, serif; font-size: 1.8em; font-weight: 700; line-height: 1; word-spacing: 4px; }
+        .terms-policy-page .logo-x { color: #5a67d8; }
+        .terms-policy-page .blog-meta { color: #666; line-height: 1.5; }
+        .terms-policy-page .blog-content { color: #333; text-align: justify; animation: terms-fade-in 1.5s ease-out; }
+        .terms-policy-page .blog-content h2 { margin: 24px 0 8px; color: #1a1a1a; font-family: "Times New Roman", Times, serif; font-size: 1.5rem; }
+        .terms-policy-page .blog-content p { margin: 0 0 12px; text-align: justify; }
+        .terms-policy-page .blog-content ul { margin: 0 0 14px; padding-left: 24px; }
+        @keyframes terms-fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @media (max-width: 640px) { .legal-shell { width: min(100% - 20px, 1100px); margin-top: 10px; } .legal-card { padding: 22px 16px 28px; } .legal-header { align-items: flex-start; flex-direction: column; } .legal-header .legal-back { width: 100%; } .legal-content { font-size: 1rem; } }
     </style>
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
     <main class="legal-shell">
         <article class="legal-card">
             <header class="legal-header">
