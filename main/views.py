@@ -99,6 +99,10 @@ def documentation(request):
             'title': 'AMRx Hub Admin Staff System v0.5.0',
             'file': 'documents/AMRx_Hub_Admin_Staff_System_v0.5.0.docx',
         },
+        {
+            'title': 'AMRx Hub Curation Policy',
+            'file': 'documents/AMRx_Hub_Curation_Policy.docx',
+        },
     ]
     return render(request, 'main/documentation.html', {'documents': documents})
 
